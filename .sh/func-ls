@@ -1,2 +1,2 @@
-WHICH_LS=$(whiff gls ls)
+WHICH_LS=/opt/local/bin/gls
 function ls() { $WHICH_LS --color=auto -F $@; }
