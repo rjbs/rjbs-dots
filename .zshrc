@@ -1,5 +1,7 @@
 ## rjbs's .zshrc
 
+unsetopt printexitvalue # <-- yuck, printexitvalue
+
 # I'll need this for colorized prompt.
 autoload -U colors
 
