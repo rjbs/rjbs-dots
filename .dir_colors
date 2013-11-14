@@ -1,0 +1,91 @@
+# Configuration file for the color ls utility
+
+# COLOR needs one of these arguments: 'tty' colorizes output to ttys, but not
+# pipes. 'all' adds color characters to all output. 'none' shuts colorization
+# off.
+COLOR tty
+
+# extra command line options for ls
+#  -F = show funny characters for special files
+#  -b = better support for special characters
+#  -T 0 = don't trust tab spacing when formatting ls output.
+OPTIONS -F -b -T 0
+
+# which terms are color-capable?
+TERM linux
+TERM console
+TERM con132x25
+TERM con132x30
+TERM con132x43
+TERM con132x60
+TERM con80x25
+TERM con80x28
+TERM con80x30
+TERM con80x43
+TERM con80x50
+TERM con80x60
+TERM xterm-color
+TERM vt100
+TERM screen
+
+TERM dtterm
+
+# allow 8-bit output?
+EIGHTBIT 1
+
+# attribute codes: 
+# 00=none 01=bold 04=underscore 05=blink 07=reverse 08=concealed
+# color codes:
+# 0=black 1=red 2=green 3=yellow 4=blue 5=magenta 6=cyan 7=white
+
+# special file types
+
+NORMAL	00			# global default		plain
+FILE	00			# regular file			plain
+DIR		01;34		# directory 			bright blue
+LINK	00;37		# symlinkr				grey
+ORPHAN	01;05;30	# broken symlink		bright black
+
+FIFO	32			# pipe					green
+SOCK	01;36		# socket				bright cyan
+BLK		01;32;40	# block device			bright green
+CHR		01;32;40 	# character device 		bright green
+EXEC	01;37 		# files with +x			bright white
+
+# file extensions
+
+.txt	01;36		# text/html files		asdf
+.html	00;36
+.shtml	00;36
+.htm	00;36
+
+.tar	01;31		# archives				bright red
+.tgz	01;31
+.arj	01;31
+.taz	01;31
+.lzh	01;31
+.zip	01;31
+.bz2	01;31
+.rpm	01;31
+.deb	01;31
+.z  	01;31
+.Z  	01;31
+.gz 	01;31
+
+.jpg	01;37		# image formats			bright yellow
+.png	01;37
+.gif	01;37
+.bmp	01;37
+.ppm	01;37
+.tga	01;37
+.xbm	01;37
+.xpm	01;37
+.tif	01;37
+
+.mpg	01;37		# audio and video		bright yellow
+.mpeg	01;37
+.avi	01;37
+.mov	01;37
+.mp3	01;37
+.ogg	01;37
+.wmv	01;37

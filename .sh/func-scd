@@ -1,0 +1,8 @@
+scd() {
+  NEWDIR=$(perl -MCwd -MFile::Spec -le '
+    die "usage: scd old new\n" unless @ARGV == 2;
+    my @parts = File::Spec->splitdir(getcwd);
+    $_ = $ARGV[1] for grep { $_ eq $ARGV[0] } @parts;
+    print File::Spec->catdir(@parts)' $1 $2)
+  chdir $NEWDIR
+}

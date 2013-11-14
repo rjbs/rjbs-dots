@@ -1,0 +1,4 @@
+gcd() {
+  local TOP="`git rev-parse --show-cdup 2> /dev/null`" || return 1
+  [ "$TOP" ] && cd "$TOP"
+}

@@ -1,0 +1,11 @@
+x() {
+	if [ "$1" = "" ]; then
+		tmux attach
+	else
+    if [ "$2" = "" ]; then
+      ssh -t $1 tmux attach
+    else
+      ssh -t $1 tmux attach -t $2
+    fi
+	fi
+}

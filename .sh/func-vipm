@@ -1,0 +1,3 @@
+vipm() {
+  vi $(perldoc -l $*)
+}

@@ -1,0 +1,8 @@
+shell zsh
+nethack on
+startup_message off
+bindkey -d -k kD stuff "\010"
+defscrollback 10000
+
+bind b eval "writebuf" "exec sh -c 'pbcopy < /tmp/screen-exchange'"
+

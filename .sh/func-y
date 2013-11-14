@@ -1,0 +1,27 @@
+function y () {
+  NEWLINES=25
+  if [ "$1" != "" ]; then
+    NEWLINES=$1
+  elif [ "$LINES" = "24" -o "$LINES" = 25 ]; then
+    NEWLINES=40
+  else
+    NEWLINES=25
+  fi
+
+  if [ "$TERM_PROGRAM" = "Apple_Terminal" ]; then
+    osascript <<applescript
+      tell application "Terminal"
+        repeat with t in tabs of window 1
+          set number of rows of t to $NEWLINES
+        end repeat
+      end tell
+applescript
+  elif [ "$TERM_PROGRAM" = "iTerm.app" ]; then
+    osascript <<applescript
+      tell application "iTerm"
+        set number of rows of current terminal to $NEWLINES
+      end tell
+applescript
+  fi
+
+}
