@@ -1,0 +1,251 @@
+#!/usr/bin/env perl
+use strict;
+use 5.10.1;
+
+use autodie;
+use JSON::PP;
+use Tie::IxHash;
+
+open my $fh, '<', ($ARGV[0] || '.git/index');
+
+read $fh, my $sig, 4;
+
+die "not an index!" unless $sig eq 'DIRC';
+
+read $fh, my $vers, 4;
+$vers = unpack 'N', $vers;
+
+read $fh, my $idx_count, 4;
+$idx_count = unpack 'N', $idx_count;
+
+tie my %index, 'Tie::IxHash';
+%index = (
+  version => $vers,
+  sha1    => undef,
+  entries_expected => $idx_count,
+);
+
+# say "v$vers, $idx_count idx entries";
+
+# is that second 16 really there in v2?
+my $IDX_WIDTH = 320 + 160 + 16;
+$IDX_WIDTH += 16 if $vers == 3;
+$IDX_WIDTH /= 8; # we really want it in bytes
+
+# say "index width: $IDX_WIDTH bytes";
+
+my @keys = qw(
+  ctime ctime_ns
+  mtime mtime_ns
+  dev   inode
+
+  typemode
+
+  uid   gid
+  size
+
+  sha1
+
+  flags
+
+  SKIP2
+  skip_worktree
+  intent_to_add
+);
+
+my @entries;
+
+for (1 .. $idx_count) {
+  read $fh, my $index_content, $IDX_WIDTH;
+
+  my %entry;
+  @entry{ @keys } = unpack "NNNNNN"
+                         . "B32"
+                         . "N N N H40 B16"
+                         . ($vers == 3 ? "B16" : '')
+                         , $index_content;
+
+  substr $entry{typemode}, 0, 16, '';
+  $entry{type} = substr $entry{typemode}, 0, 4;
+  $entry{mode} = sprintf '%o', oct('0b' . substr $entry{typemode}, -9);
+
+  $entry{assume_valid} = substr $entry{flags}, 0, 1;
+  $entry{extended}     = substr $entry{flags}, 1, 1;
+  $entry{stage}        = oct('0b' . substr $entry{flags}, 2, 2);
+  $entry{name_length}  = oct('0b' . substr $entry{flags}, 4, 13);
+
+  if ($entry{name_length} == 0xFFF) {
+    # XXX: we should read 4B chunks until we get one with a NUL.
+    die "long filenames not supported\n";
+  } else {
+    read $fh, $entry{name}, $entry{name_length};
+  }
+
+  # Entry length has to be a multiple of 32 bits.  We'll have padded with 1-8
+  # NULs to get there.
+  my $entry_len = $IDX_WIDTH + $entry{name_length};
+  my $need = 8 - $entry_len % 8;
+
+  read $fh, my $nuls, $need;
+
+  die "bogus name padding for entry $_ ($entry{name})"
+    unless $nuls eq "\0" x $need;
+
+  # my $duh = "\0";
+  # read $fh, $duh, 1 until $duh ne "\0";
+  # seek $fh, -1, 1;
+
+  push @entries, \%entry;
+}
+
+sub fmt_t {
+  my ($t, $t_ns) = @_;
+  my $t = localtime $t;
+  $t .= sprintf ' + %d ns', $t_ns / 1e9 if $t_ns;
+
+  return $t;
+}
+
+{
+  my @entry_dump;
+  $index{entries} = \@entry_dump;
+
+  my %type = (
+    1000 => 'regular file',
+    1010 => 'symlink',
+    1110 => 'gitlink',
+  );
+
+  for my $e (@entries) {
+    tie my %entry, 'Tie::IxHash';
+    %entry = (
+      name  => $e->{name},
+      stage => $e->{stage},
+      ctime => fmt_t($e->{ctime}, $e->{ctime_ns}),
+      mtime => fmt_t($e->{mtime}, $e->{mtime_ns}),
+      dev   => $e->{dev},
+      inode => $e->{inode},
+      type  => $type{ $e->{type} } // "$e->{type} (unknown!)",
+      uid   => $e->{uid},
+      gid   => $e->{gid},
+      size  => $e->{size},
+      sha1  => $e->{sha1},
+
+      assume_valid  => $e->{assume_valid},
+      extended      => $e->{extended},
+
+      (($index{version} == 3 and $e->{extended})
+        ? (skip_worktree => $e->{skip_worktree},
+           intent_to_add => $e->{intent_to_add})
+        : ()
+      ),
+    );
+
+    push @entry_dump, \%entry;
+  }
+}
+
+my $size = (stat $fh)[7];
+my $payload_end = $size - 20;
+
+my @extensions;
+$index{extensions} = \@extensions;
+push @extensions, read_extension($fh) until $payload_end == tell $fh;
+
+read $fh, my $sha, 20;
+$sha = unpack 'H40', $sha;
+
+seek $fh, 0, 0;
+read $fh, my $payload, $size - 20;
+
+use Digest::SHA1 ();
+my $should_be = Digest::SHA1->new->add($payload)->hexdigest;
+
+$index{sha1} = $sha;
+warn "Bad SHA!  Should have been: $should_be" unless $sha eq $should_be;
+
+print JSON::PP->new->pretty->encode(\%index);
+
+sub print_entry {
+  my ($entry) = @_;
+
+  my @morekeys = qw(type mode assume_valid extended stage name_length);
+
+  say "==== $entry->{name} ====";
+  say "  $_: $entry->{$_}" for @keys, @morekeys;
+}
+
+sub read_extension {
+  my ($fh) = @_;
+
+  read $fh, my $header, 8;
+  my ($sig, $len) = unpack 'A4 N', $header;
+
+  read $fh, my $payload, $len;
+
+  if (my $code = __PACKAGE__->can("parse_$sig")) {
+    return $code->($sig, $len, \$payload);
+  }
+
+  warn "unknown mandatory extension" unless $sig =~ /\A[A-Z]/;
+  return { $sig => { length => $len } };
+}
+
+sub parse_TREE {
+  my ($sig, $len, $payload_ref) = @_;
+  my $payload = $$payload_ref;
+
+  my @entries;
+
+  while (length $payload) {
+    tie my %entry, 'Tie::IxHash';
+
+    # nul-terminated path component
+    $entry{name} = unpack 'Z', $payload;
+    substr $payload, 0, 1 + length $entry{name}, '';
+
+    # ascii number followed by SP
+    my $sp_pos = index $payload, q{ };
+    my $entry_count  = substr $payload, 0, 1+$sp_pos, '';
+    substr $payload, 0, 1, ''; # remove the whitespace
+    $entry{entry_count} = $entry_count;
+
+    # ascii number followed by NL
+    my $sp_pos = index $payload, qq{\x0A};
+    my $subtree_count = substr $payload, 0, 1+$sp_pos, '';
+    substr $payload, 0, 1, ''; # remove the whitespace
+    $entry{subtree_count} = $subtree_count;
+
+    $entry{sha1} = unpack 'H40', (substr $payload, 0, 20, '');
+
+    push @entries, \%entry;
+  }
+
+  return { TREE => \@entries };
+}
+
+sub parse_REUC {
+  my ($sig, $len, $payload_ref) = @_;
+  my $payload = $$payload_ref;
+
+  my @files;
+
+  while (length $payload) {
+    my @data = unpack 'Z* Z* Z* Z*', $payload;
+    substr $payload, 0, 4 + length join(q{}, @data), '';
+
+    my $expect  = grep { $_ != 0 } @data[1 .. 3];
+
+    my @objects = unpack('H40' x $expect, $payload);
+    substr $payload, 0, 20 * $expect, '';
+
+    push @files, {
+      name   => $data[0],
+      stages => [
+        map {; $data[$_] ? { mode => $data[$_], sha1 => shift @objects } : undef } (1..3)
+      ],
+    };
+  }
+
+  return { REUC => \@files };
+}

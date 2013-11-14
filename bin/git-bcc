@@ -1,0 +1,44 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+# This script is something like the reverse of git-rebase.  rebase takes a
+# head and rebases the current head onto it.  git-bcc takes a head and
+# picks every commit from that head's history (back to our merge-based) onto
+# this one.  This is equivalent to:
+#
+# 1. checking out a new temporary head at the other head
+# 2. rebasing on our previous head
+# 3. fast-forward merging the previous head to the new position
+# 4. checking out the old head
+# 5. deleting the temporary head
+#
+# There isn't much in the way of error handling, but it works pretty often.
+
+my $merge_target = $ARGV[0];
+die "usage: git bcc REMOTEBRANCH\n" unless $merge_target;
+
+my $current = `git show-ref --head HEAD -s`;
+chomp $current;
+
+my $start = `git merge-base HEAD $merge_target`;
+chomp $start;
+
+my @list = `git rev-list $start..$merge_target --reverse`;
+chomp @list;
+
+for my $commit (@list) {
+  printf "%s commits to cherry-pick...\n", +@list;
+  next unless system("git cherry-pick $commit");
+
+  warn "error cherry-picking $commit, resetting to $current\n";
+  `git reset $current`;
+  exit 1;
+}
+
+my $new = `git show-ref --head HEAD -s`;
+chomp $new;
+
+print "branch cherry-pick complete\n";
+print "old HEAD position: $current\n";
+print "new HEAD position: $new\n";

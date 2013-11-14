@@ -1,0 +1,2 @@
+#!/bin/sh
+git log --all --graph --color=always --pretty='[%C(cyan)%h%Creset]%C(bold cyan)%d%Creset %s' | git-hist-squisher | less -R

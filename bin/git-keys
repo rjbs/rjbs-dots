@@ -1,0 +1,15 @@
+#!/Users/rjbs/perl5/perlbrew/perls/18.1/bin/perl
+use lib '/Users/rjbs/.perlbrew/libs/18.1@std/lib/perl5/';
+use 5.14.0;
+use HTTP::Tiny;
+use JSON::PP;
+
+my $res = HTTP::Tiny->new->get(
+  "https://api.github.com/users/$ARGV[0]/keys",
+);
+
+die "FAIL\n" unless $res->{success};
+
+my $keys = JSON::PP->new->decode($res->{content});
+
+say $_->{key} for @$keys;

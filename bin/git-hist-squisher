@@ -1,0 +1,44 @@
+#!/usr/bin/perl
+
+# I use this program to filter the output of:
+#   git log --all --graph --color=always \
+#     --pretty='[%C(cyan)%h%Creset]%C(bold cyan)%d%Creset %s'
+#
+# ...which I have as an alias.
+
+use strict;
+use warnings;
+
+my @cache;
+
+sub dump_cache {
+  return unless @cache;
+
+  if (@cache == 1) {
+    print $cache[-1]{line};
+  } else {
+    printf "%s %s commits\n", $cache[-1]{prefix}, 0 + @cache;
+  }
+
+  @cache = ();
+}
+
+my $color_re = qr{\c[.+?m};
+
+while (<>) {
+  dump_cache, print, next unless my ($before, $after) = /
+    ^(.+)
+    \s
+    \[$color_re?[a-f0-9]{6,}$color_re?\]$color_re?
+    \s
+    (.)
+  /x;
+
+  dump_cache, print, next if $after eq '(';
+
+  dump_cache if @cache and $before ne $cache[-1]{prefix};
+
+  push @cache, { line => $_, prefix => $before };
+}
+
+dump_cache;
