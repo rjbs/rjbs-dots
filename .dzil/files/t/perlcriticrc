@@ -1,0 +1,37 @@
+
+; Bring it on!
+severity = 2
+
+[Documentation::RequirePodSections]
+lib_sections = NAME | VERSION | DESCRIPTION | AUTHOR
+
+[ValuesAndExpressions::RequireNumberSeparators]
+min_value = 100000
+
+[Variables::ProhibitPunctuationVars]
+allow = $@ $!
+
+; I have to figure out whether/how to use this with git.
+[-Miscellanea::RequireRcsKeywords]
+
+; I don't agree with these policies, and disabled them.
+[-Documentation::RequirePodAtEnd]
+[-ControlStructures::ProhibitUnlessBlocks]
+[-ControlStructures::ProhibitPostfixControls]
+[-References::ProhibitDoubleSigils]
+[-RegularExpressions::RequireExtendedFormatting]
+[-RegularExpressions::RequireLineBoundaryMatching]
+[-Subroutines::RequireFinalReturn]
+
+[-ClassHierarchies::ProhibitExplicitISA]
+
+[-Bangs::ProhibitFlagComments]
+[-Bangs::ProhibitCommentedOutCode]
+
+; These policies are replaced by policies in Perl-Critic-Lax
+  ; [-BuiltinFunctions::ProhibitComplexMappings] ; not yet released
+
+[-BuiltinFunctions::ProhibitStringyEval]
+[-Modules::RequireEndWithOne]
+[-Modules::RequireExplicitPackage]
+[-ValuesAndExpressions::ProhibitEmptyQuotes]
