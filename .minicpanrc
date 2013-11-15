@@ -1,0 +1,14 @@
+local: ~/rjbs/Dropbox/minicpan
+also_mirror: modules/06perms.txt
+skip_perl: 1
+path_filters: /Tapper[^/]+\z
+path_filters: BioPerl
+path_filters: GBrowse-
+path_filters: Lingua-StanfordCoreNLP
+path_filters: Lingua-JA-WordNet-
+path_filters: PDL
+path_filters: Perl6-Pugs
+path_filters: Text-SenseClusters
+path_filters: UMLS-Interface-
+paht_filters: uplug-
+path_filters: zxid
