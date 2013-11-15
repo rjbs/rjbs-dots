@@ -17,8 +17,6 @@ export MANPATH=$MANPATH:/opt/local/share/man
 export PATH=$HOME/bin:/opt/local/bin:/opt/local/sbin:$PATH
 
 export NOPASTE_SERVICES=Gist
-export GITHUB_OAUTH_TOKEN=fe1642fb3ccb5d27342a453fcaededccce644e55
-export PITHUB_TOKEN=acda0e6b7fca313511a8365731ab035344ed489f
 
 # Stupid OS X
 export COPYFILE_DISABLE=1
