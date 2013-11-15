@@ -36,11 +36,6 @@ export VISUAL=$(which vi)
 
 export PERL_MAILERS=sendmail:$SENDMAIL
 
-# load all my custom functions
-for i in ~/.sh/functions/*; do
-	. $i
-done
-
 # Once I figured out this was breaking my F2 at work on Solaris, I fixed our
 # global config.  I've left this here for future reference. -- rjbs, 2009-01-08
 # if [ $OSTYPE == "SunOS" ]; then
