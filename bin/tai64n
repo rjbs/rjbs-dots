@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Time::HiRes qw(time);
+use Time::TAI64 ':tai64n';
+
+while (<>) {
+  my $ts = unixtai64n(time);
+  print "$ts $_";
+}
