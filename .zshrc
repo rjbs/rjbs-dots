@@ -28,7 +28,8 @@ export SAVEHIST=1000
 export PS1="%~$(print '%{\e[1m%}%(!.%{\e[31m%}#.%{\e[32m%}$)%{\e[0m%}') "
 export RPS1="%m@%D{%H%M%S}:%h"
 
-source $HOME/perl5/perlbrew/etc/bashrc
+export PATH="$HOME/.plenv/bin:$PATH"
+eval "$(plenv init -)"
 
 export EDITOR=$(which vi)
 export SENDMAIL=$(which sendmail)
