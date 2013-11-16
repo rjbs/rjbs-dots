@@ -21,9 +21,9 @@ else
   # ...
 fi
 
-export PATH=$HOME/bin:$HOME/.plenv/bin:$PATH
-
+export PATH=$HOME/.plenv/bin:$PATH
 eval "$(plenv init -)"
+export PATH=$HOME/bin:$PATH
 
 export NOPASTE_SERVICES=Gist
 
