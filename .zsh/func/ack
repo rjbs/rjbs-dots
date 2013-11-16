@@ -1,3 +1,4 @@
+# vim: set ft=zsh:
 function ack () {
   if (command ack --version | head -1 | grep 'ack 1' > /dev/null); then
     command ack $*
@@ -7,3 +8,14 @@ function ack () {
     command ack $args
   fi
 }
+
+# If this was bash, I'd write:
+# function ack () {
+#   if (ack --version | head -1 | grep 'ack 1' > /dev/null); then
+#     ack $*
+#   else
+#     declare -a args=("$@")
+#     declare -a no_a=( ${args[@]/-a/} )
+#     ack ${no_a[@]}
+#   fi
+# }
