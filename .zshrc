@@ -13,8 +13,17 @@ export LESSOPEN=$'|lesspipe %s'
 export MAILDOMAIN=manxome.org
 export MANPAGER="/bin/sh -c \"col -b | view -c 'set ft=man nomod nolist' -\""
 export MANPATH=$MANPATH:/opt/local/share/man
-# export PATH=$HOME/bin:/usr/local/bin:$PATH:/opt/local/bin
-export PATH=$HOME/bin:/opt/local/bin:/opt/local/sbin:$PATH
+
+uname=`uname`
+if [ "$uname" = "Darwin" ]; then
+  export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+else
+  # ...
+fi
+
+export PATH=$HOME/bin:$HOME/.plenv/bin:$PATH
+
+eval "$(plenv init -)"
 
 export NOPASTE_SERVICES=Gist
 
@@ -27,9 +36,6 @@ export SAVEHIST=1000
 
 export PS1="%~$(print '%{\e[1m%}%(!.%{\e[31m%}#.%{\e[32m%}$)%{\e[0m%}') "
 export RPS1="%m@%D{%H%M%S}:%h"
-
-export PATH="$HOME/.plenv/bin:$PATH"
-eval "$(plenv init -)"
 
 export EDITOR=$(which vi)
 export SENDMAIL=$(which sendmail)
