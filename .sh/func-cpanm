@@ -1,8 +1,0 @@
-CPANM=$HOME/perl5/perlbrew/bin/cpanm
-function cpanm() {
-  if (perlbrew list | grep '^*' | grep @ > /dev/null) then;
-    HARNESS_SUBCLASS=TAP::Harness::Restricted $CPANM $@
-  else;
-    echo "can't run cpanm while using a non-local::lib perlbrew" >&2
-  fi;
-}
