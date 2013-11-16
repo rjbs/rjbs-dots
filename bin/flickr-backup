@@ -1,7 +1,6 @@
-#!/Users/rjbs/perl5/perlbrew/perls/14.2/bin/perl
+#!/usr/bin/env perl
 use strict;
 use warnings;
-use local::lib '~/.perlbrew/libs/14.2@std';
 
 use Config::Simple;
 use Log::Dispatch::Screen;
