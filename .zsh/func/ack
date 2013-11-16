@@ -1,0 +1,9 @@
+function ack () {
+  if (command ack --version | head -1 | grep 'ack 1' > /dev/null); then
+    command ack $*
+  else
+    orig=("$@")
+    args=("${(@)orig:#-a}")
+    command ack $args
+  fi
+}
