@@ -1,7 +1,7 @@
 function man() {
   if [ `uname -s` == "SunOS" ]; then
     RJBS_IN_MAN=1 PAGER=$HOME/bin/manpager command man $@
-  else;
+  else
     RJBS_IN_MAN=1 PAGER=$MANPAGER command man $@
   fi;
 }
