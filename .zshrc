@@ -6,8 +6,11 @@ unsetopt printexitvalue # <-- yuck, printexitvalue
 autoload -U colors
 
 export PERL_AUTOINSTALL=--skipdeps
+export EDITOR=vim
+export VISUAL=vim
 export GNUPG_DEFAULT_KEY=C475DCA3
 export IRCNICK=rjbs
+export LANG=en_US.UTF-8
 export LESS="-M -x 2 -R"
 export LESSOPEN=$'|lesspipe %s'
 export MAILDOMAIN=manxome.org
@@ -23,9 +26,16 @@ fi
 
 export PATH=$HOME/.plenv/bin:$PATH
 eval "$(plenv init -)"
+export PAGER=less
+
+# . /icg/admin/include/paths.sh
 export PATH=$HOME/bin:$PATH
 
 export NOPASTE_SERVICES=Gist
+if [ $(hostname) = "lab" -a "$USER" = "rjbs" ]; then
+  keychain -q .ssh/id_rsa
+  . $HOME/.keychain/$(hostname)-sh
+fi
 
 # Stupid OS X
 export COPYFILE_DISABLE=1
@@ -107,8 +117,8 @@ zstyle ':completion:*' menu select=5
 zstyle ':completion:*:history-words' stop verbose
 
 ## Ignore directories named CVS
-zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS' 
-zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS' 
+zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS'
+zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS'
 
 ## Make sure modules are loaded
 zmodload -i zsh/zutil
