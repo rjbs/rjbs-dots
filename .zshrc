@@ -14,7 +14,6 @@ export LANG=en_US.UTF-8
 export LESS="-M -x 2 -R"
 export LESSOPEN=$'|lesspipe %s'
 export MAILDOMAIN=manxome.org
-export MANPAGER="/bin/sh -c \"col -b | view -c 'set ft=man nomod nolist' -\""
 export MANPATH=$MANPATH:/opt/local/share/man
 
 uname=`uname`
@@ -33,6 +32,9 @@ export PAGER=less
 
 # . /icg/admin/include/paths.sh
 export PATH=$HOME/bin:$PATH
+
+view=$(which view)
+export MANPAGER="/bin/sh -c \"col -b | $view -c 'set ft=man nomod nolist' -\""
 
 export NOPASTE_SERVICES=Gist
 if [ $(hostname) = "lab" -a "$USER" = "rjbs" ]; then
