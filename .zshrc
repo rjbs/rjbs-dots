@@ -140,3 +140,7 @@ zle -N predict-on
 zle -N predict-off
 
 autoload -U zrecompile
+
+if [ `uname` = "SunOS" ]; then
+  stty dsusp undef
+fi
