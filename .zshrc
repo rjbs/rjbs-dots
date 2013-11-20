@@ -24,8 +24,11 @@ else
   # ...
 fi
 
-export PATH=$HOME/.plenv/bin:$PATH
-eval "$(plenv init -)"
+if [ -d $HOME/.plenv ]; then
+  export PATH=$HOME/.plenv/bin:$PATH
+  eval "$(plenv init -)"
+fi
+
 export PAGER=less
 
 # . /icg/admin/include/paths.sh
