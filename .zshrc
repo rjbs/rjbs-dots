@@ -10,7 +10,6 @@ export EDITOR=vim
 export VISUAL=vim
 export GNUPG_DEFAULT_KEY=C475DCA3
 export IRCNICK=rjbs
-export LANG=en_US.UTF-8
 export LESS="-M -x 2 -R"
 export LESSOPEN=$'|lesspipe %s'
 export MAILDOMAIN=manxome.org
