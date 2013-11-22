@@ -1,0 +1,48 @@
+#!/usr/bin/env perl
+use 5.12.0;
+use warnings;
+
+use JSON::PP;
+
+my $JSON = JSON::PP->new;
+my @tags;
+my @mood;
+my @rest;
+my @took;
+
+for (@ARGV) {
+  /^:/  and push(@mood, $_), next;
+  /^\+/ and push(@tags, $_), next;
+  /^\@/ and push(@took, $_), next;
+  push @rest, $_;
+}
+
+s/\s+/ /g for @rest;
+s/^://    for @tags;
+s/^\+//   for @mood;
+s/^\@//   for @took;
+
+if (@took > 1) {
+  warn "ignoring took values after $took[0]\n";
+  $#took = 1;
+}
+
+my $year = (localtime $^T)[5] + 1900;
+my $week = int ( (localtime $^T)[7] / 7 );
+
+say "Did : @rest";
+say "At  : " . (localtime $^T) . " ($year-$week)";
+say "Tags: @tags";
+say "Felt: @mood";
+
+my $fn = "$ENV{HOME}/log/done/$year-$week";
+open(my $log, '>>', $fn) || die "can't open $fn to append: $!";
+
+print {$log} "- done: @rest\n"
+           . "  when: " . (localtime $^T) . "\n"
+           . "  time: $^T\n"
+           . (@took ? "  mood: $took[0]\n" : q{})
+           . "  mood: " . $JSON->encode(\@mood) . "\n"
+           . "  tags: " . $JSON->encode([ sort @tags ]) . "\n";
+
+close($log) || die "error closing $fn: $!";
