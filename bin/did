@@ -1,48 +1,107 @@
 #!/usr/bin/env perl
-use 5.12.0;
+use 5.14.0;
 use warnings;
 
+use DateTime;
 use JSON::PP;
 
-my $JSON = JSON::PP->new;
-my @tags;
-my @mood;
-my @rest;
-my @took;
+package Record {
+  use Moose;
+  has desc  => (is => 'ro');
 
-for (@ARGV) {
-  /^:/  and push(@mood, $_), next;
-  /^\+/ and push(@tags, $_), next;
-  /^\@/ and push(@took, $_), next;
-  push @rest, $_;
+  for (qw(moods tags)) {
+    has $_ => (
+      isa => 'ArrayRef[Str]',
+      traits  => [ 'Array' ],
+      handles => { $_ => 'elements' },
+    );
+  }
+
+  has done_at => (
+    is      => 'ro',
+    default => sub {
+      DateTime->now(time_zone => 'America/New_York');
+    }
+  );
+
+  has week => (
+    is   => 'ro',
+    lazy => 1,
+    default => sub {
+      my ($self) = @_;
+      my $year = $self->done_at->year;
+      my $week = int( $self->done_at->day_of_year / 7 );
+      sprintf("%4d-%02d", $year, $week);
+    },
+  );
+
+  has took => (
+    is  => 'ro',
+    isa => 'Int',
+    predicate => 'has_took',
+  );
+
+  sub _interpret_mood { }
+
+  sub new_from_argv {
+    my ($class, @argv) = @_;
+
+    my @tags;
+    my @mood;
+    my @rest;
+    my @took;
+
+    for (@argv) {
+      s/^://  and push(@mood, $_), next;
+      s/^\+// and push(@tags, $_), next;
+      s/^\@// and push(@took, $_), next;
+      push @rest, $_;
+    }
+
+    $class->_interpret_mood(\@mood);
+
+    if (@took > 1) {
+      warn "ignoring took values after $took[0]\n";
+      $#took = 1;
+    }
+
+    return $class->new({
+      desc  => "@rest",
+      moods => \@mood,
+      tags  => [ sort @tags ],
+      (@took ? (took => $took[0]) : ()),
+    });
+  }
+
+  sub as_text {
+    my ($self) = @_;
+    return "Did : " . $self->desc . "\n"
+         . "At  : " . $self->done_at . " (" . $self->week . ")\n"
+         # "Took: "
+         . "Tags: " . join(" ", $self->tags) . "\n"
+         . "Felt: " . join(" ", $self->moods) . "\n";
+  }
+
+  sub as_yaml { # not really, probably
+    my ($self) = @_;
+    state $json = JSON::PP->new;
+    return "- done: " . $self->desc . "\n"
+         . "  when: " . $self->done_at . "\n"
+         . "  time: " . $self->done_at->epoch . "\n"
+         . ($self->has_took ? "  took: " . $self->took . "\n" : q{})
+         . "  mood: " . $json->encode([ $self->moods ]) . "\n"
+         . "  tags: " . $json->encode([ $self->tags ]) . "\n";
+  }
 }
 
-s/\s+/ /g for @rest;
-s/^://    for @tags;
-s/^\+//   for @mood;
-s/^\@//   for @took;
+my $record = Record->new_from_argv(@ARGV);
 
-if (@took > 1) {
-  warn "ignoring took values after $took[0]\n";
-  $#took = 1;
-}
+print $record->as_text;
 
-my $year = (localtime $^T)[5] + 1900;
-my $week = int ( (localtime $^T)[7] / 7 );
-
-say "Did : @rest";
-say "At  : " . (localtime $^T) . " ($year-$week)";
-say "Tags: @tags";
-say "Felt: @mood";
-
-my $fn = "$ENV{HOME}/log/done/$year-$week";
+my $fn = "$ENV{HOME}/log/done/" . $record->week;
 open(my $log, '>>', $fn) || die "can't open $fn to append: $!";
 
-print {$log} "- done: @rest\n"
-           . "  when: " . (localtime $^T) . "\n"
-           . "  time: $^T\n"
-           . (@took ? "  mood: $took[0]\n" : q{})
-           . "  mood: " . $JSON->encode(\@mood) . "\n"
-           . "  tags: " . $JSON->encode([ sort @tags ]) . "\n";
+print {$log} $record->as_yaml;
 
 close($log) || die "error closing $fn: $!";
+
