@@ -7,6 +7,8 @@ use JSON::PP;
 
 package Record {
   use Moose;
+  use Time::Duration::Parse;
+
   has desc  => (is => 'ro');
 
   for (qw(moods tags)) {
@@ -96,7 +98,7 @@ package Record {
       desc  => "@rest",
       moods => \@mood,
       tags  => [ sort @tags ],
-      (@took ? (took => $took[0]) : ()),
+      (@took ? (took => parse_duration($took[0])) : ()),
     });
   }
 
@@ -119,6 +121,8 @@ package Record {
          . "  mood: " . $json->encode([ $self->moods ]) . "\n"
          . "  tags: " . $json->encode([ $self->tags ]) . "\n";
   }
+
+  no Moose;
 }
 
 my $record = Record->new_from_argv(@ARGV);
