@@ -60,7 +60,7 @@ package Record {
   );
 
   sub _interpret_mood {
-    my ($self, $moods) = shift;
+    my ($self, $moods) = @_;
     # XXX: not working, surely something stupid -- rjbs, 2013-11-22
     for (@$moods) {
       # smileys might have noses; do not confuse with "worse"
