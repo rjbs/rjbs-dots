@@ -41,7 +41,34 @@ package Record {
     predicate => 'has_took',
   );
 
-  sub _interpret_mood { }
+  my %moods = (
+    '+' => 'better', # ++ much-better, +++ much-much-better
+    '-' => 'worse',  # -- and so on
+
+    'D'  => 'very-happy',  # :-D
+    ')'  => 'happy',       # :-)
+    '('  => 'unhappy',     # :-(
+    'X'  => 'angry',       # :-X
+    'P'  => 'silly',       # :-P
+    '/'  => 'exasperated', # :-/
+    '?'  => 'confused',    # :-?
+    'S'  => 'frustrated',  # :-D
+    "'(" => 'sad',         # :'(
+    "'"  => 'sad',         # :'(
+  );
+
+  sub _interpret_mood {
+    my ($self, $moods) = shift;
+    # XXX: not working, surely something stupid -- rjbs, 2013-11-22
+    for (@$moods) {
+      # smileys might have noses; do not confuse with "worse"
+      $_ = exists $moods{"-$_"} ? $moods{"-$_"}
+         : exists $moods{  $_ } ? $moods{  $_ }
+         :                        $_;
+
+      # complain about suspicious stuff we can't recognize?
+    }
+  }
 
   sub new_from_argv {
     my ($class, @argv) = @_;
@@ -54,7 +81,7 @@ package Record {
     for (@argv) {
       s/^://  and push(@mood, $_), next;
       s/^\+// and push(@tags, $_), next;
-      s/^\@// and push(@took, $_), next;
+      s/^~//  and push(@took, $_), next;
       push @rest, $_;
     }
 
