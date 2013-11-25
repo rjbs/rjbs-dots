@@ -27,6 +27,11 @@ if [ -d $HOME/.plenv ]; then
   eval "$(plenv init -)"
 fi
 
+if [ -d $HOME/.rbenv ]; then
+  export PATH=$HOME/.rbenv/bin:$PATH
+  eval "$(rbenv init -)"
+fi
+
 export PAGER=less
 
 # . /icg/admin/include/paths.sh
