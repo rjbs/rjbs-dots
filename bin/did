@@ -125,7 +125,10 @@ package Record {
   no Moose;
 }
 
-my $record = Record->new_from_argv(@ARGV);
+my @argv = @ARGV
+  ? @ARGV
+  : do { local $|=1; print "did> "; my $x = <STDIN>; chomp $x; split ' ', $x; };
+my $record = Record->new_from_argv(@argv);
 
 print $record->as_text;
 
