@@ -54,7 +54,7 @@ package Record {
     'P'  => 'silly',       # :-P
     '/'  => 'exasperated', # :-/
     '?'  => 'confused',    # :-?
-    'S'  => 'frustrated',  # :-D
+    'S'  => 'frustrated',  # :-S
     "'(" => 'sad',         # :'(
     "'"  => 'sad',         # :'(
   );
