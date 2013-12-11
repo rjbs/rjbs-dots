@@ -1,5 +1,4 @@
-#!/Users/rjbs/perl5/perlbrew/perls/18.1/bin/perl
-use lib '/Users/rjbs/.perlbrew/libs/18.1@std/lib/perl5/';
+#!/Users/rjbs/.plenv/versions/18.1/bin/perl
 use 5.14.0;
 use HTTP::Tiny;
 use JSON::PP;
