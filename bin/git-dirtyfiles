@@ -28,7 +28,7 @@ if ($commit) {
     die "Fucking shell, how does it work?\n"
         if grep / /, @changed;
 
-    chomp(@changed = qx{find @changed -type f });
+    chomp(@changed = qx{find @changed -type f }) if @changed;
     exit 1 unless $? == 0;
 }
 
