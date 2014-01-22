@@ -17,6 +17,7 @@
   re = re-edit
   st = status -sb
   fap  = fetch --all --prune
+  git  = !git
   wip  = commit -a -m WIP
   hist = log --all --graph --color=always --pretty='[%C(cyan)%h%Creset]%C(bold cyan)%d%Creset %s'
   fist = !git fap && git hist
