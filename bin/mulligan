@@ -1,0 +1,56 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use DateTime;
+use DateTime::Duration;
+use JSON;
+use LWP::UserAgent;
+use YAML::XS;
+
+my ($when, $which, $note) = @ARGV;
+
+my $usage = "usage: mulligan [today|yesterday] [goal]\n";
+
+die $usage unless @ARGV == 2 or @ARGV == 3;
+die $usage unless $when eq 'today' or $when eq 'yesterday';
+
+my $config = YAML::XS::LoadFile("$ENV{HOME}/.ywar");
+
+my $JSON = JSON->new;
+my $tdp_token = $config->{TDP}{token};
+
+my $goal_res = LWP::UserAgent->new->get(
+  "http://tdp.me/v1/goals/",
+  'X-Access-Token' => $tdp_token,
+);
+
+die "fail" unless $goal_res->is_success;
+
+my @goals = @{ $JSON->decode($goal_res->decoded_content)->{goals} };
+
+my @candidates = grep { index($_->{name}, $which) >= 0 } @goals;
+
+if (@candidates > 1) {
+  print "More than one candidate!\n";
+  for (@candidates) {
+    printf "%6s. %s\n", $_->{id}, $_->{name};
+  }
+  exit 1;
+}
+
+my $yesterday = DateTime->now(time_zone => 'local')
+              - DateTime::Duration->new(days => 1);
+
+my $payload = $JSON->encode({
+  quantity => 0,
+  vacation => 1,
+  note     => $note // "mulligan logged",
+  ($when eq 'yesterday' ? (date => $yesterday->iso8601) : ()),
+});
+
+my $res = LWP::UserAgent->new->post(
+  "http://tdp.me/v1/goals/$candidates[0]{id}/completion",
+  Content => $payload,
+  'Content-type' => 'application/json',
+  'X-Access-Token' => $tdp_token,
+);
