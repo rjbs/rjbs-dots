@@ -1,8 +1,11 @@
 # vim: set ft=zsh:
 function ack () {
-  if (which ag 2>&1 > /dev/null); then
-    ag $*
-  elif (command ack --version | head -1 | grep 'ack 1' > /dev/null); then
+  # I removed "ag" support because the switches differ too often.  -f,
+  # especially, got my goat.
+  # if (which ag 2>&1 > /dev/null); then
+  #   ag $*
+  # elif...
+  if (command ack --version | head -1 | grep 'ack 1' > /dev/null); then
     command ack $*
   else
     orig=("$@")
