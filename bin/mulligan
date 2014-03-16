@@ -9,10 +9,25 @@ use YAML::XS;
 
 my ($when, $which, $note) = @ARGV;
 
-my $usage = "usage: mulligan [today|yesterday] [goal]\n";
+my $usage = "usage: mulligan [when] [goal]\n";
 
 die $usage unless @ARGV == 2 or @ARGV == 3;
-die $usage unless $when eq 'today' or $when eq 'yesterday';
+
+my $tz = $ENV{TZ} // 'local';
+
+my $date;
+if ($when =~ /\pL/) {
+  my $days = { today => 0, yesterday => 1, vorgestern => 2 }->{$when}
+          // die $usage;
+
+  my $n = $days->{$when} // die $usage;
+  $date = DateTime->now(time_zone => $tz)
+        - DateTime::Duration->new(days => $n)
+        ->iso8601;
+} elsif ($when =~ m{ \A ([0-9]{4})-([0-9]{2})-([0-9]{2}) \z }x) {
+  $date = DateTime->new(time_zone => $tz, year => $1, month => $2, day => $3)
+        ->iso8601;
+}
 
 my $config = YAML::XS::LoadFile("$ENV{HOME}/.ywar");
 
@@ -28,7 +43,7 @@ die "fail" unless $goal_res->is_success;
 
 my @goals = @{ $JSON->decode($goal_res->decoded_content)->{goals} };
 
-my @candidates = grep { index($_->{name}, $which) >= 0 } @goals;
+my @candidates = grep { $_->{active} && index($_->{name}, $which) >= 0 } @goals;
 
 if (@candidates > 1) {
   print "More than one candidate!\n";
@@ -38,14 +53,11 @@ if (@candidates > 1) {
   exit 1;
 }
 
-my $yesterday = DateTime->now(time_zone => 'local')
-              - DateTime::Duration->new(days => 1);
-
 my $payload = $JSON->encode({
   quantity => 0,
   vacation => 1,
   note     => $note // "mulligan logged",
-  ($when eq 'yesterday' ? (date => $yesterday->iso8601) : ()),
+  date     => $date,
 });
 
 my $res = LWP::UserAgent->new->post(
