@@ -1,4 +1,5 @@
 ## rjbs's .zshrc
+export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin
 
 unsetopt printexitvalue # <-- yuck, printexitvalue
 unsetopt autoresume
