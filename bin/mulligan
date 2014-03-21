@@ -20,9 +20,8 @@ if ($when =~ /\pL/) {
   my $days = { today => 0, yesterday => 1, vorgestern => 2 }->{$when}
           // die $usage;
 
-  my $n = $days->{$when} // die $usage;
-  $date = DateTime->now(time_zone => $tz)
-        - DateTime::Duration->new(days => $n)
+  $date = (DateTime->now(time_zone => $tz)
+        - DateTime::Duration->new(days => $days))
         ->iso8601;
 } elsif ($when =~ m{ \A ([0-9]{4})-([0-9]{2})-([0-9]{2}) \z }x) {
   $date = DateTime->new(time_zone => $tz, year => $1, month => $2, day => $3)
@@ -44,6 +43,10 @@ die "fail" unless $goal_res->is_success;
 my @goals = @{ $JSON->decode($goal_res->decoded_content)->{goals} };
 
 my @candidates = grep { $_->{active} && index($_->{name}, $which) >= 0 } @goals;
+
+unless (@candidates) {
+  die "couldn't find any candidate for <$which>\n";
+}
 
 if (@candidates > 1) {
   print "More than one candidate!\n";
