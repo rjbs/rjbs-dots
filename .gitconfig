@@ -22,3 +22,6 @@
   hist = log --all --graph --color=always --pretty='[%C(cyan)%h%Creset]%C(bold cyan)%d%Creset %s'
   fist = !git fap && git hist
   shist = log --graph --color=always --pretty='[%C(cyan)%h%Creset]%C(bold cyan)%d%Creset %s'
+
+[url "git://github.com/"]
+  insteadOf = hub:
