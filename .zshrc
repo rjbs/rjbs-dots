@@ -1,5 +1,11 @@
 ## rjbs's .zshrc
-export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin
+uname=`uname`
+
+if [ "$uname" = "SunOS" ]; then
+  export PATH=/icg/lib/perl/site_perl/bin:/usr/pkg/lib/perl5/site_perl/bin:/usr/pkg/lib/perl5/bin:/icg/wrapper:/icg/admin/bin:/icg/bin:/icg/sbin:/usr/pkg/bin:/usr/pkg/sbin:/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/bin/X11:/usr/games
+else
+  export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin
+fi
 
 unsetopt printexitvalue # <-- yuck, printexitvalue
 unsetopt autoresume
@@ -17,7 +23,6 @@ export LESSOPEN=$'|lesspipe %s'
 export MAILDOMAIN=manxome.org
 export MANPATH=$MANPATH:/opt/local/share/man
 
-uname=`uname`
 if [ "$uname" = "Darwin" ]; then
   export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 else
