@@ -25,3 +25,6 @@
 
 [url "git://github.com/"]
   insteadOf = hub:
+
+[include]
+path = ~/.gitconfig.local
