@@ -49,9 +49,10 @@ view=$(which view)
 export MANPAGER="/bin/sh -c \"col -b | $view -c 'set ft=man nomod nolist' -\""
 
 export NOPASTE_SERVICES=Gist
-if [ $(hostname) = "lab" -a "$USER" = "rjbs" ]; then
-  keychain -q .ssh/id_rsa
-  . $HOME/.keychain/$(hostname)-sh
+
+if [ ! -z "$SSH_AUTH_SOCK" ] && [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/agent" ]; then
+  ln -snf "$SSH_AUTH_SOCK" "$HOME/.ssh/agent"
+  export SSH_AUTH_SOCK="$HOME/.ssh/agent"
 fi
 
 # Stupid OS X
