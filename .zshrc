@@ -1,9 +1,7 @@
 ## rjbs's .zshrc
 uname=`uname`
 
-if [ "$uname" = "SunOS" ]; then
-  export PATH=/icg/lib/perl/site_perl/bin:/usr/pkg/lib/perl5/site_perl/bin:/usr/pkg/lib/perl5/bin:/icg/wrapper:/icg/admin/bin:/icg/bin:/icg/sbin:/usr/pkg/bin:/usr/pkg/sbin:/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/bin/X11:/usr/games
-else
+if [ "$uname" != "SunOS" ]; then
   export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin
 fi
 
