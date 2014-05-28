@@ -91,9 +91,6 @@ unalias man
 dirc=$(whiff dircolors gdircolors);
 [ $? -eq 0 ] && eval $($dirc -b ~/.dir_colors | grep LS_COLORS)
 
-groff=$(whiff /opt/local/bin/groff ggroff groff)
-[ $? -eq 0 ] && export PERLDOC=-n$groff
-
 # By excluding /, this lets me hit <C-w> to delete part of a path.
 export WORDCHARS='*?[]~=&!#$%^(){}<>'
 
