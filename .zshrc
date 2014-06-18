@@ -48,11 +48,6 @@ export MANPAGER="/bin/sh -c \"col -b | $view -c 'set ft=man nomod nolist' -\""
 
 export NOPASTE_SERVICES=Gist
 
-if [ ! -z "$SSH_AUTH_SOCK" ] && [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/agent" ]; then
-  ln -snf "$SSH_AUTH_SOCK" "$HOME/.ssh/agent"
-  export SSH_AUTH_SOCK="$HOME/.ssh/agent"
-fi
-
 # Stupid OS X
 export COPYFILE_DISABLE=1
 export COPYFILE_EXTENDED_ATTRIBUTES_DISABLE=1
