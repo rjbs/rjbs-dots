@@ -10,5 +10,6 @@ path_filters: PDL
 path_filters: Perl6-Pugs
 path_filters: Text-SenseClusters
 path_filters: UMLS-Interface-
-paht_filters: uplug-
+path_filters: uplug-
 path_filters: zxid
+path_filters: Lingua-EN-SENNA-
