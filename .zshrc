@@ -144,5 +144,8 @@ zle -N predict-off
 autoload -U zrecompile
 
 if [ `uname` = "SunOS" ]; then
-  stty dsusp undef
+  /usr/bin/stty dsusp undef
+  if /usr/bin/stty -a | grep -q 'status =' ; then
+    /usr/bin/stty status undef
+  fi
 fi
