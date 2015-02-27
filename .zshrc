@@ -21,6 +21,7 @@ export LESSOPEN=$'|lesspipe %s'
 export MAILDOMAIN=manxome.org
 export MANPATH=$MANPATH:/opt/local/share/man
 export MANWIDTH=80
+export PERLDOC=-otext
 
 if [ "$uname" = "Darwin" ]; then
   export PATH=/opt/local/bin:/opt/local/sbin:$PATH
