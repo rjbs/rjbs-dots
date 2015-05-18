@@ -5,6 +5,10 @@ if [ "$uname" != "SunOS" ]; then
   export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin
 fi
 
+if [ -d ~/perl6 ]; then
+  export PATH=$PATH:$HOME/perl6/bin:$HOME/perl6/share/perl6/site/bin
+fi
+
 unsetopt printexitvalue # <-- yuck, printexitvalue
 unsetopt autoresume
 
@@ -45,7 +49,7 @@ export PAGER=less
 export PATH=$HOME/bin:$PATH
 
 view=$(which view)
-export MANPAGER="/bin/sh -c \"col -b | $view -c 'set ft=man nomod nolist' -\""
+export MANPAGER="/bin/sh -c \"col -b | $view -c 'set ts=8 ft=man nomod nolist' -\""
 
 export NOPASTE_SERVICES=Gist
 
