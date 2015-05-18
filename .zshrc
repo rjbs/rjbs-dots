@@ -93,6 +93,7 @@ bindkey -e
 bindkey -s "^?" "^H"
 bindkey "^[[3~" delete-char
 bindkey "^W" backward-delete-word
+setopt    autopushd             # cd implies pushd
 setopt no_auto_remove_slash     # ls /symli<Tab> should list contents, not ln
 setopt no_autoresume            # if running something already bg'd, don't fg
 setopt no_correct               # disable spellchecking
