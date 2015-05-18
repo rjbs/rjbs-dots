@@ -100,6 +100,7 @@ setopt no_correct               # disable spellchecking
 setopt no_correct_all           # disable spellchecking
 setopt no_cdable_vars           # disable cd to homedir
 setopt    extended_history      # timestamps, etc, in .zhistory
+setopt    histignoredups        # don't log an item to history twice in a row
 setopt    inc_append_history    # update .zhistory in closer to real time
 setopt    interactive_comments  # let # make comments even interactive!
 setopt no_nomatch               # if a wildcard can't expand, leave it verbatim
