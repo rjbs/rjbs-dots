@@ -9,9 +9,6 @@ if [ -d ~/perl6 ]; then
   export PATH=$PATH:$HOME/perl6/bin:$HOME/perl6/share/perl6/site/bin
 fi
 
-unsetopt printexitvalue # <-- yuck, printexitvalue
-unsetopt autoresume
-
 # I'll need this for colorized prompt.
 autoload -U colors
 
@@ -97,6 +94,7 @@ bindkey -s "^?" "^H"
 bindkey "^[[3~" delete-char
 bindkey "^W" backward-delete-word
 setopt no_auto_remove_slash     # ls /symli<Tab> should list contents, not ln
+setopt no_autoresume            # if running something already bg'd, don't fg
 setopt no_correct               # disable spellchecking
 setopt no_correct_all           # disable spellchecking
 setopt no_cdable_vars           # disable cd to homedir
@@ -104,6 +102,7 @@ setopt    extended_history      # timestamps, etc, in .zhistory
 setopt    inc_append_history    # update .zhistory in closer to real time
 setopt    interactive_comments  # let # make comments even interactive!
 setopt no_nomatch               # if a wildcard can't expand, leave it verbatim
+setopt no_printexitvalue        # <-- yuck, printexitvalue
 setopt    transient_rprompt     # rprompt goes away after command is run
 setopt no_bang_hist             # "foo!" should not be special
 
