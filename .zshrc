@@ -35,6 +35,10 @@ if [ -d $HOME/.plenv ]; then
   eval "$(plenv init -)"
 fi
 
+if [ -d $HOME/.rakudobrew ]; then
+  export PATH=$HOME/.rakudobrew/bin:$PATH
+fi
+
 if [ -d $HOME/.rbenv ]; then
   export PATH=$HOME/.rbenv/bin:$PATH
   eval "$(rbenv init -)"
