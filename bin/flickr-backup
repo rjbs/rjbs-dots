@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+use local::lib '~/local/old-moz-ca';
+
 use Config::Simple;
 use Log::Dispatch::Screen;
 use Net::Flickr::Backup;
