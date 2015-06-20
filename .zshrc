@@ -93,7 +93,7 @@ dirc=$(whiff dircolors gdircolors);
 # By excluding /, this lets me hit <C-w> to delete part of a path.
 export WORDCHARS='*?[]~=&!#$%^(){}<>'
 
-bindkey -e  # the default emacs mode
+bindkey -v  # the dreaded vi mode!!
 
 bindkey -s "^?" "^H" # sometimes, a terminal thinks backspace is delete
 bindkey "^[[3~" delete-char # I have no idea why this is here.
