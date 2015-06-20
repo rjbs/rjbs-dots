@@ -1,2 +1,5 @@
+set editing-mode vi
+set blink-matching-paren on
+
 "\e[A": history-search-backward
 "\e[B": history-search-forward
