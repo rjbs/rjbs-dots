@@ -97,6 +97,7 @@ bindkey -v  # the dreaded vi mode!!
 
 bindkey -s "^?" "^H" # sometimes, a terminal thinks backspace is delete
 bindkey "^[[3~" delete-char # I have no idea why this is here.
+bindkey "^R" history-incremental-search-backward # vi mode's version sux
 
 # It used to be that at work, I'd encounter ^W to delete line.  I'd try to
 # delete one word and then lost my whole big command and then lose my mind and
