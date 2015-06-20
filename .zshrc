@@ -93,10 +93,16 @@ dirc=$(whiff dircolors gdircolors);
 # By excluding /, this lets me hit <C-w> to delete part of a path.
 export WORDCHARS='*?[]~=&!#$%^(){}<>'
 
-bindkey -e
-bindkey -s "^?" "^H"
-bindkey "^[[3~" delete-char
+bindkey -e  # the default emacs mode
+
+bindkey -s "^?" "^H" # sometimes, a terminal thinks backspace is delete
+bindkey "^[[3~" delete-char # I have no idea why this is here.
+
+# It used to be that at work, I'd encounter ^W to delete line.  I'd try to
+# delete one word and then lost my whole big command and then lose my mind and
+# moan and scream.  No more! -- rjbs, 2015-06-19
 bindkey "^W" backward-delete-word
+
 setopt    autopushd             # cd implies pushd
 setopt no_auto_remove_slash     # ls /symli<Tab> should list contents, not ln
 setopt no_autoresume            # if running something already bg'd, don't fg
