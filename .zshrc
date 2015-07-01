@@ -25,7 +25,8 @@ export MANWIDTH=80
 export PERLDOC=-otext
 
 if [ "$uname" = "Darwin" ]; then
-  export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+  export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/texlive/2015/bin/x86_64-darwin:$PATH
+  export MANPATH=/usr/local/texlive/2015/texmf-dist/doc/man:$MANPATH
 else
   # ...
 fi
