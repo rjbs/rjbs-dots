@@ -167,3 +167,17 @@ if [ `uname` = "SunOS" ]; then
     /usr/bin/stty status undef
   fi
 fi
+
+# from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity
+# the idea here is to make C-z on a blank line act like running fg
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line
+  else
+    zle push-input
+    zle clear-screen
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
