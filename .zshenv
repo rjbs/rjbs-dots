@@ -1,6 +1,9 @@
 export LANG=en_US.UTF-8
 
-if [ ! -z "$SSH_AUTH_SOCK" ] && [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/agent" ]; then
+if [ ! -z "$SSH_AUTH_SOCK" ] \
+  && [ ! -e "$HOME/.ssh/agent" ] \
+  && [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/agent" ]; \
+then
   ln -snf "$SSH_AUTH_SOCK" "$HOME/.ssh/agent"
   export SSH_AUTH_SOCK="$HOME/.ssh/agent"
 fi
