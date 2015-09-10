@@ -1,4 +1,4 @@
-local: ~/Sync/minicpan
+local: ~/minicpan
 also_mirror: modules/06perms.txt
 skip_perl: 1
 path_filters: /Tapper[^/]+\z
