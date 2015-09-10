@@ -1,0 +1,6 @@
+
+if [ ! -e "$HOME/.ssh/agent" ] \
+  && [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/agent" ]; \
+then
+  export SSH_AUTH_SOCK="$HOME/.ssh/agent"
+fi
