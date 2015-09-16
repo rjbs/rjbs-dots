@@ -1,10 +1,11 @@
 # vim: set ft=zsh:
-if (/usr/bin/which plenv > /dev/null); then
-  ACK=$(plenv which ack)
-else
-  ACK=$(/usr/bin/which ack)
-fi
-
 ack() {
-  ACK=$ACK perl -e 'use App::Ack::ConfigLoader; my $_ro; BEGIN { $_ro = \&App::Ack::ConfigLoader::removed_option; } sub App::Ack::ConfigLoader::removed_option { return sub {} if $_[0] eq q{-a} or $_[0] eq q{--all}; goto &$_ro; } do "$ENV{ACK}"' -- "$@"
+  if [ -z "$ACK" ]; then
+    if (/usr/bin/which plenv > /dev/null); then
+      export ACK=$(plenv which ack)
+    else
+      export ACK=$(/usr/bin/which ack)
+    fi
+  fi
+  perl -e 'use App::Ack::ConfigLoader; my $_ro; BEGIN { $_ro = \&App::Ack::ConfigLoader::removed_option; } sub App::Ack::ConfigLoader::removed_option { return sub {} if $_[0] eq q{-a} or $_[0] eq q{--all}; goto &$_ro; } do "$ENV{ACK}"' -- "$@"
 }
