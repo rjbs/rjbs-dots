@@ -1,26 +1,10 @@
 # vim: set ft=zsh:
-function ack () {
-  # I removed "ag" support because the switches differ too often.  -f,
-  # especially, got my goat.
-  # if (which ag 2>&1 > /dev/null); then
-  #   ag $*
-  # elif...
-  if (command ack --version | head -1 | grep 'ack 1' > /dev/null); then
-    command ack $*
-  else
-    orig=("$@")
-    args=("${(@)orig:#-a}")
-    command ack $args
-  fi
-}
+if (/usr/bin/which plenv > /dev/null); then
+  ACK=$(plenv which ack)
+else
+  ACK=$(/usr/bin/which ack)
+fi
 
-# If this was bash, I'd write:
-# function ack () {
-#   if (ack --version | head -1 | grep 'ack 1' > /dev/null); then
-#     ack $*
-#   else
-#     declare -a args=("$@")
-#     declare -a no_a=( ${args[@]/-a/} )
-#     ack ${no_a[@]}
-#   fi
-# }
+ack() {
+  ACK=$ACK perl -e 'use App::Ack::ConfigLoader; my $_ro; BEGIN { $_ro = \&App::Ack::ConfigLoader::removed_option; } sub App::Ack::ConfigLoader::removed_option { return sub {} if $_[0] eq q{-a} or $_[0] eq q{--all}; goto &$_ro; } do "$ENV{ACK}"' -- "$@"
+}
