@@ -23,11 +23,13 @@ my %emoji = (
   'smile' => "\N{SMILING FACE WITH OPEN MOUTH AND SMILING EYES}",
   'wave'  => "\N{WAVING HAND SIGN}",
 
-  'pobox' => "[\N{BLUE HEART}\N{INCOMING ENVELOPE}]",
+  'pobox' => "[\N{BLUE HEART} \N{INCOMING ENVELOPE} ]",
 
-  'facepunch'   => "\N{FISTED HAND SIGN}",
-  'ok_hand'     => "\N{OK HAND SIGN}",
-  'pouting_cat' => "\N{POUTING CAT FACE}",
+  'disappointed' => "\N{DISAPPOINTED FACE}",
+  'facepunch'    => "\N{FISTED HAND SIGN}",
+  'heart_eyes'   => "\N{SMILING FACE WITH HEART-SHAPED EYES}",
+  'ok_hand'      => "\N{OK HAND SIGN}",
+  'pouting_cat'  => "\N{POUTING CAT FACE}",
 );
 
 sub munge_emoji {
