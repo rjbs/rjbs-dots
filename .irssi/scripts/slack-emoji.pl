@@ -21,8 +21,7 @@ my %emoji = (
 
 sub munge_emoji {
   my ($target, $text) = split / :/, $_[0], 2;
-  # make this :[^:]+: later --rjbs
-  $text =~ s/:$_:/$emoji{$_}/g for keys %emoji;
+  $text =~ s/:([-+a-z0-9_]+):/$emoji{$1}/g;
   return "$target :$text";
 }
 
