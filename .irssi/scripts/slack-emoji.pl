@@ -11,12 +11,23 @@ our %IRSSI = (
 );
 
 my %emoji = (
-  'imp'   => "\N{IMP}",
-  'heart' => "\N{BLUE HEART}", # Pobox, yo.
-  'poop'  => "\N{PILE OF POO}",
-  'smile' => "\N{SMILING FACE WITH OPEN MOUTH AND SMILING EYES}",
   '+1'    => "\N{THUMBS UP SIGN}",
   '-1'    => "\N{THUMBS DOWN SIGN}",
+
+  'ok'    => "\N{SQUARED OK}",
+  'fist'  => "\N{RAISED FIST}",
+  'heart' => "\N{BLACK HEART SUIT}\x{FE0F}",
+  'imp'   => "\N{IMP}",
+  'poop'  => "\N{PILE OF POO}",
+  'rage'  => "\N{POUTING FACE}",
+  'smile' => "\N{SMILING FACE WITH OPEN MOUTH AND SMILING EYES}",
+  'wave'  => "\N{WAVING HAND SIGN}",
+
+  'pobox' => "[\N{BLUE HEART}\N{INCOMING ENVELOPE}]",
+
+  'facepunch'   => "\N{FISTED HAND SIGN}",
+  'ok_hand'     => "\N{OK HAND SIGN}",
+  'pouting_cat' => "\N{POUTING CAT FACE}",
 );
 
 sub munge_emoji {
