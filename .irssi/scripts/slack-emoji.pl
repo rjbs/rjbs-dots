@@ -1,7 +1,7 @@
 use warnings;
 use strict;
 
-use charnames ':full';
+use Text::SlackEmoji;
 use Irssi ();
 
 our $VERSION = '0.001';
@@ -10,27 +10,9 @@ our %IRSSI = (
   name    => 'slack-emoji',
 );
 
-my %emoji = (
-  '+1'    => "\N{THUMBS UP SIGN}",
-  '-1'    => "\N{THUMBS DOWN SIGN}",
+my %emoji = %{ Text::SlackEmoji->emoji_map };
 
-  'ok'    => "\N{SQUARED OK}",
-  'fist'  => "\N{RAISED FIST}",
-  'heart' => "\N{BLACK HEART SUIT}\x{FE0F}",
-  'imp'   => "\N{IMP}",
-  'poop'  => "\N{PILE OF POO}",
-  'rage'  => "\N{POUTING FACE}",
-  'smile' => "\N{SMILING FACE WITH OPEN MOUTH AND SMILING EYES}",
-  'wave'  => "\N{WAVING HAND SIGN}",
-
-  'pobox' => "[\N{BLUE HEART} \N{INCOMING ENVELOPE} ]",
-
-  'disappointed' => "\N{DISAPPOINTED FACE}",
-  'facepunch'    => "\N{FISTED HAND SIGN}",
-  'heart_eyes'   => "\N{SMILING FACE WITH HEART-SHAPED EYES}",
-  'ok_hand'      => "\N{OK HAND SIGN}",
-  'pouting_cat'  => "\N{POUTING CAT FACE}",
-);
+$emoji{pobox} = "[\N{BLUE HEART} \N{INCOMING ENVELOPE} ]";
 
 sub munge_emoji {
   my ($target, $text) = split / :/, $_[0], 2;
