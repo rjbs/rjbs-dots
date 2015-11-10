@@ -36,3 +36,12 @@ sub expand_emoji {
 }
 
 Irssi::signal_add('event privmsg'  => 'expand_emoji');
+
+
+sub cmd_reloademoji {
+  Text::SlackEmoji->load_emoji;
+  Irssi::print("emoji reloaded");
+  return;
+}
+
+Irssi::command_bind('reloademoji', 'cmd_reloademoji');
