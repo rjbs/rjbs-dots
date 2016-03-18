@@ -26,6 +26,9 @@
 [url "git://github.com/"]
   insteadOf = hub:
 
+[core]
+attributesfile = ~/.gitattributes
+
 [include]
 path = ~/.gitconfig.local
 [push]
