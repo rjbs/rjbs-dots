@@ -19,7 +19,7 @@ applescript
   elif [ "$TERM_PROGRAM" = "iTerm.app" ]; then
     osascript <<applescript
       tell application "iTerm"
-        set number of rows of current terminal to $NEWLINES
+        set rows of current session of current tab of current window to $NEWLINES
       end tell
 applescript
   fi
