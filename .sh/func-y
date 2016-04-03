@@ -18,7 +18,7 @@ function y () {
 applescript
   elif [ "$TERM_PROGRAM" = "iTerm.app" ]; then
     osascript <<applescript
-      tell application "iTerm"
+      tell application "iTerm2"
         set rows of current session of current tab of current window to $NEWLINES
       end tell
 applescript
