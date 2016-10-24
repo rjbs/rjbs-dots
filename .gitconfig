@@ -12,7 +12,7 @@
   cl = clean -dfx
   cc = cherry-pick
   ff = merge --ff-only
-  fx = commit -a --amend -C HEAD
+  fx = commit -a --amend --no-edit
   ix = diff --cached
   re = re-edit
   st = status -sb
@@ -33,3 +33,5 @@ attributesfile = ~/.gitattributes
 path = ~/.gitconfig.local
 [push]
 	default = matching
+[diff]
+	compactionHeuristic = true
