@@ -1,0 +1,3 @@
+lfn() {
+  ls -1 | perl -pe '$_ = sprintf "%02i %s", length, $_' | gsort -n
+}
