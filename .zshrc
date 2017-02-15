@@ -99,6 +99,7 @@ bindkey -v  # the dreaded vi mode!!
 bindkey -s "^?" "^H" # sometimes, a terminal thinks backspace is delete
 bindkey "^[[3~" delete-char # I have no idea why this is here.
 bindkey "^R" history-incremental-search-backward # vi mode's version sux
+bindkey ' ' magic-space # expand history at space
 
 # It used to be that at work, I'd encounter ^W to delete line.  I'd try to
 # delete one word and then lost my whole big command and then lose my mind and
@@ -118,7 +119,6 @@ setopt    interactive_comments  # let # make comments even interactive!
 setopt no_nomatch               # if a wildcard can't expand, leave it verbatim
 setopt no_printexitvalue        # <-- yuck, printexitvalue
 setopt    transient_rprompt     # rprompt goes away after command is run
-setopt no_bang_hist             # "foo!" should not be special
 
 ## BELOW THIS, EVERYTHING IS BASICALLY CARGO CULTED
 
