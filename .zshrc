@@ -179,5 +179,15 @@ fancy-ctrl-z () {
     zle clear-screen
   fi
 }
+
 zle -N fancy-ctrl-z
+
+vi-push-line-or-edit () { zle push-line; bindkey -v }
+zle -N vi-push-line-or-edit
+
 bindkey '^Z' fancy-ctrl-z
+bindkey -M vicmd 'z' vi-push-line-or-edit
+
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd 'Z' edit-command-line
