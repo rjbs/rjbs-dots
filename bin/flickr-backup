@@ -1,8 +1,6 @@
-#!/usr/bin/env perl
+#!/Users/rjbs/.plenv/versions/24.3/bin/perl
 use strict;
 use warnings;
-
-use local::lib '~/local/old-moz-ca';
 
 use Config::Simple;
 use Log::Dispatch::Screen;
