@@ -53,7 +53,9 @@ export PATH=$HOME/bin:$PATH
 view=$(which view)
 export MANPAGER="/bin/sh -c \"col -b | $view -c 'set ts=8 ft=man nomod nolist' -\""
 
-export NOPASTE_SERVICES=Gist
+if [ -z "$NOPASTE_SERVICES" ]; then
+  export NOPASTE_SERVICES=Gist
+fi
 
 # Stupid OS X
 export COPYFILE_DISABLE=1
