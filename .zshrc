@@ -45,6 +45,10 @@ if [ -d $HOME/.rbenv ]; then
   eval "$(rbenv init -)"
 fi
 
+if [ -d $HOME/.cargo ]; then
+  source $HOME/.cargo/env
+fi
+
 export PAGER=less
 
 # . /icg/admin/include/paths.sh
