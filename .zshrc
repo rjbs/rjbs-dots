@@ -37,7 +37,7 @@ if [ -d $HOME/.plenv ]; then
 fi
 
 if [ -d $HOME/.rakudobrew ]; then
-  export PATH=$HOME/.rakudobrew/bin:$PATH
+  eval "$(/Users/rjbs/.rakudobrew/bin/rakudobrew init Zsh)"
 fi
 
 if [ -d $HOME/.rbenv ]; then
