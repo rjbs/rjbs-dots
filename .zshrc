@@ -58,7 +58,11 @@ view=$(which view)
 export MANPAGER="/bin/sh -c \"col -b | $view -c 'set ts=8 ft=man nomod nolist' -\""
 
 if [ -z "$NOPASTE_SERVICES" ]; then
-  export NOPASTE_SERVICES=Gist
+  if [ "$USER" = "rjbsfm" ]; then
+    export NOPASTE_SERVICES=GitLab
+  else
+    export NOPASTE_SERVICES=Gist
+  fi
 fi
 
 # Stupid OS X
