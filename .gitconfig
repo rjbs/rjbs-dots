@@ -9,6 +9,7 @@
   ; default = simple
 [alias]
   ci = commit -a
+  c- = !git commit -a -F -
   cl = clean -dfx
   cc = cherry-pick
   ff = merge --ff-only
