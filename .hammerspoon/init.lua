@@ -8,8 +8,8 @@ function resizeChromes ()
       local frame = window:screen():frame()
       if (string.len(window:title()) > 0) then
         window:move({
-          x = frame.x + 10 * (i - 1),
-          y = frame.y + 10 * (i - 1),
+          x = frame.x + 10 * i,
+          y = frame.y + 10 * i,
           w = 1200,
           h = 800
         })
