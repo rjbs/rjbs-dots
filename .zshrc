@@ -9,6 +9,10 @@ if [ -d ~/perl6 ]; then
   export PATH=$PATH:$HOME/perl6/bin:$HOME/perl6/share/perl6/site/bin
 fi
 
+if [ -d "$HOME/.cargo/bin" ]; then
+  export PATH="$HOME/.cargo/bin:$PATH"
+fi
+
 # I'll need this for colorized prompt.
 autoload -U colors
 
