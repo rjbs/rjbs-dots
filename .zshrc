@@ -28,7 +28,11 @@ export MANPATH=$MANPATH:/opt/local/share/man
 export MANWIDTH=80
 export PERLDOC=-otext
 
-export CERTFILE=/etc/ssl/certs/ca-certificates.crt
+if [ -e /etc/ssl/certs/ca-certificates.crt ]; then
+  export CERTFILE=/etc/ssl/certs/ca-certificates.crt
+elif [ -e /usr/local/etc/openssl/cert.pem ]; then
+  export CERTFILE=/usr/local/etc/openssl/cert.pem
+fi
 
 if [ "$uname" = "Darwin" ]; then
   export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/texlive/2015/bin/x86_64-darwin:$PATH
