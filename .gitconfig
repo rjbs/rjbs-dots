@@ -1,6 +1,6 @@
 [user]
   name = Ricardo Signes
-  email = rjbs@cpan.org
+  email = rjbs@semiotic.systems
 [color]
   diff = auto
   status = auto
@@ -33,6 +33,6 @@ attributesfile = ~/.gitattributes
 [include]
 path = ~/.gitconfig.local
 [push]
-	default = matching
+default = matching
 [diff]
-	compactionHeuristic = true
+compactionHeuristic = true
