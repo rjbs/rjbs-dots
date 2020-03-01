@@ -1,5 +1,4 @@
 
-
 function resizeChromes ()
   local chrome = hs.application.find("Chrome")
   if (chrome) then
@@ -35,9 +34,27 @@ function resizeSlack ()
   end
 end
 
+function resizeLiquidPlanner ()
+  local lp = hs.application.find("LiquidPlanner")
+  if (lp) then
+    local windows = lp:visibleWindows()
+    for i, window in ipairs(windows) do
+      local frame = window:screen():frame()
+      window:move({
+        x = frame.w - 1300,
+        y = 30,
+        w = 1200,
+        h = 800
+      })
+      break -- one window is enough, in case of madness
+    end
+  end
+end
+
 resizeMenu = hs.menubar.new()
 resizeMenu:setTitle("⌧")
 resizeMenu:setClickCallback(function ()
   resizeChromes()
+  resizeLiquidPlanner()
   resizeSlack()
 end)
