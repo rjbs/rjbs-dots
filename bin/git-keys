@@ -1,4 +1,4 @@
-#!/Users/rjbs/.plenv/versions/24.0/bin/perl
+#!/usr/bin/env perl
 use 5.14.0;
 use HTTP::Tiny;
 use JSON::PP;
