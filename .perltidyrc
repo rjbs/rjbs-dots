@@ -5,11 +5,14 @@
   -nolq  # don't outdent long quotes
   -b     # edit file in place, leave .bak file
   -nola  # don't outdent labels
-  -msc=2 # two spaces for post-line comments (not 4)
+  -msc=1 # two spaces for post-line comments (not 4)
+
+  -bom   # keep old breaks before method calls
   -bok   # keep old breaks before map/grep/sort (we're smarter than perltidy)
 
-  -sot   # stack opening/closing delims (but not for blocks)
-  -sct
+  -nbbc
+
+  -wn
 
   # we always want to break BEFORE operators
   -wbb="+ - * / x != == >= <= =~ !~ < > | & >= <"
