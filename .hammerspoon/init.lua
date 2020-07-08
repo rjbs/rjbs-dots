@@ -24,7 +24,7 @@ function resizeSlack ()
     for i, window in ipairs(windows) do
       local frame = window:screen():fullFrame()
       window:move({
-        x = frame.w - 960,
+        x = frame.x + frame.w - 960,
         y = frame.h - 710,
         w = 950,
         h = 700
@@ -41,7 +41,7 @@ function resizeLiquidPlanner ()
     for i, window in ipairs(windows) do
       local frame = window:screen():frame()
       window:move({
-        x = frame.w - 1300,
+        x = frame.x + frame.w - 1300,
         y = 30,
         w = 1200,
         h = 800
@@ -50,6 +50,18 @@ function resizeLiquidPlanner ()
     end
   end
 end
+
+hs.hotkey.bind({"cmd","alt"}, "space", function()
+  hs.spotify.playpause()
+end)
+
+hs.hotkey.bind({"cmd","alt"}, "left", function()
+  hs.spotify.previous()
+end)
+
+hs.hotkey.bind({"cmd","alt"}, "right", function()
+  hs.spotify.next()
+end)
 
 resizeMenu = hs.menubar.new()
 resizeMenu:setTitle("⌧")
