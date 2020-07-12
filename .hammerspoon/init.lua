@@ -70,3 +70,7 @@ resizeMenu:setClickCallback(function ()
   resizeLiquidPlanner()
   resizeSlack()
 end)
+
+TimerWidget = require('TimerWidget')
+timer = TimerWidget:new()
+timer:install()
