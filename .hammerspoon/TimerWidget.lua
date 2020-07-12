@@ -39,12 +39,9 @@ end
 
 function TimerWidget:startPomodoro ()
   self.state = "running"
-  hs.task.new(
-    "/usr/bin/afplay",
-    nil,
-    function () return true end, -- Silly. -- rjbs, 2020-07-11
-    { "/Users/rjbs/Dropbox/music/3-2-1-lets-jam.mp3" }
-  ):start()
+
+
+  hs.sound.getByFile("/Users/rjbs/Dropbox/music/3-2-1-lets-jam.mp3"):play()
   self:blink("00ff00", 5)
   self.doneAt  = hs.timer.secondsSinceEpoch() + self.runDuration
   self.timer = hs.timer.doEvery(1, function () self:tick() end)
