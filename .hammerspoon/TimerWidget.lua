@@ -60,6 +60,20 @@ function TimerWidget:startRest ()
   self:redraw()
 end
 
+function TimerWidget:cancelTimer ()
+  if self.timer then
+    self.timer:stop()
+    self.timer = nil
+  end
+
+  self:blink("ff00ff", 3)
+
+  self.blinkSlice = nil
+  self.doneAt = nil
+  self.state = "idle"
+  self:redraw()
+end
+
 function TimerWidget:blink (rgb, count)
   local url = string.format(
     "http://raspberrypi.local:8000/blink1/blink?rgb=%s&count=%s",
@@ -79,10 +93,7 @@ function TimerWidget:tick ()
       self:startRest()
       self:blink("ff0000", 5)
     else
-      self.timer:stop()
-      self.timer = nil
-      self.state = "idle"
-      self:blink("ff00ff", 3)
+      self:cancelTimer()
     end
   else
     if self.state == "running" then
@@ -102,13 +113,13 @@ end
 function TimerWidget:provideMenu ()
   if self.state == "running" then
     return {
-      { title = "Cancel Pomodoro" }
+      { title = "Cancel Pomodoro", fn = function () self:cancelTimer() end }
     }
   end
 
   if self.state == "resting" then
     return {
-      { title = "Cancel Rest" }
+      { title = "Cancel Rest", fn = function () self:cancelTimer() end }
     }
   end
 
