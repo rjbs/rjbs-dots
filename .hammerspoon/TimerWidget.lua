@@ -77,6 +77,7 @@ function TimerWidget:cancelTimer ()
 end
 
 function TimerWidget:blink (rgb, count)
+  rgb = rgb:gsub("^#","")
   local url = string.format(
     "http://raspberrypi.local:8000/blink1/blink?rgb=%s&count=%s",
     rgb,
