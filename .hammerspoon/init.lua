@@ -74,3 +74,7 @@ end)
 TimerWidget = require('TimerWidget')
 timer = TimerWidget:new()
 timer:install()
+
+Microphonist = require('Microphonist')
+mic = Microphonist:new()
+mic:install()
