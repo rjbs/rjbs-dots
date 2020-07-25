@@ -78,6 +78,8 @@ function Microphonist:install ()
 
   hs.audiodevice.watcher.start()
 
+  hs.timer.doEvery(30, function () self:redraw() end)
+
   self:redraw()
 end
 
