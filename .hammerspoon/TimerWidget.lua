@@ -1,9 +1,9 @@
 local TimerWidget = { }
 
-local startPattern      = { times = 3, { rgb = "00FF00" } }
-local slicePattern      = {            { rgb = "FF8800" } }
-local startRestPattern  = { times = 3, { rgb = "FF00FF" } }
-local timerEndPattern   = { times = 3, { rgb = "FF0000" } }
+local startPattern      = { { rgb = "00FF00", times = 3 } }
+local slicePattern      = { { rgb = "FF8800" } }
+local startRestPattern  = { { rgb = "FF00FF", times = 3 } }
+local timerEndPattern   = { { rgb = "FF0000", times = 3 } }
 local cancelPattern     = { times = 2, { rgb = "FF0000", litTime = 0.1 },
                                        { rgb = "FF8800", litTime = 0.1 } }
 
