@@ -38,14 +38,14 @@ end
 function TimerWidget:startPomodoro (runMinutes, restMinutes)
   self.state = "running"
 
-  self.runDuration  = runMinutes  * 60
-  self.restDuration = restMinutes * 60
+  self.runSeconds  = runMinutes  * 60
+  self.restSeconds = restMinutes * 60
 
   hs.sound.getByFile("/Users/rjbs/Dropbox/music/3-2-1-lets-jam.mp3"):play()
   self:blink("00ff00", 5)
-  self.doneAt  = hs.timer.secondsSinceEpoch() + self.runDuration
+  self.doneAt  = hs.timer.secondsSinceEpoch() + self.runSeconds
   self.timer = hs.timer.doEvery(1, function () self:tick() end)
-  self.blinkSlice = { numerator = 4, denomenator = 5, total = self.runDuration }
+  self.blinkSlice = { numerator = 4, denomenator = 5, total = self.runSeconds }
   self:redraw()
 end
 
@@ -57,7 +57,7 @@ function TimerWidget:startRest ()
     title         = "It's over.",
     setIdImage    = "/Users/rjbs/Dropbox/images/tomato-icon.png"
   }):send()
-  self.doneAt = hs.timer.secondsSinceEpoch() + self.restDuration
+  self.doneAt = hs.timer.secondsSinceEpoch() + self.restSeconds
   self.timer = hs.timer.doEvery(1, function () self:tick() end)
   self:redraw()
 end
@@ -71,8 +71,8 @@ function TimerWidget:clearTimer ()
   self.blinkSlice = nil
   self.doneAt = nil
   self.state = "idle"
-  self.runDuration = nil
-  self.restDuration = nil
+  self.runSeconds = nil
+  self.restSeconds = nil
 
   self:redraw()
 end
@@ -130,7 +130,7 @@ function TimerWidget:tick ()
   local remaining = self.doneAt - hs.timer.secondsSinceEpoch()
 
   if remaining <= 0 then
-    if (self.state == "running") and (self.restDuration > 0) then
+    if (self.state == "running") and (self.restSeconds > 0) then
       self.timer:stop()
       self:blink("ff0000", 5)
       self:startRest()
