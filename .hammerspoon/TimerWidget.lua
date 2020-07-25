@@ -1,5 +1,12 @@
 local TimerWidget = { }
 
+local startPattern      = { times = 3, { rgb = "00FF00" } }
+local slicePattern      = {            { rgb = "FF8800" } }
+local startRestPattern  = { times = 3, { rgb = "FF00FF" } }
+local timerEndPattern   = { times = 3, { rgb = "FF0000" } }
+local cancelPattern     = { times = 2, { rgb = "FF0000", litTime = 0.1 },
+                                       { rgb = "FF8800", litTime = 0.1 } }
+
 function TimerWidget:new (obj)
   obj = obj or {}
   setmetatable(obj, self)
@@ -42,7 +49,7 @@ function TimerWidget:startPomodoro (runMinutes, restMinutes)
   self.restSeconds = restMinutes * 60
 
   hs.sound.getByFile("/Users/rjbs/Dropbox/music/3-2-1-lets-jam.mp3"):play()
-  self:blink("00ff00", 5)
+  self:blinkPattern( startPattern )
   self.doneAt  = hs.timer.secondsSinceEpoch() + self.runSeconds
   self.timer = hs.timer.doEvery(1, function () self:tick() end)
   self.blinkSlice = { numerator = 4, denomenator = 5, total = self.runSeconds }
@@ -51,6 +58,7 @@ end
 
 function TimerWidget:startRest ()
   self.state = "resting"
+  self:blinkPattern( startRestPattern )
   hs.speech.new():speak("Time to take a break.")
   hs.notify.new(nil, {
     autoWithdraw  = true,
@@ -79,8 +87,7 @@ end
 
 function TimerWidget:cancelTimer ()
   self:clearTimer()
-
-  self:blink("ff00ff", 3)
+  self:blinkPattern(cancelPattern)
 end
 
 -- What is a tolerable subset of pattern semantics?
@@ -132,10 +139,9 @@ function TimerWidget:tick ()
   if remaining <= 0 then
     if (self.state == "running") and (self.restSeconds > 0) then
       self.timer:stop()
-      self:blink("ff0000", 5)
       self:startRest()
     else
-      self:blink("ff00ff", 3)
+      self:blinkPattern(timerEndPattern)
       self:clearTimer()
     end
   else
@@ -144,7 +150,9 @@ function TimerWidget:tick ()
       local nextBlink = bs.total / bs.denomenator * bs.numerator
 
       if remaining < nextBlink then
-        self:blink("ff8800", bs.numerator)
+        local sliceBlink = { table.unpack(slicePattern) }
+        sliceBlink.times = bs.numerator
+        self:blinkPattern(sliceBlink)
         bs.numerator = bs.numerator - 1
       end
     end
