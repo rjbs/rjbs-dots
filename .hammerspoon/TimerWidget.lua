@@ -42,11 +42,11 @@ function TimerWidget:redraw ()
   self.timerMenu:setTitle("🍅")
 end
 
-function TimerWidget:startPomodoro (runMinutes, restMinutes)
+function TimerWidget:startPomodoro (runSeconds, restSeconds)
   self.state = "running"
 
-  self.runSeconds  = runMinutes  * 60
-  self.restSeconds = restMinutes * 60
+  self.runSeconds  = runSeconds
+  self.restSeconds = restSeconds
 
   hs.sound.getByFile("/Users/rjbs/Dropbox/music/3-2-1-lets-jam.mp3"):play()
   self:blinkPattern( startPattern )
@@ -178,12 +178,16 @@ function TimerWidget:provideMenu ()
     return {
       {
         title = "Start Pomodoro (25/5)",
-        fn    = function () self:startPomodoro(25, 5) end
+        fn    = function () self:startPomodoro(25 * 60, 5 * 60) end
       },
       {
         title = "Start Pomodoro (30/0)",
-        fn    = function () self:startPomodoro(30, 0) end
-      }
+        fn    = function () self:startPomodoro(30 * 60, 0) end
+      },
+      {
+        title = "Start Test (30s/5)",
+        fn    = function () self:startPomodoro(30, 5) end
+      },
     }
   end
 
