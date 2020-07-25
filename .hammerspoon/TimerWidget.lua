@@ -6,8 +6,6 @@ function TimerWidget:new (obj)
   self.__index = self
 
   obj.state = "idle"
-  obj.runDuration  = 25 * 60
-  obj.restDuration = 5 * 60
 
   return obj
 end
@@ -37,9 +35,11 @@ function TimerWidget:redraw ()
   self.timerMenu:setTitle("🍅")
 end
 
-function TimerWidget:startPomodoro ()
+function TimerWidget:startPomodoro (runMinutes, restMinutes)
   self.state = "running"
 
+  self.runDuration  = runMinutes  * 60
+  self.restDuration = restMinutes * 60
 
   hs.sound.getByFile("/Users/rjbs/Dropbox/music/3-2-1-lets-jam.mp3"):play()
   self:blink("00ff00", 5)
@@ -62,18 +62,25 @@ function TimerWidget:startRest ()
   self:redraw()
 end
 
-function TimerWidget:cancelTimer ()
+function TimerWidget:clearTimer ()
   if self.timer then
     self.timer:stop()
     self.timer = nil
   end
 
-  self:blink("ff00ff", 3)
-
   self.blinkSlice = nil
   self.doneAt = nil
   self.state = "idle"
+  self.runDuration = nil
+  self.restDuration = nil
+
   self:redraw()
+end
+
+function TimerWidget:cancelTimer ()
+  self:clearTimer()
+
+  self:blink("ff00ff", 3)
 end
 
 function TimerWidget:blink (rgb, count)
@@ -91,12 +98,13 @@ function TimerWidget:tick ()
   local remaining = self.doneAt - hs.timer.secondsSinceEpoch()
 
   if remaining <= 0 then
-    if self.state == "running" then
+    if (self.state == "running") and (self.restDuration > 0) then
       self.timer:stop()
-      self:startRest()
       self:blink("ff0000", 5)
+      self:startRest()
     else
-      self:cancelTimer()
+      self:blink("ff00ff", 3)
+      self:clearTimer()
     end
   else
     if self.state == "running" then
@@ -128,7 +136,14 @@ function TimerWidget:provideMenu ()
 
   if self.state == "idle" then
     return {
-      { title = "Start Pomodoro", fn = function () self:startPomodoro() end }
+      {
+        title = "Start Pomodoro (25/5)",
+        fn    = function () self:startPomodoro(25, 5) end
+      },
+      {
+        title = "Start Pomodoro (30/0)",
+        fn    = function () self:startPomodoro(30, 0) end
+      }
     }
   end
 
