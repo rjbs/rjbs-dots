@@ -5,10 +5,6 @@ if [ "$uname" != "SunOS" ]; then
   export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin
 fi
 
-if [ -d ~/perl6 ]; then
-  export PATH=$PATH:$HOME/perl6/bin:$HOME/perl6/share/perl6/site/bin
-fi
-
 if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
@@ -41,14 +37,7 @@ else
   # ...
 fi
 
-if [ -d $HOME/.plenv ]; then
-  export PATH=$HOME/.plenv/bin:$PATH
-  eval "$(plenv init -)"
-fi
-
-if [ -d $HOME/.rakudobrew ]; then
-  eval "$(/Users/rjbs/.rakudobrew/bin/rakudobrew init Zsh)"
-fi
+if which plenv > /dev/null; then eval "$(plenv init - zsh)"; fi
 
 if [ -d $HOME/.rbenv ]; then
   export PATH=$HOME/.rbenv/bin:$PATH
