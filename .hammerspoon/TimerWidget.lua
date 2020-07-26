@@ -4,8 +4,8 @@ local startPattern      = { { rgb = "00FF00", times = 3 } }
 local slicePattern      = { { rgb = "FF8800" } }
 local startRestPattern  = { { rgb = "FF00FF", times = 3 } }
 local timerEndPattern   = { { rgb = "FF0000", times = 3 } }
-local cancelPattern     = { times = 2, { rgb = "FF0000", litTime = 0.1 },
-                                       { rgb = "FF8800", litTime = 0.1 } }
+local cancelPattern     = { times = 2, { rgb = "FF0000", litTime = 100 },
+                                       { rgb = "FF8800", litTime = 100 } }
 
 function TimerWidget:new (obj)
   obj = obj or {}
@@ -91,45 +91,36 @@ function TimerWidget:cancelTimer ()
 end
 
 -- What is a tolerable subset of pattern semantics?
---   { rgb, litTime, darkTime, n } ...
+--   { rgb, litTime, darkTime, times } ...
 function TimerWidget:blinkPattern (pattern)
-  local program = pattern.times or 1
+  local program = {}
 
-  for i, subpattern in ipairs(pattern) do
-    local rgb       = subpattern.rgb or error("no subpattern rgb")
-    local litTime   = subpattern.litTime  or 0.3
-    local darkTime  = subpattern.darkTime or 0.3
-    local times     = subpattern.times    or 1
+  for i = 1, pattern.times or 1 do
+    for j, subpattern in ipairs(pattern) do
+      local rgb       = subpattern.rgb or error("no subpattern rgb")
+      local litTime   = subpattern.litTime  or 300
+      local darkTime  = subpattern.darkTime or 300
+      local times     = subpattern.times    or 1
 
-    -- You can't supply a 0s time for anything, or the server sticks in a
-    -- default.  To deal with that, we use a 0.01 fade time, and here we shave
-    -- it off the requested time, which is probably not perceptable, but let's
-    -- try to be accurate.
-    litTime  = litTime - 0.01
-    darkTime = darkTime - 0.01
-
-    -- The subprogram format is (targetRGB,fadeTime,led), where fadeTime is how
-    -- long it takes to go from the current color to the target.  That means
-    -- that if we want to sustain, we need a short fadeTime to dark, then a
-    -- second instance of "fade black to black" for the sustain.
-    local subprogram = string.format(",%s,0.01,0", rgb)
-                    .. string.format(",%s,%.2f,0", rgb, litTime)
-                    .. string.format(",000000,0.01,0")
-                    .. string.format(",000000,%.2f,0", darkTime)
-
-    program = program .. string.rep(subprogram, times)
+      for k = 1, times do
+        table.insert(program, { cmd = "set", color = rgb })
+        table.insert(program, { cmd = "sleep", ms = litTime })
+        table.insert(program, { cmd = "off" })
+        table.insert(program, { cmd = "sleep", ms = darkTime })
+      end
+    end
   end
 
-  local url = "http://raspberrypi.local:8000/blink1/pattern/play?pattern="
-            .. program
+  local url = "http://raspberrypi.local:5000/"
 
-  hs.http.doAsyncRequest(url, 'GET', nil, nil, function () end, 'ignoreLocalCache')
+  local json = hs.json.encode(program)
+  hs.http.doAsyncRequest(url, 'POST', json, nil, function () end, 'ignoreLocalCache')
 end
 
 function TimerWidget:blink (rgb, count)
   rgb = rgb:gsub("^#","")
   self:blinkPattern({
-    { rgb = rgb, litTime = 0.3, darkTime = 0.3, times = count }
+    { rgb = rgb, times = count }
   })
 end
 
