@@ -36,3 +36,5 @@ path = ~/.gitconfig.local
 default = matching
 [diff]
 compactionHeuristic = true
+[log]
+	date = iso-local
