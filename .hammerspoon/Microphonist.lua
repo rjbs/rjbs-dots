@@ -6,18 +6,31 @@ function Microphonist:new (obj)
   self.__index = self
 
   obj.options = {
-    -- Maybe I should trim the name I get.  Whatever. -- rjbs, 2020-07-18
-    { name = "C-Media USB Headphone Set  ", icon = "🎧", order = 1 },
-    { name = "HD Pro Webcam C920",          icon = "🎙", order = 2 },
-    { name = "MacBook Pro Microphone",      icon = "💻" },
+    {
+      input  = "External Microphone",
+      output = "External Headphones",
+      icon   = "🎧",
+      order  = 1
+    },
+    {
+      input  = "HD Pro Webcam C920",
+      output = "CalDigit USB-C Pro Audio",
+      icon   = "🎙",
+      order  = 2
+    },
+    {
+      input  = "MacBook Pro Microphone",
+      output = "MacBook Pro Speakers",
+      icon    = "💻"
+    },
   }
 
-  obj.byName = {}
-  obj.rotor = {}
+  obj.byInput  = {}
+  obj.byOutput = {}
+  obj.rotor    = {}
 
   for k, v in pairs(obj.options) do
     if v.order then obj.rotor[v.order] = v end
-    obj.byName[v.name] = v
   end
 
   obj.unknownIcon = "🧏🏽"
@@ -29,12 +42,23 @@ end
 -- hs.audiodevice.datasource:setDefault() -> hs.audiodevice.datasource
 -- hs.audiodevice.defaultOutputDevice() -> hs.audiodevice or nil
 
-function Microphonist:currentInputProfile ()
-  local active = hs.audiodevice.defaultInputDevice()
+function Microphonist:currentAudioProfile ()
+  local activeInput  = hs.audiodevice.defaultInputDevice()
+  local activeOutput = hs.audiodevice.defaultOutputDevice()
 
-  if active == nil then return nil end
+  print("Input : " .. activeInput:name())
+  print("Output: " .. activeOutput:name())
 
-  local profile = self.byName[ active:name() ]
+  if (activeInput == nil) or (activeOutput == nil) then return nil end
+
+  local profile = nil
+
+  for k, v in pairs(self.options) do
+    if (v.output == activeOutput:name()) and (v.input == activeInput:name()) then
+      profile = v
+      break
+    end
+  end
 
   if profile == nil then return nil end
 
@@ -42,7 +66,7 @@ function Microphonist:currentInputProfile ()
 end
 
 function Microphonist:redraw ()
-  local profile = self:currentInputProfile()
+  local profile = self:currentAudioProfile()
 
   local icon = self.unknownIcon
   if profile and profile.icon then icon = profile.icon end
@@ -50,16 +74,22 @@ function Microphonist:redraw ()
   self.micMenu:setTitle(icon)
 end
 
-function Microphonist:toggleInput ()
-  local profile = self:currentInputProfile()
-  local order = profile.order == nil and 1 or (profile.order + 1)
+function Microphonist:toggleAudio ()
+  local profile = self:currentAudioProfile()
+  local order = 1
+
+  if (profile and (profile.order ~= nil)) then order = profile.order + 1 end
 
   local profile = self.rotor[ order ] or self.rotor[1]
 
-  local input = hs.audiodevice.findInputByName(profile.name)
+  local input = hs.audiodevice.findInputByName(profile.input)
   if input == nil then return end
 
+  local output = hs.audiodevice.findOutputByName(profile.output)
+  if output == nil then return end
+
   input:setDefaultInputDevice()
+  output:setDefaultOutputDevice()
 
   self:redraw()
 end
@@ -68,11 +98,11 @@ function Microphonist:install ()
   self.micMenu = hs.menubar.new()
 
   self.micMenu:setClickCallback(function ()
-    self:toggleInput()
+    self:toggleAudio()
   end)
 
   hs.audiodevice.watcher.setCallback(function (change)
-    if change ~= "dIn " then return end
+    if (change ~= "dIn ") and (change ~= "dOut") then return end
     self:redraw()
   end)
 
