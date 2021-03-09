@@ -58,7 +58,7 @@ function resizeLiquidPlanner ()
     for i, window in ipairs(windows) do
       local frame = window:screen():frame()
       window:move({
-        x = frame.x + frame.w - 1300,
+        x = frame.x + frame.w - 1250,
         y = 30,
         w = 1200,
         h = 800
