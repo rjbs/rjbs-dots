@@ -80,6 +80,16 @@ hs.hotkey.bind({"cmd","alt"}, "right", function()
   hs.spotify.next()
 end)
 
+hs.hotkey.bind({}, "f9", function()
+  local zoom = hs.application.find("Zoom")
+  if (zoom) then
+    local path = zoom:path()
+    zoom:kill9()
+
+    hs.task.new("/usr/bin/open", nil, function() return true end, { path }):start()
+  end
+end)
+
 resizeMenu = hs.menubar.new()
 resizeMenu:setTitle("⌧")
 resizeMenu:setClickCallback(function ()
