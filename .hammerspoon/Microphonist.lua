@@ -46,9 +46,6 @@ function Microphonist:currentAudioProfile ()
   local activeInput  = hs.audiodevice.defaultInputDevice()
   local activeOutput = hs.audiodevice.defaultOutputDevice()
 
-  print("Input : " .. activeInput:name())
-  print("Output: " .. activeOutput:name())
-
   if (activeInput == nil) or (activeOutput == nil) then return nil end
 
   local profile = nil
