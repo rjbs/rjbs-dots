@@ -1,0 +1,18 @@
+function 80 () {
+  if [ "$TERM_PROGRAM" = "Apple_Terminal" ]; then
+    osascript <<applescript
+      tell application "Terminal"
+        repeat with t in tabs of window 1
+          set number of columns of t to 80
+        end repeat
+      end tell
+applescript
+  elif [ "$TERM_PROGRAM" = "iTerm.app" ]; then
+    osascript <<applescript
+      tell application "iTerm2"
+        set columns of current session of current tab of current window to 80
+      end tell
+applescript
+  fi
+
+}
