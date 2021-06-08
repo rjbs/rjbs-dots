@@ -39,3 +39,5 @@ default = matching
 compactionHeuristic = true
 [log]
 	date = iso-local
+[init]
+	defaultBranch = main
