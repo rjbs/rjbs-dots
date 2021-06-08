@@ -44,6 +44,10 @@ if [ -d $HOME/.rbenv ]; then
   eval "$(rbenv init -)"
 fi
 
+if [ -d $HOME/.rakubrew ]; then
+  eval "$($HOME/.rakubrew/bin/rakubrew init Zsh)"
+fi
+
 if [ -d $HOME/.cargo ]; then
   source $HOME/.cargo/env
 fi
