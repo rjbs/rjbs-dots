@@ -9,6 +9,7 @@
   ; default = simple
 [alias]
   ci = commit -a
+  co = checkout --recurse-submodules
   c- = !git commit -a -F -
   cl = clean -dfx
   cc = cherry-pick
