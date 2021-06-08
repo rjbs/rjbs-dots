@@ -1,5 +1,6 @@
 local: ~/minicpan
 also_mirror: modules/06perms.txt
+also_mirror: indices/find-ls.gz
 skip_perl: 1
 path_filters: /Tapper[^/]+\z
 path_filters: BioPerl
