@@ -16,6 +16,7 @@
   ff = merge --ff-only
   fx = commit -a --amend --no-edit
   ix = diff --cached
+  please = push --force-with-lease
   re = re-edit
   st = status -sb
   fap  = fetch --all --prune
