@@ -37,6 +37,10 @@ else
   # ...
 fi
 
+if [ -d $HOME/.plenv ]; then
+  export PATH=$HOME/.plenv/bin:$PATH
+fi
+
 if which plenv > /dev/null; then eval "$(plenv init - zsh)"; fi
 
 if [ -d $HOME/.rbenv ]; then
