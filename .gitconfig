@@ -42,3 +42,5 @@ compactionHeuristic = true
 	date = iso-local
 [init]
 	defaultBranch = main
+[pull]
+	ff = only
