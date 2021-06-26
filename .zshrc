@@ -84,6 +84,10 @@ export VISUAL=$(which vi)
 
 export PERL_MAILERS=sendmail:$SENDMAIL
 
+if [ -e "${HOME}/.iterm2_shell_integration.zsh" ]; then
+  source "${HOME}/.iterm2_shell_integration.zsh"
+fi
+
 # Once I figured out this was breaking my F2 at work on Solaris, I fixed our
 # global config.  I've left this here for future reference. -- rjbs, 2009-01-08
 # if [ $OSTYPE == "SunOS" ]; then
