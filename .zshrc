@@ -80,7 +80,22 @@ export HISTFILE=~/.zhistory
 export SAVEHIST=1000
 
 export PS1="%~$(print '%{\e[1m%}%(!.%{\e[31m%}#.%{\e[32m%}$)%{\e[0m%}') "
-export RPS1="%m@%D{%H%M%S}:%h"
+
+HOSTCOLOR=
+HOSTNAME=`hostname -s`
+if [ -z "$HOSTNAME" ]; then
+  HOSTCOLOR=196 # no hostname! bright red!!
+elif [ "$HOSTNAME" = "dinah" ]; then
+  HOSTCOLOR=141 # lovely lavendar
+elif [ "$HOSTNAME" = "cancer" ]; then
+  HOSTCOLOR=202 # orange; this host should be deleted!
+elif [ "$HOSTNAME" = "snark" ]; then
+  HOSTCOLOR=63  # indigo; just because
+else
+  HOSTCOLOR=201 # bright pink; where ARE we??
+fi
+
+export RPS1="%F{$HOSTCOLOR}%m%f @ %D{%H:%M:%S}"
 
 export EDITOR=$(which vi)
 export SENDMAIL=$(which sendmail)
