@@ -79,21 +79,22 @@ export COPYFILE_EXTENDED_ATTRIBUTES_DISABLE=1
 export HISTFILE=~/.zhistory
 export SAVEHIST=1000
 
-HOSTCOLOR=
 HOSTNAME=`hostname -s`
 if [ -z "$HOSTNAME" ]; then
-  HOSTCOLOR=196 # no hostname! bright red!!
+  RJBS_HOST_COLOR=196 # no hostname! bright red!!
 elif [ "$HOSTNAME" = "dinah" ]; then
-  HOSTCOLOR=141 # lovely lavendar
+  RJBS_HOST_COLOR=141 # lovely lavendar
 elif [ "$HOSTNAME" = "cancer" ]; then
-  HOSTCOLOR=202 # orange; this host should be deleted!
+  RJBS_HOST_COLOR=202 # orange; this host should be deleted!
 elif [ "$HOSTNAME" = "snark" ]; then
-  HOSTCOLOR=63  # indigo; just because
+  RJBS_HOST_COLOR=63  # indigo; just because
 else
-  HOSTCOLOR=201 # bright pink; where ARE we??
+  RJBS_HOST_COLOR=201 # bright pink; where ARE we??
 fi
 
-export PS1="%F{$HOSTCOLOR}%m%f:%~%(!.%F{red}#.%F{green}$)%f "
+export RJBS_HOST_COLOR
+
+export PS1="%F{$RJBS_HOST_COLOR}%m%f:%~%(!.%F{red}#.%F{green}$)%f "
 
 # I used to have an ephemeral right-hand prompt with hostname and time.  This
 # was nice because it kept my hostname in view, but the time was not very
