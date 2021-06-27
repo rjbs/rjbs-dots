@@ -79,8 +79,6 @@ export COPYFILE_EXTENDED_ATTRIBUTES_DISABLE=1
 export HISTFILE=~/.zhistory
 export SAVEHIST=1000
 
-export PS1="%~$(print '%{\e[1m%}%(!.%{\e[31m%}#.%{\e[32m%}$)%{\e[0m%}') "
-
 HOSTCOLOR=
 HOSTNAME=`hostname -s`
 if [ -z "$HOSTNAME" ]; then
@@ -95,7 +93,15 @@ else
   HOSTCOLOR=201 # bright pink; where ARE we??
 fi
 
-export RPS1="%F{$HOSTCOLOR}%m%f @ %D{%H:%M:%S}"
+export PS1="%F{$HOSTCOLOR}%m%f:%~%(!.%F{red}#.%F{green}$)%f "
+
+# I used to have an ephemeral right-hand prompt with hostname and time.  This
+# was nice because it kept my hostname in view, but the time was not very
+# useful most of the time, and the history number (also often there) was even
+# less so.  I should look at how to put things like history number, exit
+# status, and time info into my session… but the prompt isn't the best way.
+# -- rjbs, 2021-06-27
+# export RPS1="%F{$HOSTCOLOR}%m%f @ %D{%H:%M:%S}"
 
 export EDITOR=$(which vi)
 export SENDMAIL=$(which sendmail)
