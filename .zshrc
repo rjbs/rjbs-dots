@@ -94,7 +94,7 @@ fi
 
 export RJBS_HOST_COLOR
 
-export PS1="%F{$RJBS_HOST_COLOR}%m%f:%~%(!.%F{red}#.%F{green}$)%f "
+export PS1="%{[1m%}%F{$RJBS_HOST_COLOR}%m%f:%~%(!.%F{red}#.%F{46}$)%f%{[0m%} "
 
 # I used to have an ephemeral right-hand prompt with hostname and time.  This
 # was nice because it kept my hostname in view, but the time was not very
