@@ -84,12 +84,10 @@ if [ -z "$HOSTNAME" ]; then
   RJBS_HOST_COLOR=247 # no hostname! dim unto death
 elif [ "$HOSTNAME" = "dinah" ]; then
   RJBS_HOST_COLOR=141 # lovely lavendar
-elif [ "$HOSTNAME" = "cancer" ]; then
-  RJBS_HOST_COLOR=202 # orange; this host should be deleted!
 elif [ "$HOSTNAME" = "snark" ]; then
-  RJBS_HOST_COLOR=63  # indigo; just because
+  RJBS_HOST_COLOR=202 # orange you glad I picked this color?
 elif [ -d "/var/icg" ]; then
-  RJBS_HOST_COLOR=208  # orange for Pobox (and Topicbox)
+  RJBS_HOST_COLOR=34  # green, in honor of Listbox
 elif [ -d "/etc/fmisproduction.boxdc" ]; then
   RJBS_HOSTCOLOR=51   # cyan, following convention
 elif [ -d "/etc/fmisproduction.nyi" ]; then
