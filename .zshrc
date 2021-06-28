@@ -81,13 +81,23 @@ export SAVEHIST=1000
 
 HOSTNAME=`hostname -s`
 if [ -z "$HOSTNAME" ]; then
-  RJBS_HOST_COLOR=196 # no hostname! bright red!!
+  RJBS_HOST_COLOR=247 # no hostname! dim unto death
 elif [ "$HOSTNAME" = "dinah" ]; then
   RJBS_HOST_COLOR=141 # lovely lavendar
 elif [ "$HOSTNAME" = "cancer" ]; then
   RJBS_HOST_COLOR=202 # orange; this host should be deleted!
 elif [ "$HOSTNAME" = "snark" ]; then
   RJBS_HOST_COLOR=63  # indigo; just because
+elif [ -d "/var/icg" ]; then
+  RJBS_HOST_COLOR=208  # orange for Pobox (and Topicbox)
+elif [ -d "/etc/fmisproduction.boxdc" ]; then
+  RJBS_HOSTCOLOR=51   # cyan, following convention
+elif [ -d "/etc/fmisproduction.nyi" ]; then
+  RJBS_HOSTCOLOR=196  # red, following convention
+elif [ -d "/etc/fmisproduction.west" ]; then
+  RJBS_HOSTCOLOR=226  # yellow, following convention
+elif [ -d "/etc/fmisproduction" ]; then
+  RJBS_HOSTCOLOR=225  # unknown DC; the salmon of doubt
 else
   RJBS_HOST_COLOR=201 # bright pink; where ARE we??
 fi
