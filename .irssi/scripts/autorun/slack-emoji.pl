@@ -1,10 +1,12 @@
 use warnings;
 use strict;
+use utf8;
 
 use Text::SlackEmoji;
+use Encode qw(encode decode);
 use Irssi ();
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 our %IRSSI = (
   authors => 'rjbs',
   name    => 'slack-emoji',
@@ -15,9 +17,10 @@ my %emoji = %{ Text::SlackEmoji->emoji_map };
 $emoji{pobox} = "[\N{BLUE HEART} \N{INCOMING ENVELOPE} ]";
 
 sub munge_emoji {
-  my ($target, $text) = split / :/, $_[0], 2;
+  my ($str) = decode('UTF-8', shift);
+  my ($target, $text) = split / :/, $str, 2;
   $text =~ s!:([-+a-z0-9_]+):!$emoji{$1} // ":$1:"!ge;
-  return "$target :$text";
+  return encode('UTF-8', "$target :$text");
 }
 
 sub expand_emoji {
