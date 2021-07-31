@@ -111,7 +111,7 @@ function TimerWidget:blinkPattern (pattern)
     end
   end
 
-  local url = "http://raspberrypi.local:5000/"
+  local url = "http://wabe.local:5000/"
 
   local json = hs.json.encode(program)
   hs.http.doAsyncRequest(url, 'POST', json, nil, function () end, 'ignoreLocalCache')
