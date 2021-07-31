@@ -105,3 +105,45 @@ timer:install()
 Microphonist = require('Microphonist')
 mic = Microphonist:new()
 mic:install()
+
+tabulator = hs.httpserver.new()
+tabulator:setPort(9876)
+tabulator:setCallback(function (method, path, headers, body)
+  if (method == "GET") and (path == "/metrics") then
+    bool, tabcounts, descriptor = hs.osascript.javascript([[
+      const Chrome  = new Application("/Applications/Google Chrome.app");
+
+      let tabCounts = [];
+
+      if (Chrome.running()) {
+        for (i in Chrome.windows) {
+          const window = Chrome.windows[i];
+          const tabs   = window.tabs;
+          tabCounts.push(tabs.length);
+        }
+
+        tabCounts.sort((a,b) => b - a);
+
+        // console.log(JSON.stringify(tabCounts));
+      } else {
+        // console.log(JSON.stringify([]));
+      }
+
+      tabCounts;
+    ]])
+
+    if not bool then
+      return "Error\n", 500, {}
+    end
+
+    local sum = 0
+    for i, tabs in ipairs(tabcounts) do
+      sum = sum + tabs
+    end
+
+    return "chrome_open_tabs " .. sum .. "\n", 200, {}
+  else
+    return "No good.\n", 404, {}
+  end
+end)
+tabulator:start()
