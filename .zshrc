@@ -87,13 +87,13 @@ elif [ "$HOSTNAME" = "dinah" ]; then
 elif [ "$HOSTNAME" = "snark" ]; then
   RJBS_HOST_COLOR=202 # orange you glad I picked this color?
 elif [ "$HOSTNAME" = "wabe" ]; then
-  RJBS_HOST_COLOR=136 # the brown in the shade of the sundial
+  RJBS_HOST_COLOR=66  # the color of moss on your sundial
 elif [ "$HOSTNAME" = "bill" ]; then
   RJBS_HOST_COLOR=40  # green, because Bill is a lizard
 elif [ "$HOSTNAME" = "dormouse" ]; then
   RJBS_HOST_COLOR=222 # yellow as the fur of the dormouse
 elif [ -d "/var/icg" ]; then
-  RJBS_HOST_COLOR=39  # blue, in honor of Listbox
+  RJBS_HOST_COLOR=27  # blue, in honor of Pobox
 elif [ -d "/etc/fmisproduction.boxdc" ]; then
   RJBS_HOSTCOLOR=51   # cyan, following convention
 elif [ -d "/etc/fmisproduction.nyi" ]; then
