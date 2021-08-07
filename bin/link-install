@@ -54,15 +54,15 @@ FILE: for my $file (@files) {
       next FILE
     }
 
-    if ($force) {
-      warn "EXEC: rm $home/$file\n";
-      if ($really) {
-        system('rm', "$home/$file") && die "couldn't rm $home/$file: $!";
-      }
-    } else {
+    unless ($force) {
       warn "SKIP: $home/$file which exists but isn't a link to $cwd/$file\n";
+      next FILE;
     }
-    next FILE;
+
+    warn "EXEC: rm $home/$file\n";
+    if ($really) {
+      system('rm', "$home/$file") && die "couldn't rm $home/$file: $!";
+    }
   }
 
   warn "EXEC: ln -s $cwd/$file $target\n";
