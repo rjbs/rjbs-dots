@@ -80,6 +80,12 @@ hs.hotkey.bind({"cmd","alt"}, "right", function()
   hs.spotify.next()
 end)
 
+hs.hotkey.bind({}, "f6", function()
+  local url  = "http://wabe.local:9999/"
+  hs.http.doAsyncRequest(url, 'GET', nil, nil, function () end, 'ignoreLocalCache')
+  hs.sound.getByFile("/Users/rjbs/Dropbox/sounds/tng-red-alert-1.mp3"):play()
+end)
+
 hs.hotkey.bind({}, "f9", function()
   local zoom = hs.application.find("Zoom")
   if (zoom) then
