@@ -7,9 +7,9 @@ $opt{$_}++ for @ARGV;
 
 die "duplicating options is weird\n" if grep {; $_ > 1 } values %opt;
 
-my $debug  = delete $opt{debug};
-my $force  = delete $opt{force};
-my $really = delete $opt{really};
+my $debug  = delete $opt{'--debug'};
+my $force  = delete $opt{'--force'};
+my $really = delete $opt{'--really'};
 
 die "unknown options provided; only --really and --debug work\n" if keys %opt;
 
