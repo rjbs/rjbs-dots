@@ -45,7 +45,7 @@ FILE: for my $file (@files) {
     }
   }
 
-  if (-e "$home/$file") {
+  if (-e "$home/$file" || -l "$home/$file") {
     if (-l "$home/$file" && readlink("$home/$file") eq "$cwd/$file") {
       if ($debug) {
         warn "SKIP: $home/$file already links to $cwd/$file\n";
