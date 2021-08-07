@@ -1,0 +1,6 @@
+hmct () {
+  (
+    cd ~/fm/code/TestBoxer;
+    ./bin/compile-test --result-dest /tmp/hmct $*
+  )
+}
