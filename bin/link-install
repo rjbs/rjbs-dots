@@ -37,8 +37,7 @@ FILE: for my $file (@files) {
     my $path = join q{/}, splice @parts, 0, @parts-1;
     $target = "$home/$path";
 
-    unless ($made{$path}++) {
-      next if -d $target;
+    unless ($made{$path}++ || -d $target) {
       warn "EXEC: mkdir -p $target\n";
       if ($really) {
         system('mkdir', '-p', $target) && die "couldn't make $target: $!";
