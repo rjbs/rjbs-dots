@@ -9,6 +9,12 @@ if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
+if [ -d "$HOME/.zprivate" ]; then
+  for file in $HOME/.zprivate/*(N); do
+    source $file
+  done
+fi
+
 # I'll need this for colorized prompt.
 autoload -U colors
 
