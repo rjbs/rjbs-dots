@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-my %opt = (debug => 0, force => 0, really => 0);
+my %opt = ('--debug' => 0, '--force' => 0, '--really' => 0);
 $opt{$_}++ for @ARGV;
 
 die "duplicating options is weird\n" if grep {; $_ > 1 } values %opt;
