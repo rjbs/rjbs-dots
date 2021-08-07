@@ -38,9 +38,6 @@ fi
 
 if [ "$uname" = "Darwin" ]; then
   export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/texlive/2015/bin/x86_64-darwin:$PATH
-  export MANPATH=/usr/local/texlive/2015/texmf-dist/doc/man:$MANPATH
-else
-  # ...
 fi
 
 if [ -d $HOME/.plenv ]; then
@@ -71,11 +68,7 @@ view=$(which view)
 export MANPAGER="/bin/sh -c \"col -b | $view -c 'set ts=8 ft=man nomod nolist' -\""
 
 if [ -z "$NOPASTE_SERVICES" ]; then
-  if [ "$USER" = "rjbsfm" ]; then
-    export NOPASTE_SERVICES=GitLab
-  else
-    export NOPASTE_SERVICES=Gist
-  fi
+  export NOPASTE_SERVICES=Gist
 fi
 
 # Stupid OS X
