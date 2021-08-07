@@ -26,7 +26,9 @@ chomp @files;
 my %made;
 
 FILE: for my $file (@files) {
-  next if $file eq '.gitignore'; # Next makes sense to copy this.
+  # Never makes sense to copy this.
+  next if $file eq '.gitignore';
+  next if $file eq '.gitmodules';
 
   my @parts  = split m{/}, $file;
   my $target = $home;
