@@ -1,0 +1,40 @@
+#!/Users/rjbs/.plenv/versions/24.0/bin/perl5.24.0
+use 5.22.0;
+use warnings;
+use JSON;
+use Path::Tiny;
+
+my $filename = q{/Users/rjbs/Library/Application Support/Firefox/Profiles/tlplj4x4.default/sessionstore-backups/recovery.js};
+
+my $json = path($filename)->slurp;
+my $data = decode_json($json);
+
+my $tabcount = 0;
+my @urls;
+for my $window ($data->{windows}->@*) {
+  my @tabs = $window->{tabs}->@*;
+  $tabcount += @tabs;
+
+  push @urls, $_->{entries}[0]{url} for @tabs;
+}
+
+@urls = grep {; defined } @urls;
+
+my $state = {
+  recorded_at => time,
+  file_mtime  => (stat $filename)[9],
+  tab_count   => $tabcount,
+  urls        => [ sort @urls ],
+};
+
+my $JSON = JSON->new->canonical->utf8;
+
+my $path = path(q{/Users/rjbs/Dropbox/data/tab-count.json});
+my $old  = $path->slurp;
+my $old_state = $JSON->decode($old);
+
+exit(0)
+  if join(qq{\0}, @{$state->{urls}}) eq join(qq{\0}, @{$old_state->{urls}});
+
+my $new  = $JSON->encode($state) . "\n";
+$path->spew($new);
