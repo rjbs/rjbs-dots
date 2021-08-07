@@ -13,6 +13,14 @@ for file in $HOME/.zprivate/*(N); do
   source $file
 done
 
+for file in $HOME/.sh/func/*(N); do
+  source $file
+done
+
+for file in $HOME/.zsh/func/*(N); do
+  source $file
+done
+
 # I'll need this for colorized prompt.
 autoload -U colors
 
