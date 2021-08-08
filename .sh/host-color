@@ -13,13 +13,13 @@ elif [ "$HOSTNAME" = "dormouse" ]; then
   RJBS_HOST_COLOR=222 # yellow as the fur of the dormouse
 elif [ -d "/var/icg" ]; then
   RJBS_HOST_COLOR=27  # blue, in honor of Pobox
-elif [ -d "/etc/fmisproduction.boxdc" ]; then
+elif [ -e "/etc/fmisproduction.boxdc" ]; then
   RJBS_HOSTCOLOR=51   # cyan, following convention
-elif [ -d "/etc/fmisproduction.nyi" ]; then
+elif [ -e "/etc/fmisproduction.nyi" ]; then
   RJBS_HOSTCOLOR=196  # red, following convention
-elif [ -d "/etc/fmisproduction.west" ]; then
+elif [ -e "/etc/fmisproduction.west" ]; then
   RJBS_HOSTCOLOR=226  # yellow, following convention
-elif [ -d "/etc/fmisproduction" ]; then
+elif [ -e "/etc/fmisproduction" ]; then
   RJBS_HOSTCOLOR=225  # unknown DC; the salmon of doubt
 else
   RJBS_HOST_COLOR=201 # bright pink; where ARE we??
