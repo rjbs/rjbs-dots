@@ -1,0 +1,1 @@
+source ~/.sh/host-color
