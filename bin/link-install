@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+use Term::ANSIColor qw(colored);
+
 my %opt = ('--debug' => 0, '--force' => 0, '--really' => 0);
 $opt{$_}++ for @ARGV;
 
@@ -10,6 +12,29 @@ die "duplicating options is weird\n" if grep {; $_ > 1 } values %opt;
 my $debug  = delete $opt{'--debug'};
 my $force  = delete $opt{'--force'};
 my $really = delete $opt{'--really'};
+
+sub execute {
+  my ($desc, @argv) = @_;
+
+  warn colored(['ansi51'], 'EXEC: ')
+     . ($really ? q{} : "(not really) ")
+     . "@argv\n";
+
+  if ($really) {
+    system(@argv) && die "couldn't $desc\n";
+  }
+}
+
+sub skip_file {
+  my ($reason, $always_warn) = @_;
+
+  if ($debug || $always_warn) {
+    warn colored(['ansi38'], 'SKIP: ') . "$reason\n";
+  }
+
+  no warnings 'exiting';
+  next FILE;
+}
 
 die "unknown options provided; only --really and --debug work\n" if keys %opt;
 
@@ -38,35 +63,24 @@ FILE: for my $file (@files) {
     $target = "$home/$path";
 
     unless ($made{$path}++ || -d $target) {
-      warn "EXEC: mkdir -p $target\n";
-      if ($really) {
-        system('mkdir', '-p', $target) && die "couldn't make $target: $!";
-      }
+      execute("make $target", ('mkdir', '-p', $target));
     }
   }
 
   if (-e "$home/$file" || -l "$home/$file") {
     if (-l "$home/$file" && readlink("$home/$file") eq "$cwd/$file") {
-      if ($debug) {
-        warn "SKIP: $home/$file already links to $cwd/$file\n";
-      }
-      next FILE
+      skip_file("~/$file already links to $cwd/$file");
     }
 
     unless ($force) {
-      warn "SKIP: $home/$file which exists but isn't a link to $cwd/$file\n";
-      next FILE;
+      skip_file("~/$file which exists but isn't a link to $cwd/$file", 1);
     }
 
-    warn "EXEC: rm $home/$file\n";
-    if ($really) {
-      system('rm', "$home/$file") && die "couldn't rm $home/$file: $!";
-    }
+    execute("remove ~/$file", ('rm', "$home/$file"));
   }
 
-  warn "EXEC: ln -s $cwd/$file $target\n";
-  if ($really) {
-    system 'ln', '-s', "$cwd/$file", $target;
-    die "error symlinking" if $?;
-  }
+  execute(
+    "make a symlink to $cwd/$file in $target",
+    ('ln', '-s', "$cwd/$file", $target),
+  );
 }
