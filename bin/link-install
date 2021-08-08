@@ -2,6 +2,7 @@
 use strict;
 use warnings;
 
+use Cwd ();
 use Term::ANSIColor qw(colored);
 
 my %opt = ('--debug' => 0, '--force' => 0, '--really' => 0);
@@ -41,7 +42,7 @@ die "unknown options provided; only --really and --debug work\n" if keys %opt;
 my $home = $ENV{HOME};
 die "no \$HOME set, so... what?\n" unless $home;
 
-my $cwd  = $ENV{PWD};
+my $cwd  = Cwd::cwd();
 
 my @files = `git ls-files`;
 die "couldn't run `git ls-files` for some reason: $!\n" if $?;
