@@ -19,8 +19,8 @@ function Microphonist:new (obj)
       order  = 2
     },
     {
-      input  = "MacBook Pro Microphone",
-      output = "MacBook Pro Speakers",
+      input  = "MacBook Air Microphone",
+      output = "MacBook Air Speakers",
       icon    = "💻"
     },
   }
