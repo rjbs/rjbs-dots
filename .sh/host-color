@@ -3,6 +3,8 @@ if [ -z "$HOSTNAME" ]; then
   RJBS_HOST_COLOR=247 # no hostname! dim unto death
 elif [ "$HOSTNAME" = "dinah" ]; then
   RJBS_HOST_COLOR=141 # lovely lavendar
+elif [ "$HOSTNAME" = "snowdrop" ]; then
+  RJBS_HOST_COLOR=81  # an icey blue
 elif [ "$HOSTNAME" = "snark" ]; then
   RJBS_HOST_COLOR=202 # orange you glad I picked this color?
 elif [ "$HOSTNAME" = "wabe" ]; then
