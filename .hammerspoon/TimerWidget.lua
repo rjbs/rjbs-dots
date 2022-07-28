@@ -176,6 +176,10 @@ function TimerWidget:provideMenu ()
         fn    = function () self:startPomodoro(30 * 60, 0) end
       },
       {
+        title = "Start Pomodoro (15/2)",
+        fn    = function () self:startPomodoro(15 * 60, 2 * 60) end
+      },
+      {
         title = "Start Test (30s/5)",
         fn    = function () self:startPomodoro(30, 5) end
       },
