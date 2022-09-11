@@ -147,7 +147,16 @@ tabulator:setCallback(function (method, path, headers, body)
       sum = sum + tabs
     end
 
-    return "chrome_open_tabs " .. sum .. "\n", 200, {}
+    local to_upload = 0
+    for file in hs.fs.dir("/Users/rjbs/Dropbox/to-upload/images") do
+      to_upload = to_upload + 1
+    end
+
+    local metrics = "chrome_open_tabs " .. sum .. "\n"
+
+    metrics = metrics .. "pending_upload_images " .. to_upload .. "\n"
+
+    return metrics, 200, {}
   else
     return "No good.\n", 404, {}
   end
