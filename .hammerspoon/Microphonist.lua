@@ -19,8 +19,25 @@ function Microphonist:new (obj)
       order  = 2
     },
     {
+      output = "External Headphones",
+      input  = "HD Pro Webcam C920",
+      icon   = "🎤",
+      order  = 3
+    },
+    {
+      output = "C-Media USB Headphone Set  ",
+      input  = "C-Media USB Headphone Set  ",
+      icon   = "🔌",
+      order  = 4
+    },
+    {
       input  = "MacBook Air Microphone",
       output = "MacBook Air Speakers",
+      icon    = "💻"
+    },
+    {
+      input  = "MacBook Pro Microphone",
+      output = "MacBook Pro Speakers",
       icon    = "💻"
     },
   }
@@ -71,24 +88,54 @@ function Microphonist:redraw ()
   self.micMenu:setTitle(icon)
 end
 
-function Microphonist:toggleAudio ()
-  local profile = self:currentAudioProfile()
-  local order = 1
-
-  if (profile and (profile.order ~= nil)) then order = profile.order + 1 end
-
-  local profile = self.rotor[ order ] or self.rotor[1]
-
-  local input = hs.audiodevice.findInputByName(profile.input)
-  if input == nil then return end
-
-  local output = hs.audiodevice.findOutputByName(profile.output)
-  if output == nil then return end
-
+function Microphonist:setIO(input, output)
   input:setDefaultInputDevice()
   output:setDefaultOutputDevice()
-
   self:redraw()
+end
+
+function Microphonist:toggleAudio ()
+  local current = self:currentAudioProfile()
+  local order = 1
+
+  if (current and (current.order ~= nil)) then order = current.order + 1 end
+
+  local input
+  local output
+
+  for i, profile in pairs(self.rotor) do
+    if i < order then goto next end
+
+    input = hs.audiodevice.findInputByName(profile.input)
+    output = hs.audiodevice.findOutputByName(profile.output)
+
+    print("Trying profile" .. i .. " -- " .. profile.icon)
+
+    if input ~= nil and output ~= nil then
+      print "accepted!"
+      self:setIO(input, output)
+      return
+    end
+
+    ::next::
+  end
+
+  for i, profile in pairs(self.rotor) do
+    if i >= order then break end
+
+    input = hs.audiodevice.findInputByName(profile.input)
+    output = hs.audiodevice.findOutputByName(profile.output)
+
+    print("Trying profile" .. i .. " -- " .. profile.icon)
+
+    if input ~= nil and output ~= nil then
+      print "accepted!"
+      self:setIO(input, output)
+      return
+    end
+  end
+
+  print "Couldn't find a suitable input/output pair!"
 end
 
 function Microphonist:install ()
