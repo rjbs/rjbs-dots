@@ -76,6 +76,24 @@ async def main(connection):
     await shimmy_vertical.async_register(connection)
 
     @iterm2.RPC
+    async def prefer_current_size(session_id):
+        session = app.get_session_by_id(session_id)
+        if not session:
+            return
+
+        # This debugging noise added while learning that this bug seems to
+        # prevent this code from working as intended:
+        #
+        # https://gitlab.com/gnachman/iterm2/-/issues/10642
+        print("current size  :", session.grid_size)
+        print("preferred size:", session.preferred_size)
+
+        session.preferred_size = size
+
+        return True
+    await prefer_current_size.async_register(connection)
+
+    @iterm2.RPC
     async def relayout_layout(session_id):
         session = app.get_session_by_id(session_id)
         if not session:
