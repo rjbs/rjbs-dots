@@ -36,9 +36,7 @@ export MANPATH=$MANPATH:/opt/local/share/man
 export MANWIDTH=80
 export PERLDOC=-otext
 
-if [ "$uname" = "Darwin" ]; then
-  export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/texlive/2015/bin/x86_64-darwin:$PATH
-
+if [ -d "/opt/homebrew" ]; then
   # added 2022-07-26, probably should be cleaned up
   export HOMEBREW_PREFIX="/opt/homebrew";
   export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
