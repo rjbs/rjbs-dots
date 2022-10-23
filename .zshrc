@@ -108,18 +108,6 @@ if [ -e "${HOME}/.iterm2_shell_integration.zsh" ]; then
   source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
-# Once I figured out this was breaking my F2 at work on Solaris, I fixed our
-# global config.  I've left this here for future reference. -- rjbs, 2009-01-08
-# if [ $OSTYPE == "SunOS" ]; then
-#   export TERMINFO=/usr/pkg/share/lib/terminfo
-# fi
-
-if [ -e $HOME/code/hla ]; then
-  export hlalib=$HOME/code/hla/hlalib
-  export hlainc=$HOME/code/hla/include
-  export PATH=$PATH:$HOME/code/hla
-fi
-
 # ugh, hate; the first is to prevent "no entry in hash table for man"
 alias man=man
 unalias man
