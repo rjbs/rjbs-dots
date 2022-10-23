@@ -102,8 +102,6 @@ export EDITOR=$(which vi)
 export SENDMAIL=$(which sendmail)
 export VISUAL=$(which vi)
 
-export PERL_MAILERS=sendmail:$SENDMAIL
-
 # For more information on this,
 # see https://iterm2.com/documentation-shell-integration.html
 if [ -e "${HOME}/.iterm2_shell_integration.zsh" ]; then
