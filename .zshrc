@@ -24,17 +24,34 @@ done
 # I'll need this for colorized prompt.
 autoload -U colors
 
-export PERL_AUTOINSTALL=--skipdeps
-export EDITOR=vim
-export VISUAL=vim
 export GNUPG_DEFAULT_KEY=C475DCA3
 export IRCNICK=rjbs
+export MAILDOMAIN=manxome.org
+export PERL_AUTOINSTALL=--skipdeps
+
+export HISTFILE=~/.zhistory
+export SAVEHIST=1000
+
+# Stupid OS X
+export COPYFILE_DISABLE=1
+export COPYFILE_EXTENDED_ATTRIBUTES_DISABLE=1
+
+# I edit things in Vim.
+export EDITOR=vim
+export VISUAL=vim
+
+# pager and manpager setup
 export LESS="-M -x 2 -R"
 export LESSOPEN=$'|lesspipe %s'
-export MAILDOMAIN=manxome.org
+export MANPAGER="/bin/sh -c \"col -b | view -c 'set ts=8 ft=man nomod nolist' -\""
 export MANPATH=$MANPATH:/opt/local/share/man
 export MANWIDTH=80
+export PAGER=less
 export PERLDOC=-otext
+
+if [ -z "$NOPASTE_SERVICES" ]; then
+  export NOPASTE_SERVICES=Gist
+fi
 
 if [ -d "/opt/homebrew" ]; then
   # added 2022-07-26, probably should be cleaned up
@@ -65,24 +82,9 @@ if [ -d $HOME/.cargo ]; then
   source $HOME/.cargo/env
 fi
 
-export PAGER=less
-
-# . /icg/admin/include/paths.sh
+# Everything above that might have stuck things into our $PATH is now complete,
+# so we can finally put ~/bin at the head of the path!
 export PATH=$HOME/bin:$PATH
-
-view=$(which view)
-export MANPAGER="/bin/sh -c \"col -b | $view -c 'set ts=8 ft=man nomod nolist' -\""
-
-if [ -z "$NOPASTE_SERVICES" ]; then
-  export NOPASTE_SERVICES=Gist
-fi
-
-# Stupid OS X
-export COPYFILE_DISABLE=1
-export COPYFILE_EXTENDED_ATTRIBUTES_DISABLE=1
-
-export HISTFILE=~/.zhistory
-export SAVEHIST=1000
 
 source ~/.sh/host-color
 
