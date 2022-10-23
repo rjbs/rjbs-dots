@@ -186,13 +186,6 @@ zle -N predict-off
 
 autoload -U zrecompile
 
-if [ `uname` = "SunOS" ]; then
-  /usr/bin/stty dsusp undef
-  if /usr/bin/stty -a | grep -q 'status =' ; then
-    /usr/bin/stty status undef
-  fi
-fi
-
 # from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity
 # the idea here is to make C-z on a blank line act like running fg
 fancy-ctrl-z () {
