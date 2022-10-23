@@ -1,2 +1,3 @@
 .headers on
-.nullvalue {}
+.mode columns
+.nullvalue ⦰
