@@ -7,3 +7,5 @@ then
   ln -snf "$SSH_AUTH_SOCK" "$HOME/.ssh/agent"
   export SSH_AUTH_SOCK="$HOME/.ssh/agent"
 fi
+
+. "$HOME/.cargo/env"
