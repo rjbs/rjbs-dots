@@ -48,9 +48,9 @@ fi
 
 if [ -d $HOME/.plenv ]; then
   export PATH=$HOME/.plenv/bin:$PATH
-fi
 
-if which plenv > /dev/null; then eval "$(plenv init - zsh)"; fi
+  if which plenv > /dev/null; then eval "$(plenv init - zsh)"; fi
+fi
 
 if [ -d $HOME/.rbenv ]; then
   export PATH=$HOME/.rbenv/bin:$PATH
