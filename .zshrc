@@ -37,8 +37,13 @@ export COPYFILE_DISABLE=1
 export COPYFILE_EXTENDED_ATTRIBUTES_DISABLE=1
 
 # I edit things in Vim.
-export EDITOR=vim
-export VISUAL=vim
+VI=$(which vim)
+if [ $? -ne 0 ]; then
+  VI=$(which vi)
+fi
+
+export EDITOR=$VI
+export VISUAL=$VI
 
 # pager and manpager setup
 export LESS="-M -x 2 -R"
@@ -97,10 +102,6 @@ export PS1="%{[1m%}%F{$RJBS_HOST_COLOR}%m%f:%~%(!.%F{red}#.%F{46}$)%f%{[0m%} "
 # status, and time info into my session… but the prompt isn't the best way.
 # -- rjbs, 2021-06-27
 # export RPS1="%F{$HOSTCOLOR}%m%f @ %D{%H:%M:%S}"
-
-export EDITOR=$(which vi)
-export SENDMAIL=$(which sendmail)
-export VISUAL=$(which vi)
 
 # For more information on this,
 # see https://iterm2.com/documentation-shell-integration.html
