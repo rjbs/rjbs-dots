@@ -81,14 +81,13 @@ async def main(connection):
         if not session:
             return
 
-        # This debugging noise added while learning that this bug seems to
-        # prevent this code from working as intended:
+        # I don't think I should need to call this, but if I don't, grid_size
+        # will be out of date.
         #
         # https://gitlab.com/gnachman/iterm2/-/issues/10642
-        print("current size  :", session.grid_size)
-        print("preferred size:", session.preferred_size)
+        await app.async_refresh()
 
-        session.preferred_size = size
+        session.preferred_size = session.grid_size
 
         return True
     await prefer_current_size.async_register(connection)
