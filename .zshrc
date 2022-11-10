@@ -87,6 +87,10 @@ if [ -d $HOME/.cargo ]; then
   source $HOME/.cargo/env
 fi
 
+if [ -d $HOME/.nodenv ]; then
+  eval "$(nodenv init -)"
+fi
+
 # Everything above that might have stuck things into our $PATH is now complete,
 # so we can finally put ~/bin at the head of the path!
 export PATH=$HOME/bin:$PATH
