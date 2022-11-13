@@ -68,27 +68,27 @@ if [ -d "/opt/homebrew" ]; then
   export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 fi
 
-if [ -d $HOME/.plenv ]; then
-  export PATH=$HOME/.plenv/bin:$PATH
-
-  if which plenv > /dev/null; then eval "$(plenv init - zsh)"; fi
-fi
-
-if [ -d $HOME/.rbenv ]; then
-  export PATH=$HOME/.rbenv/bin:$PATH
-  eval "$(rbenv init -)"
-fi
-
-if [ -d $HOME/.rakubrew ]; then
-  eval "$($HOME/.rakubrew/bin/rakubrew init Zsh)"
-fi
-
 if [ -d $HOME/.cargo ]; then
   source $HOME/.cargo/env
 fi
 
 if [ -d $HOME/.nodenv ]; then
   eval "$(nodenv init -)"
+fi
+
+if [ -d $HOME/.plenv ]; then
+  export PATH=$HOME/.plenv/bin:$PATH
+
+  if which plenv > /dev/null; then eval "$(plenv init - zsh)"; fi
+fi
+
+if [ -d $HOME/.rakubrew ]; then
+  eval "$($HOME/.rakubrew/bin/rakubrew init Zsh)"
+fi
+
+if [ -d $HOME/.rbenv ]; then
+  export PATH=$HOME/.rbenv/bin:$PATH
+  eval "$(rbenv init -)"
 fi
 
 # Everything above that might have stuck things into our $PATH is now complete,
