@@ -82,6 +82,12 @@ if [ -d $HOME/.plenv ]; then
   if which plenv > /dev/null; then eval "$(plenv init - zsh)"; fi
 fi
 
+if [ -d $HOME/.pyenv ]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+fi
+
 if [ -d $HOME/.rakubrew ]; then
   eval "$($HOME/.rakubrew/bin/rakubrew init Zsh)"
 fi
