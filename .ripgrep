@@ -1,0 +1,10 @@
+--colors
+  path:fg:0x70,0x77,0xff
+--colors
+  path:style:bold
+--colors
+  line:fg:0x7d,0xbf,0x73
+--colors
+  line:style:bold
+--colors
+  match:fg:0xff,0x0ff,00

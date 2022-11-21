@@ -53,6 +53,7 @@ export MANPATH=$MANPATH:/opt/local/share/man
 export MANWIDTH=80
 export PAGER=less
 export PERLDOC=-otext
+export RIPGREP_CONFIG_PATH=$HOME/.ripgrep
 
 if [ -z "$NOPASTE_SERVICES" ]; then
   export NOPASTE_SERVICES=Gist
