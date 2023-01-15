@@ -8,4 +8,6 @@ then
   export SSH_AUTH_SOCK="$HOME/.ssh/agent"
 fi
 
-. "$HOME/.cargo/env"
+if [ -e "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
