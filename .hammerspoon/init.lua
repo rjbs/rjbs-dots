@@ -81,8 +81,16 @@ hs.hotkey.bind({"cmd","alt"}, "right", function()
 end)
 
 hs.hotkey.bind({}, "f6", function()
-  local url  = "http://wabe.local:9999/"
-  hs.http.doAsyncRequest(url, 'GET', nil, nil, function () end, 'ignoreLocalCache')
+  local url  = "http://192.168.1.161:5010/lights"
+
+  local program = {
+    room   = "Office",
+    preset = "alert"
+  }
+
+  local json = hs.json.encode(program)
+  hs.http.doAsyncRequest(url, 'PUT', json, nil, function () end, 'ignoreLocalCache')
+
   hs.sound.getByFile("/Users/rjbs/Dropbox/sounds/tng-red-alert-1.mp3"):play()
 end)
 
