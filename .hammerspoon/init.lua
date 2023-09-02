@@ -81,7 +81,7 @@ hs.hotkey.bind({"cmd","alt"}, "right", function()
 end)
 
 hs.hotkey.bind({}, "f6", function()
-  local url  = "http://192.168.1.161:5010/lights"
+  local url  = "http://wabe.local.:5010/lights"
 
   local program = {
     room   = "Office",
