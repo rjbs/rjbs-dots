@@ -1,0 +1,54 @@
+#!/usr/bin/env perl
+use v5.32.0;
+use warnings;
+use utf8;
+
+use experimental 'signatures';
+
+binmode *STDIN,  ':encoding(utf-8)';
+binmode *STDOUT, ':encoding(utf-8)';
+
+my sub greek ($c) {
+  state @DIGIT = qw( ꘠ ꘢ ꘣ ꘤ ꘥ ꘦ ꘧ ꘨ ꘩ );
+
+  state @UPPER = qw(
+    Ⴀ Ⴁ Ⴂ Ⴃ Ⴄ Ⴅ Ⴆ Ⴇ Ⴈ Ⴉ Ⴊ Ⴋ Ⴌ Ⴍ Ⴎ Ⴏ Ⴐ Ⴑ Ⴒ
+    Ⴓ Ⴔ Ⴕ Ⴖ Ⴗ Ⴘ Ⴙ Ⴚ Ⴛ Ⴜ Ⴝ Ⴞ Ⴟ Ⴠ Ⴡ Ⴢ Ⴣ Ⴤ Ⴥ
+  );
+
+  state @LOWER = qw(
+    𞤢 𞤣 𞤤 𞤥 𞤦 𞤧 𞤨 𞤩 𞤪 𞤫 𞤬 𞤭 𞤮 𞤯 𞤰 𞤱 𞤲
+    𞤳 𞤴 𞤵 𞤶 𞤷 𞤸 𞤹 𞤺 𞤻 𞤼 𞤽 𞤾 𞤿 𞥀 𞥁 𞥂 𞥃
+  );
+
+  state @OTHER = qw(
+    ߋ ߌ ߍ ߎ ߏ ߐ ߑ ߒ ߓ ߔ ߕ ߖ ߗ ߘ ߙ ߚ ߛ ߜ
+    ߝ ߞ ߟ ߠ ߡ ߢ ߣ ߤ ߥ ߦ
+  );
+
+  local $_ = $c;
+
+  my $o = ord;
+  $o += $$;
+
+  if (/\d/)     { return $DIGIT[ $o % @DIGIT ]; }
+  if (/\p{Lu}/) { return $UPPER[ $o % @UPPER ]; }
+  if (/\p{Ll}/) { return $LOWER[ $o % @LOWER ]; }
+  # I should probably handle ideographs at this point. -- rjbs, 2023-06-21
+  if (/\p{Lo}/) { return $OTHER[ $o % @OTHER ]; }
+
+  return $_;
+}
+
+while (<>) {
+  my @hunks = split /(\e\[ [\d;]* m)/x, $_;
+  for (@hunks) {
+    next if /\A\e/;
+    s/(\w)/greek($1)/ge;
+  }
+
+  $_ = join q{}, @hunks;
+
+  print;
+}
+
