@@ -1,12 +1,15 @@
 [user]
   name = Ricardo Signes
   email = rjbs@semiotic.systems
+
 [color]
   diff = auto
   status = auto
   branch = auto
+
 [push]
   ; default = simple
+
 [alias]
   ci = commit -a
   co = checkout --recurse-submodules
@@ -33,14 +36,18 @@
 attributesfile = ~/.gitattributes
 
 [include]
-path = ~/.gitconfig.local
+  path = ~/.gitconfig.local
 [push]
-default = matching
+  default = matching
+
 [diff]
-compactionHeuristic = true
+  compactionHeuristic = true
+
 [log]
 	date = iso-local
+
 [init]
 	defaultBranch = main
+
 [pull]
 	ff = only
