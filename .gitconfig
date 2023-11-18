@@ -1,15 +1,3 @@
-[user]
-  name = Ricardo Signes
-  email = rjbs@semiotic.systems
-
-[color]
-  diff = auto
-  status = auto
-  branch = auto
-
-[push]
-  ; default = simple
-
 [alias]
   ci = commit -a
   co = checkout --recurse-submodules
@@ -29,25 +17,35 @@
   fist = !git fap && git hist
   shist = log --graph --color=always --pretty='[%C(cyan)%h%Creset]%C(bold cyan)%d%Creset %s'
 
-[url "git://github.com/"]
-  insteadOf = hub:
+[color]
+  diff = auto
+  status = auto
+  branch = auto
 
 [core]
-attributesfile = ~/.gitattributes
-
-[include]
-  path = ~/.gitconfig.local
-[push]
-  default = matching
+  attributesfile = ~/.gitattributes
 
 [diff]
   compactionHeuristic = true
 
-[log]
-	date = iso-local
+[include]
+  path = ~/.gitconfig.local
 
 [init]
-	defaultBranch = main
+  defaultBranch = main
+
+[log]
+  date = iso-local
 
 [pull]
-	ff = only
+  ff = only
+
+[push]
+  default = matching
+
+[url "git://github.com/"]
+  insteadOf = hub:
+
+[user]
+  name = Ricardo Signes
+  email = rjbs@semiotic.systems
