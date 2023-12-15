@@ -46,6 +46,9 @@
 [url "git://github.com/"]
   insteadOf = hub:
 
+[url "ssh://git@gitlab.fm/"]
+  insteadOf = https://gitlab.fm/
+
 [user]
   name = Ricardo Signes
   email = rjbs@semiotic.systems
