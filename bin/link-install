@@ -44,9 +44,10 @@ die "no \$HOME set, so... what?\n" unless $home;
 
 my $cwd  = Cwd::cwd();
 
-my @files = `git -c safe.directory=$cwd ls-files`;
-die "couldn't run `git ls-files` for some reason: $!\n" if $?;
+my @files = `find . -type f -not -path './.git/*'`;
+die "couldn't `find` files for some reason: $!\n" if $?;
 
+s{^\./}{} for @files;
 chomp @files;
 
 my %made;
