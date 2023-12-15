@@ -44,7 +44,7 @@ die "no \$HOME set, so... what?\n" unless $home;
 
 my $cwd  = Cwd::cwd();
 
-my @files = `git ls-files`;
+my @files = `git -c safe.directory=$cwd ls-files`;
 die "couldn't run `git ls-files` for some reason: $!\n" if $?;
 
 chomp @files;
