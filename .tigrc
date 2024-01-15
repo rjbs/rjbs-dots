@@ -1,1 +1,76 @@
-bind blame b parent
+# Global configuration options.
+set horizontal-scroll = 15
+set line-graphics = auto
+set mailmap = yes
+set start-on-head = yes
+
+# Per-view settings
+set main-view = id:yes date author:email-user commit-title:graph:v2,refs:yes
+set main-view-date-local = yes
+set main-view-date = custom
+set main-view-date-format = "%Y-%m-%d"
+
+set blame-view-author-display = email-user
+set blame-view-date = custom
+set blame-view-date-format = "%Y-%m-%d"
+
+# Tweak navigation to be a bit more like Vim but also just more better maybe.
+bind generic g  none
+bind generic gg move-first-line
+
+bind generic E edit
+bind generic gp parent
+bind generic gP back
+bind generic gs refresh
+
+bind main    G move-last-line
+bind generic G move-last-line
+
+bind generic <C-f> move-page-down
+bind generic <C-b> move-page-up
+
+# capital R rebases interactively on that commit
+bind main R !<git rebase -i %(commit)
+
+# 🎨 COLORS
+set git-colors = no
+
+color id              color6    default
+color date            color75   default
+color author          color14   default
+color cursor          color0    color229
+color title-focus     default   color17
+
+color graph-commit    color104  default
+
+color help-group      color15   default   bold underline
+color status          color225  default
+
+color main-remote     color226  default
+
+# These are header-y names shown in diff view (at least).  There are more that
+# show up, but these are more or less always there, and I want them to be less
+# ugly.
+color "Refs: "        color183  default
+color "commit "       color226  default
+color "Merge: "       color105  default
+color "Author: "      color87   default
+color "AuthorDate: "  color87   default
+color "Commit: "      color84   default
+color "CommitDate: "  color84   default
+
+# we cycle through these colors to draw graph lines
+color palette-0       color11   default
+color palette-1       color10   default
+color palette-2       color14   default
+color palette-3       color13   default
+color palette-4       color15   default
+color palette-5       color208  default
+color palette-6       color94   default
+color palette-7       color247  default
+color palette-8       color160  default
+color palette-9       color154  default
+color palette-10      color21   default
+color palette-11      color90   default
+color palette-12      color147  default
+color palette-13      color196  default
