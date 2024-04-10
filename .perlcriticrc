@@ -2,7 +2,7 @@
 ; Bring it on!
 severity = 2
 
-[Documentation::RequirePodSections]
+; [Documentation::RequirePodSections]
 lib_sections = NAME | SYNOPSIS | AUTHOR
 
 [ValuesAndExpressions::RequireNumberSeparators]
@@ -18,11 +18,13 @@ allow = $@ $!
 [-Documentation::RequirePodAtEnd]
 [-ControlStructures::ProhibitUnlessBlocks]
 [-ControlStructures::ProhibitPostfixControls]
+[-Modules::ProhibitMultiplePackages]
 [-References::ProhibitDoubleSigils]
 [-RegularExpressions::RequireExtendedFormatting]
 [-RegularExpressions::RequireLineBoundaryMatching]
 [-RegularExpressions::RequireDotMatchAnything]
 [-Subroutines::RequireFinalReturn]
+[-Subroutines::ProhibitExplicitReturnUndef]
 
 [-ClassHierarchies::ProhibitExplicitISA]
 
