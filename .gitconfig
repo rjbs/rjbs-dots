@@ -41,7 +41,7 @@
   ff = only
 
 [push]
-  default = matching
+  default = upstream
 
 [url "git://github.com/"]
   insteadOf = hub:
