@@ -121,6 +121,23 @@ Microphonist = require('Microphonist')
 mic = Microphonist:new()
 mic:install()
 
+ffMetrics = ""
+
+function ffMakeMetricsTask ()
+  return hs.task.new(
+    "/Users/rjbs/code/hub/rjbs-misc/firefox-prometheus-metrics",
+    function (exitCode, stdOut, stdErr)
+      ffMetrics = stdOut
+    end
+  )
+end
+
+ffMetricsTimer = hs.timer.doEvery(60, function ()
+  if not (ffMetricsTask and ffMetricsTask:isRunning()) then
+    ffMetricsTask = ffMakeMetricsTask():start()
+  end
+end)
+
 tabulator = hs.httpserver.new()
 tabulator:setPort(9876)
 tabulator:setCallback(function (method, path, headers, body)
@@ -164,6 +181,8 @@ tabulator:setCallback(function (method, path, headers, body)
     local metrics = "chrome_open_tabs " .. sum .. "\n"
 
     metrics = metrics .. "pending_upload_images " .. to_upload .. "\n"
+
+    metrics = metrics .. ffMetrics .. "\n"
 
     return metrics, 200, {}
   else
