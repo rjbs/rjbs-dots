@@ -1,8 +1,8 @@
 
-function resizeChromes ()
-  local chrome = hs.application.find("Chrome")
-  if (chrome) then
-    local windows = chrome:visibleWindows()
+function resizeBrowser (browserName)
+  local browser = hs.application.find(browserName)
+  if (browser) then
+    local windows = browser:visibleWindows()
 
     -- So, we're going to move windows to near the top left of their screens,
     -- staggering them by +(10,10) per window.  But the staggering needs to be
@@ -107,7 +107,8 @@ end)
 resizeMenu = hs.menubar.new()
 resizeMenu:setTitle("⌧")
 resizeMenu:setClickCallback(function ()
-  resizeChromes()
+  resizeBrowser("Chrome")
+  resizeBrowser("Firefox")
   resizeLiquidPlanner()
   resizeSlack()
 end)
