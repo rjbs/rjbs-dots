@@ -1,6 +1,8 @@
 #!/usr/bin/env perl
 use v5.36.0;
 
+die "you aren't in a git repo" unless -d ".git";
+
 system(qw( git branch -m main ));
 warn "Couldn't move branch to be main\n" if $?;
 
