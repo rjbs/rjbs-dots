@@ -3,7 +3,7 @@
 severity = 2
 
 ; [Documentation::RequirePodSections]
-lib_sections = NAME | SYNOPSIS | AUTHOR
+; lib_sections = NAME | SYNOPSIS | AUTHOR
 
 [ValuesAndExpressions::RequireNumberSeparators]
 min_value = 100000
