@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Basename qw(basename);
+use File::Temp qw(tempfile);
+
+# pdfcode infile [outfile] -- a2ps options
+
+my ($dash_index) = grep {; $ARGV[$_] eq '--' } (0 .. $#ARGV);
+
+my @a2ps_opts;
+if (defined $dash_index) {
+  @a2ps_opts = splice @ARGV, $dash_index;
+  shift @a2ps_opts; # drop the --
+}
+
+my ($infile, $outfile) = @ARGV;
+
+unless (-e -r $infile) {
+  die "input file '$infile' does not exist or isn't readable\n";
+}
+
+my $tmp = File::Temp->new(UNLINK => 1, SUFFIX => '.ps');
+
+system("a2ps", @a2ps_opts, $infile, "-o", $tmp);
+die "a2ps exited nonzero\n" if $?;
+
+my $default_outfile = basename($infile) . '.pdf';
+system("ps2pdf", $tmp, $outfile // $default_outfile);
+die "ps2pdf exited nonzero\n" if $?;
