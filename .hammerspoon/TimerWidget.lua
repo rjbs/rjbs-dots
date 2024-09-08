@@ -103,10 +103,10 @@ function TimerWidget:blinkPattern (pattern)
       local times     = subpattern.times    or 1
 
       for k = 1, times do
-        table.insert(program, { cmd = "set", color = rgb })
-        table.insert(program, { cmd = "sleep", ms = litTime })
-        table.insert(program, { cmd = "off" })
-        table.insert(program, { cmd = "sleep", ms = darkTime })
+        table.insert(program, { "set",   { rgb = rgb }   })
+        table.insert(program, { "sleep", { time = litTime }  })
+        table.insert(program, { "off" })
+        table.insert(program, { "sleep", { time = darkTime } })
       end
     end
   end
