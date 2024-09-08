@@ -26,6 +26,9 @@ allow = $@ $!
 [-Subroutines::RequireFinalReturn]
 [-Subroutines::ProhibitExplicitReturnUndef]
 
+; This does nothing to distinguish prototypes from signatures, so it's gone.
+[-Subroutines::ProhibitSubroutinePrototypes]
+
 [-ClassHierarchies::ProhibitExplicitISA]
 
 [-Bangs::ProhibitFlagComments]
