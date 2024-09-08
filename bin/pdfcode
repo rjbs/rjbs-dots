@@ -26,6 +26,9 @@ my $tmp = File::Temp->new(UNLINK => 1, SUFFIX => '.ps');
 system("a2ps", @a2ps_opts, $infile, "-o", $tmp);
 die "a2ps exited nonzero\n" if $?;
 
-my $default_outfile = basename($infile) . '.pdf';
+my $basename = basename($infile);
+   $basename = 'print-job' unless length $basename;
+
+my $default_outfile = "$basename.pdf";
 system("ps2pdf", $tmp, $outfile // $default_outfile);
 die "ps2pdf exited nonzero\n" if $?;
