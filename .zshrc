@@ -90,7 +90,10 @@ if [ -d $HOME/.pyenv ]; then
 fi
 
 if [ -d $HOME/.rakubrew ]; then
-  eval "$($HOME/.rakubrew/bin/rakubrew init Zsh)"
+  rakubrew() {
+    eval "$(/Users/rjbs/.rakubrew/bin/rakubrew init Zsh)"
+    rakubrew "$@"
+  }
 fi
 
 if [ -d $HOME/.rbenv ]; then
