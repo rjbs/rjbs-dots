@@ -3,10 +3,19 @@ use strict;
 use warnings;
 
 use Config::Simple;
+use File::Path;
 use Log::Dispatch::Screen;
 use Net::Flickr::Backup;
 
 my $cfg = Config::Simple->new('/Users/rjbs/.flickr-backup');
+
+my $safety_file = $cfg->param('safety.file');
+
+die "no safety file defined\n" unless $safety_file;
+die "safety file does not exist\n" unless -f $safety_file;
+
+$cfg->param('safety.file');
+$cfg->param('safety');
 
 my $flickr = Net::Flickr::Backup->new($cfg);
 
