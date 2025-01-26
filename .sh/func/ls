@@ -1,2 +1,2 @@
-WHICH_LS=$(find /usr/local/bin/gls /opt/local/bin/gls /usr/pkg/bin/gls /bin/ls 2>/dev/null | head -1)
+WHICH_LS=$(find /opt/homebrew/bin/gls /usr/local/bin/gls /opt/local/bin/gls /usr/pkg/bin/gls /bin/ls 2>/dev/null | head -1)
 function ls() { $WHICH_LS --color=auto -F $@; }
