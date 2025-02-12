@@ -43,3 +43,9 @@ allow = $@ $!
 [-ValuesAndExpressions::ProhibitEmptyQuotes]
 
 [Tics::ProhibitLongLines]
+
+[TestingAndDebugging::RequireUseStrict]
+equivalent_modules = ME::Modern
+
+[TestingAndDebugging::RequireUseWarnings]
+equivalent_modules = ME::Modern
