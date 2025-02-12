@@ -57,6 +57,7 @@ FILE: for my $file (@files) {
   next if $file eq '.gitignore';
   next if $file eq '.gitmodules';
   next if $file eq 'README.md';
+  next if $file =~ m{(^|/)\.DS_Store\z}n;
 
   my @parts  = split m{/}, $file;
   my $target = $home;
