@@ -31,6 +31,12 @@ function Microphonist:new (obj)
       order  = 4
     },
     {
+      input  = "Cable Creation",
+      output = "Cable Creation",
+      icon   = "🎴",
+      order  = 5
+    },
+    {
       input  = "MacBook Air Microphone",
       output = "MacBook Air Speakers",
       icon    = "💻"
