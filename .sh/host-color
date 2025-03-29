@@ -1,10 +1,11 @@
+#!sh
 HOSTNAME=`hostname -s`
 if [ -z "$HOSTNAME" ]; then
   RJBS_HOST_COLOR=247 # no hostname! dim unto death
 elif [ "$HOSTNAME" = "boojum" ]; then
-  RJBS_HOST_COLOR=141 # lovely lavendar
+  RJBS_HOST_COLOR=33 # more like bluejum, am I right?
 elif [ "$HOSTNAME" = "snowdrop" ]; then
-  RJBS_HOST_COLOR=81  # an icey blue
+  RJBS_HOST_COLOR=135 #  default host, default color (purple)
 elif [ "$HOSTNAME" = "snark" ]; then
   RJBS_HOST_COLOR=202 # orange you glad I picked this color?
 elif [ "$HOSTNAME" = "wabe" ]; then
