@@ -184,7 +184,7 @@ tabulator:setCallback(function (method, path, headers, body)
 
     metrics = metrics .. ffMetrics .. "\n"
 
-    return metrics, 200, {}
+    return metrics, 200, { ["Content-Type"]="text/plain" }
   else
     return "No good.\n", 404, {}
   end
