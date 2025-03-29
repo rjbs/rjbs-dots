@@ -1,14 +1,2 @@
-#!/usr/bin/env perl
-use 5.14.0;
-use HTTP::Tiny;
-use JSON::PP;
-
-my $res = HTTP::Tiny->new->get(
-  "https://api.github.com/users/$ARGV[0]/keys",
-);
-
-die "FAIL\n" unless $res->{success};
-
-my $keys = JSON::PP->new->decode($res->{content});
-
-say $_->{key} for @$keys;
+#!/bin/sh
+curl "https://github.com/$1.keys"
