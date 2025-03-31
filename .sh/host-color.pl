@@ -7,19 +7,19 @@ my $mode = $ARGV[0] || 'shell';
 my @options = (
   [ { host => 'boojum' }    => [  33, 255,  26 ], 'more like BLUEJUM, am I right?' ],
   [ { host => 'snowdrop' }  => [ 135, 255,  93 ], 'default host, default hue (purple)' ],
-  [ { host => 'snark' }     => [ 202,   0, 166 ], 'orange you glad I picked it?' ],
-  [ { host => 'wabe' }      => [  66,   0,     ], 'the color of moss on your sundial' ],
-  [ { host => 'dormouse' }  => [ 222,   0,     ], 'yellow as the fur of the dormouse' ],
-  [ { fm => 'boxdc' }       => [  51,   0,     ], 'cyan, following convention' ],
-  [ { fm => 'phl' }         => [  13,   0,     ], 'magenta, following convention' ],
-  [ { fm => 'stl' }         => [  11,   0,     ], 'yellow, following convention' ],
-  [ { fm => '' }            => [ 225,   0,     ], 'unknown DC; the salmon of doubt' ],
+  [ { host => 'snark' }     => [ 202, 232, 166 ], 'orange you glad I picked it?' ],
+  [ { host => 'wabe' }      => [  66, 232,     ], 'the color of moss on your sundial' ],
+  [ { host => 'dormouse' }  => [ 222, 232,     ], 'yellow as the fur of the dormouse' ],
+  [ { fm => 'boxdc' }       => [  51, 232,     ], 'cyan, following convention' ],
+  [ { fm => 'phl' }         => [  13, 232,     ], 'magenta, following convention' ],
+  [ { fm => 'stl' }         => [  11, 232,     ], 'yellow, following convention' ],
+  [ { fm => '' }            => [ 225, 232,     ], 'unknown DC; the salmon of doubt' ],
 
   # [ 196, 255 ] # alarmingly red
 );
 
 my $default = [
-  [ 247, 0 ], 'unknown identity, just kinda grey'
+  [ 247, 232 ], 'unknown identity, just kinda grey'
 ];
 
 if ($mode eq 'shell') {
@@ -97,7 +97,7 @@ for my $option (
   }
 
   say greyspace()
-    . colored([ "ansi$rv", "on_ansi$bg" ], "1:crnt*") # current pane
+    . colored([ "ansi$rv", "on_ansi$bg", 'bold' ], "1:crnt*") # current pane
     . greyspace()
     . colored([ "ansi231", "on_ansi238" ], "2:bkgr") # background pane
     . greyspace()

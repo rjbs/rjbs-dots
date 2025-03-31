@@ -11,35 +11,35 @@ elif [ "$HOSTNAME" = "snowdrop" ]; then
 elif [ "$HOSTNAME" = "snark" ]; then
   RJBS_HOST_COLOR=202 # orange you glad I picked it?
   RJBS_HOST_COLOR_BACKGROUND=166
-  RJBS_HOST_COLOR_REVERSE=0
+  RJBS_HOST_COLOR_REVERSE=232
 elif [ "$HOSTNAME" = "wabe" ]; then
   RJBS_HOST_COLOR=66 # the color of moss on your sundial
   RJBS_HOST_COLOR_BACKGROUND=66
-  RJBS_HOST_COLOR_REVERSE=0
+  RJBS_HOST_COLOR_REVERSE=232
 elif [ "$HOSTNAME" = "dormouse" ]; then
   RJBS_HOST_COLOR=222 # yellow as the fur of the dormouse
   RJBS_HOST_COLOR_BACKGROUND=222
-  RJBS_HOST_COLOR_REVERSE=0
+  RJBS_HOST_COLOR_REVERSE=232
 elif [ -e /etc/fmisproduction.boxdc ]; then
   RJBS_HOST_COLOR=51 # cyan, following convention
   RJBS_HOST_COLOR_BACKGROUND=51
-  RJBS_HOST_COLOR_REVERSE=0
+  RJBS_HOST_COLOR_REVERSE=232
 elif [ -e /etc/fmisproduction.phl ]; then
   RJBS_HOST_COLOR=13 # magenta, following convention
   RJBS_HOST_COLOR_BACKGROUND=13
-  RJBS_HOST_COLOR_REVERSE=0
+  RJBS_HOST_COLOR_REVERSE=232
 elif [ -e /etc/fmisproduction.stl ]; then
   RJBS_HOST_COLOR=11 # yellow, following convention
   RJBS_HOST_COLOR_BACKGROUND=11
-  RJBS_HOST_COLOR_REVERSE=0
+  RJBS_HOST_COLOR_REVERSE=232
 elif [ -e /etc/fmisproduction ]; then
   RJBS_HOST_COLOR=225 # unknown DC; the salmon of doubt
   RJBS_HOST_COLOR_BACKGROUND=225
-  RJBS_HOST_COLOR_REVERSE=0
+  RJBS_HOST_COLOR_REVERSE=232
 else
   RJBS_HOST_COLOR=247 # unknown identity, just kinda grey
   RJBS_HOST_COLOR_BACKGROUND=247
-  RJBS_HOST_COLOR_REVERSE=0
+  RJBS_HOST_COLOR_REVERSE=232
 fi
 export RJBS_HOST_COLOR
 export RJBS_HOST_COLOR_BACKGROUND
