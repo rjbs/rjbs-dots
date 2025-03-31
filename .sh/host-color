@@ -1,32 +1,38 @@
 #!sh
 HOSTNAME=`hostname -s`
-if [ -z "$HOSTNAME" ]; then
+if [ "$HOSTNAME" = "" ]; then
   RJBS_HOST_COLOR=247 # no hostname! dim unto death
+  RJBS_HOST_COLOR_REVERSE=0
 elif [ "$HOSTNAME" = "boojum" ]; then
-  RJBS_HOST_COLOR=33 # more like bluejum, am I right?
+  RJBS_HOST_COLOR=33 # more like BLUEJUM, am I right?
+  RJBS_HOST_COLOR_REVERSE=255
 elif [ "$HOSTNAME" = "snowdrop" ]; then
-  RJBS_HOST_COLOR=135 #  default host, default color (purple)
+  RJBS_HOST_COLOR=135 # default host, default hue (purple)
+  RJBS_HOST_COLOR_REVERSE=255
 elif [ "$HOSTNAME" = "snark" ]; then
-  RJBS_HOST_COLOR=202 # orange you glad I picked this color?
+  RJBS_HOST_COLOR=202 # orange you glad I picked it?
+  RJBS_HOST_COLOR_REVERSE=0
 elif [ "$HOSTNAME" = "wabe" ]; then
-  RJBS_HOST_COLOR=66  # the color of moss on your sundial
-### bill has been decommissioned
-# elif [ "$HOSTNAME" = "bill" ]; then
-#   RJBS_HOST_COLOR=40  # green, because Bill is a lizard
+  RJBS_HOST_COLOR=66 # the color of moss on your sundial
+  RJBS_HOST_COLOR_REVERSE=255
 elif [ "$HOSTNAME" = "dormouse" ]; then
   RJBS_HOST_COLOR=222 # yellow as the fur of the dormouse
-elif [ -d "/var/icg" ]; then
-  RJBS_HOST_COLOR=27  # blue, in honor of Pobox
-elif [ -e "/etc/fmisproduction.boxdc" ]; then
-  RJBS_HOST_COLOR=51   # cyan, following convention
-elif [ -e "/etc/fmisproduction.nyi" ]; then
-  RJBS_HOST_COLOR=196  # red, following convention
-elif [ -e "/etc/fmisproduction.west" ]; then
-  RJBS_HOST_COLOR=226  # yellow, following convention
-elif [ -e "/etc/fmisproduction" ]; then
-  RJBS_HOST_COLOR=225  # unknown DC; the salmon of doubt
+  RJBS_HOST_COLOR_REVERSE=0
+elif [ -e /etc/fmisproduction.boxdc ]; then
+  RJBS_HOST_COLOR=51 # cyan, following convention
+  RJBS_HOST_COLOR_REVERSE=0
+elif [ -e /etc/fmisproduction.nyi ]; then
+  RJBS_HOST_COLOR=196 # red, following convention
+  RJBS_HOST_COLOR_REVERSE=255
+elif [ -e /etc/fmisproduction.west ]; then
+  RJBS_HOST_COLOR=226 # yellow, following convention
+  RJBS_HOST_COLOR_REVERSE=0
+elif [ -e /etc/fmisproduction ]; then
+  RJBS_HOST_COLOR=225 # unknown DC; the salmon of doubt
+  RJBS_HOST_COLOR_REVERSE=0
 else
   RJBS_HOST_COLOR=201 # bright pink; where ARE we??
+  RJBS_HOST_COLOR_REVERSE=0
 fi
-
 export RJBS_HOST_COLOR
+export RJBS_HOST_COLOR_REVERSE
