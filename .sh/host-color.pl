@@ -5,20 +5,21 @@ use warnings;
 my $mode = $ARGV[0] || 'shell';
 
 my @options = (
-  [ { host => '' }          => [ 247,   0 ], 'no hostname! dim unto death' ],
-  [ { host => 'boojum' }    => [  33, 255 ], 'more like BLUEJUM, am I right?' ],
-  [ { host => 'snowdrop' }  => [ 135, 255 ], 'default host, default hue (purple)' ],
-  [ { host => 'snark' }     => [ 202,   0 ], 'orange you glad I picked it?' ],
-  [ { host => 'wabe' }      => [  66, 255 ], 'the color of moss on your sundial' ],
-  [ { host => 'dormouse' }  => [ 222,   0 ], 'yellow as the fur of the dormouse' ],
-  [ { fm => 'boxdc' }       => [  51,   0 ], 'cyan, following convention' ],
-  [ { fm => 'nyi' }         => [ 196, 255 ], 'red, following convention' ],
-  [ { fm => 'west' }        => [ 226,   0 ], 'yellow, following convention' ],
-  [ { fm => '' }            => [ 225,   0 ], 'unknown DC; the salmon of doubt' ],
+  [ { host => 'boojum' }    => [  33, 255,  26 ], 'more like BLUEJUM, am I right?' ],
+  [ { host => 'snowdrop' }  => [ 135, 255,  93 ], 'default host, default hue (purple)' ],
+  [ { host => 'snark' }     => [ 202,   0, 166 ], 'orange you glad I picked it?' ],
+  [ { host => 'wabe' }      => [  66,   0,     ], 'the color of moss on your sundial' ],
+  [ { host => 'dormouse' }  => [ 222,   0,     ], 'yellow as the fur of the dormouse' ],
+  [ { fm => 'boxdc' }       => [  51,   0,     ], 'cyan, following convention' ],
+  [ { fm => 'phl' }         => [  13,   0,     ], 'magenta, following convention' ],
+  [ { fm => 'stl' }         => [  11,   0,     ], 'yellow, following convention' ],
+  [ { fm => '' }            => [ 225,   0,     ], 'unknown DC; the salmon of doubt' ],
+
+  # [ 196, 255 ] # alarmingly red
 );
 
 my $default = [
-  [ 201, 0 ], 'bright pink; where ARE we??'
+  [ 247, 0 ], 'unknown identity, just kinda grey'
 ];
 
 if ($mode eq 'shell') {
@@ -26,7 +27,8 @@ if ($mode eq 'shell') {
 
   for my $option (@options) {
     my ($cond, $color, $comment) = @$option;
-    my ($fg, $rv) = @$color;
+    my ($fg, $rv, $bg) = @$color;
+    $bg //= $fg;
 
     my $cond_str;
     if (defined $cond->{host}) {
@@ -40,16 +42,23 @@ if ($mode eq 'shell') {
 
     $str .= "if [ $cond_str ]; then\n"
          .  "  RJBS_HOST_COLOR=$fg # $comment\n"
+         .  "  RJBS_HOST_COLOR_BACKGROUND=$bg\n"
          .  "  RJBS_HOST_COLOR_REVERSE=$rv\n"
          .  "el";
   }
 
+  my %default;
+  @default{ qw( fg rv bg ) } = $default->[0]->@*;
+  $default{bg} //= $default{fg};
+
   $str .= "se\n"
-        . "  RJBS_HOST_COLOR=$default->[0][0] # $default->[1]\n"
-        . "  RJBS_HOST_COLOR_REVERSE=$default->[0][1]\n"
-        . "fi\n";
+       .  "  RJBS_HOST_COLOR=$default{fg} # $default->[1]\n"
+       .  "  RJBS_HOST_COLOR_BACKGROUND=$default{bg}\n"
+       .  "  RJBS_HOST_COLOR_REVERSE=$default{rv}\n"
+       .  "fi\n";
 
   $str .= "export RJBS_HOST_COLOR\n";
+  $str .= "export RJBS_HOST_COLOR_BACKGROUND\n";
   $str .= "export RJBS_HOST_COLOR_REVERSE\n";
 
   print $str;
@@ -75,21 +84,32 @@ for my $option (
     $prompt = $cond->{fm} ? "$cond->{fm}-example-01" : "wtf-example-02";
   }
 
-  my $fg = $color->[0];
-  my $rv = $color->[1] ? 255 : 0;
+  my ($fg, $rv, $bg) = @$color;
+  $bg //= $fg;
 
-  my $spacer = 60 - length $prompt;
+  my $spacer = 50 - length $prompt;
 
-  say colored([ "on_ansi238" ], ' ')
-    . colored([ "ansi$rv", "on_ansi$fg" ], "1:demo*")
-    . colored([ "on_ansi238" ], ' ')
-    . colored([ "ansi231", "on_ansi238" ], "2:etc")
-    . colored([ "on_ansi238" ], ' ' x $spacer)
+  my sub greyspace {
+    my ($w) = @_;
+    $w //= 1;
+
+    return colored([ "on_ansi238" ], ' ' x $w);
+  }
+
+  say greyspace()
+    . colored([ "ansi$rv", "on_ansi$bg" ], "1:crnt*") # current pane
+    . greyspace()
+    . colored([ "ansi231", "on_ansi238" ], "2:bkgr") # background pane
+    . greyspace()
+    . colored([ "ansi$fg", "on_ansi238" ], "2:actv") # pane with activity
+    . greyspace($spacer)
     . colored([ "ansi238", "on_ansi0" ], '▛')
-    . colored([ "ansi$fg" ], " $prompt ")
+    . colored([ "ansi$fg", 'bold' ], " $prompt")
+    . colored([ "ansi248" ], "/")
+    . colored([ "ansi255" ], "0 ")
     . colored([ "ansi238", "on_ansi0" ], '▟')
     . "\n\n"
-    . colored([ "ansi$fg" ], $prompt)
+    . colored([ "ansi$fg", 'bold' ], $prompt)
     . colored([ "ansi255" ], ":~")
     . colored([ "ansi46" ], q{$ })
     . qq{echo "$comment"}
