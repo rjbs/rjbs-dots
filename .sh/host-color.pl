@@ -9,6 +9,7 @@ my @options = (
   [ { host => 'snowdrop' }  => [ 135, 255,  93 ], 'default host, default hue (purple)' ],
   [ { host => 'snark' }     => [ 202, 232, 166 ], 'orange you glad I picked it?' ],
   [ { host => 'wabe' }      => [  66, 232,     ], 'the color of moss on your sundial' ],
+  [ { host => 'dodo' }      => [ 153, 232,     ], 'the pale blue-grey of a dodo' ],
   [ { host => 'dormouse' }  => [ 222, 232,     ], 'yellow as the fur of the dormouse' ],
   [ { fm => 'boxdc' }       => [  51, 232,     ], 'cyan, following convention' ],
   [ { fm => 'phl' }         => [  13, 232,     ], 'magenta, following convention' ],
