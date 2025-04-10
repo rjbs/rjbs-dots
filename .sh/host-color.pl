@@ -6,7 +6,7 @@ my $mode = $ARGV[0] || 'shell';
 
 my @options = (
   [ { host => 'boojum' }    => [  33, 255,  26 ], 'more like BLUEJUM, am I right?' ],
-  [ { host => 'snowdrop' }  => [ 135, 255,  93 ], 'default host, default hue (purple)' ],
+  [ { host => 'tove' }      => [ 135, 255,  93 ], 'default host, default hue (purple)' ],
   [ { host => 'snark' }     => [ 202, 232, 166 ], 'orange you glad I picked it?' ],
   [ { host => 'wabe' }      => [  66, 232,     ], 'the color of moss on your sundial' ],
   [ { host => 'dodo' }      => [ 153, 232,     ], 'the pale blue-grey of a dodo' ],
