@@ -1,0 +1,11 @@
+{
+  "backlogged": "😴",
+  "do-not-merge": "🛑",
+  "include-in-beta": "🅱️",
+  "include-in-dogfood": "🐕🍔",
+  "needs-rewrite": "♻️",
+  "pup": "💙",
+  "run-perl-tests": "🦎",
+
+  "bug": "🐛"
+}
