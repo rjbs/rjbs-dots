@@ -24,17 +24,23 @@ function Microphonist:new (obj)
       icon   = "🎤",
       order  = 3
     },
-    {
+    { -- USB adapter on desk at home
       output = "C-Media USB Headphone Set  ",
       input  = "C-Media USB Headphone Set  ",
       icon   = "🔌",
       order  = 4
     },
-    {
+    { -- Belkin dock on desk at work
+      output = "Realtek USB2.0 Audio",
+      input  = "Realtek USB2.0 Audio",
+      icon   = "🔌",
+      order  = 5
+    },
+    { -- USB-C adapter in desk drawer at work
       input  = "Cable Creation",
       output = "Cable Creation",
       icon   = "🎴",
-      order  = 5
+      order  = 6
     },
     {
       input  = "MacBook Air Microphone",
