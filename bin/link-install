@@ -5,6 +5,8 @@ use warnings;
 use Cwd ();
 use Term::ANSIColor qw(colored);
 
+$ENV{ANSI_COLORS_DISABLED} = 1 unless -t;
+
 my %opt = ('--debug' => 0, '--force' => 0, '--really' => 0);
 $opt{$_}++ for @ARGV;
 
