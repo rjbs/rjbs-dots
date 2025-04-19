@@ -9,6 +9,10 @@ if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
+if [ -d "/opt/homebrew/opt/rustup/bin" ]; then
+  export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+fi
+
 for file in $HOME/.zprivate/*(N); do
   source $file
 done
