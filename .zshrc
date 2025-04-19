@@ -73,7 +73,7 @@ if [ -d "/opt/homebrew" ]; then
   export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 fi
 
-if [ -d $HOME/.cargo ]; then
+if [ -f $HOME/.cargo/env ]; then
   source $HOME/.cargo/env
 fi
 
