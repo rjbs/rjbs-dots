@@ -60,11 +60,19 @@ function TimerWidget:startRest ()
   self.state = "resting"
   self:blinkPattern( startRestPattern )
   hs.speech.new():speak("Time to take a break.")
-  hs.notify.new(nil, {
+
+  local tomato_icon = hs.image.imageFromPath(
+    "/Users/rjbs/Dropbox/images/tomato-icon.png"
+  )
+
+  local notification = hs.notify.new(nil, {
     autoWithdraw  = true,
     title         = "It's over.",
-    setIdImage    = "/Users/rjbs/Dropbox/images/tomato-icon.png"
-  }):send()
+  })
+
+  notification:contentImage(tomato_icon)
+  notification:send()
+
   self.doneAt = hs.timer.secondsSinceEpoch() + self.restSeconds
   self.timer = hs.timer.doEvery(1, function () self:tick() end)
   self:redraw()
