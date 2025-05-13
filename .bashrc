@@ -10,6 +10,11 @@ if [ -e /etc/fmhome/bashrc ]; then
     __userhost="\u@\h$__inabox_name"
   fi
 
+  if [ -e /etc/inaboxinfo/digitalocean.droplet-short-name ]; then
+    export FMINABOX_NAME=`cat /etc/inaboxinfo/digitalocean.droplet-short-name | sed -e 's/\.rjbs$//'`;
+    export FMINABOX_COLOR=`COLORTERM='' ~/bin/color-for $FMINABOX_NAME`
+  fi
+
   PS1_BASE="$__dc_color[$FMENVIRONMENT $__userhost \W]"
   PS1_END="\\\$\[\033[0m\] "
 fi
