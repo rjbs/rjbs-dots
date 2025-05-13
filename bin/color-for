@@ -1,0 +1,39 @@
+#!/usr/bin/perl
+use v5.34.0;
+use warnings;
+
+use experimental 'signatures';
+
+use Digest::SHA ();
+
+sub deterministic_color ($str) {
+  state %color_for;
+  return $color_for{$str} if $color_for{$str};
+
+  state $typ = ($ENV{COLORTERM}//'') eq 'truecolor' ? 256 : 6;
+  state $mod = $typ == 256 ?  16 : 6;
+  state $mul = $typ == 256 ?   8 : 1;
+  state $min = $typ == 256 ? 512 : 6;
+  state $inc = $typ == 256 ?  16 : 1;
+  state $fmt = $typ == 256 ? 'r%ug%ub%u' : 'rgb%u%u%u';
+
+  my $sha1 = Digest::SHA::sha1($str);
+  my ($r, $g, $b, $i) = unpack 'SSSN', $sha1;
+  $r = ($r % $mod) * $mul;
+  $g = ($g % $mod) * $mul;
+  $b = ($b % $mod) * $mul;
+
+  while ($r + $g + $b < $min) {
+    my $j = $i % 3;
+    $i >>= 2;
+    $r += $inc unless $j == 0 or $r >= $typ - $inc;
+    $g += $inc unless $j == 1 or $g >= $typ - $inc;
+    $b += $inc unless $j == 2 or $b >= $typ - $inc;
+  }
+
+  return $color_for{$str} = sprintf $fmt, $r, $g, $b;
+}
+
+die "usage: color-for STR\n" unless @ARGV == 1;
+
+say deterministic_color($ARGV[0]);
