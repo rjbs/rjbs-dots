@@ -6,16 +6,28 @@ use experimental 'signatures';
 
 use Digest::SHA ();
 
+my $typ = ($ENV{COLORTERM}//'') eq 'truecolor' ? 256 : 6;
+
+my $fmt;
+if ($typ == 256) {
+  $fmt = sub ($r, $g, $b) { sprintf 'r%ug%ub%u', $r, $g, $b; };
+} elsif ($ENV{COLOR_FOR_XTERM}) {
+  $fmt = sub ($r, $g, $b) {
+    my $num = $r*36 + $g*6 + $b + 16;
+    return "color$num";
+  };
+} else {
+  $fmt = sub ($r, $g, $b) { sprintf 'rgb%u%u%u', $r, $g, $b; };
+}
+
 sub deterministic_color ($str) {
   state %color_for;
   return $color_for{$str} if $color_for{$str};
 
-  state $typ = ($ENV{COLORTERM}//'') eq 'truecolor' ? 256 : 6;
   state $mod = $typ == 256 ?  16 : 6;
   state $mul = $typ == 256 ?   8 : 1;
   state $min = $typ == 256 ? 512 : 6;
   state $inc = $typ == 256 ?  16 : 1;
-  state $fmt = $typ == 256 ? 'r%ug%ub%u' : 'rgb%u%u%u';
 
   my $sha1 = Digest::SHA::sha1($str);
   my ($r, $g, $b, $i) = unpack 'SSSN', $sha1;
@@ -31,9 +43,10 @@ sub deterministic_color ($str) {
     $b += $inc unless $j == 2 or $b >= $typ - $inc;
   }
 
-  return $color_for{$str} = sprintf $fmt, $r, $g, $b;
+  return $color_for{$str} = $fmt->($r, $g, $b);
 }
 
 die "usage: color-for STR\n" unless @ARGV == 1;
 
 say deterministic_color($ARGV[0]);
+
