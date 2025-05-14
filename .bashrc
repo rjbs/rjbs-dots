@@ -6,7 +6,7 @@ if [ -e /etc/fmhome/bashrc ]; then
     export FMINABOX_COLOR=`COLORTERM='' COLOR_FOR_XTERM=1 ~/bin/color-for $FMINABOX_NAME`
 
     __dc_color="\[\033[38;5;178m\]" # Brown like a box
-    GREEN="\[\033[92m\]"
+    GREEN="\[\033[38;5;119m\]"
     RED="\[\033[91m\]"
     RESET="\[\033[0m\]"
 
@@ -14,7 +14,7 @@ if [ -e /etc/fmhome/bashrc ]; then
     # prompt no longer indicates when I'm root other than the word "root" among
     # a bunch of other letters.  GIVE ME BACK MY COLOR. -- rjbs, 2025-04-11 🧀💨
     if [ $UID = 0 ]; then
-      PS1_BASE="${__dc_color}[${GREEN}⭑ ${__dc_color}$FMADMIN@$FMINABOX_NAME:\W]"
+      PS1_BASE="${GREEN}[⭑ ${__dc_color}$FMADMIN@$FMINABOX_NAME:\W${GREEN}]"
       PS1_END="${RED}# $RESET"
     else
       PS1_BASE="${__dc_color}[\u@$FMINABOX_NAME:\W]"
