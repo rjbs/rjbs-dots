@@ -25,9 +25,9 @@ elif [ "$HOSTNAME" = "dormouse" ]; then
   RJBS_HOST_COLOR_BACKGROUND=222
   RJBS_HOST_COLOR_REVERSE=232
 elif [ -e /etc/fmisproduction.boxdc ]; then
-  RJBS_HOST_COLOR=51 # cyan, following convention
-  RJBS_HOST_COLOR_BACKGROUND=51
-  RJBS_HOST_COLOR_REVERSE=232
+  RJBS_HOST_COLOR=94 # brown, the color of the box emoji
+  RJBS_HOST_COLOR_BACKGROUND=94
+  RJBS_HOST_COLOR_REVERSE=255
 elif [ -e /etc/fmisproduction.phl ]; then
   RJBS_HOST_COLOR=13 # magenta, following convention
   RJBS_HOST_COLOR_BACKGROUND=13
