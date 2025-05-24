@@ -223,4 +223,5 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd 'Z' edit-command-line
 
+export FZF_DEFAULT_OPTS='--tmux'
 command which fzf > /dev/null && source <(fzf --zsh)

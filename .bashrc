@@ -23,6 +23,7 @@ if [ -e /etc/fmhome/bashrc ]; then
   fi
 fi
 
+export FZF_DEFAULT_OPTS='--tmux'
 command which fzf > /dev/null && eval "$(fzf --bash)"
 
 if [ ! -z "$SSH_AUTH_SOCK" ] \
