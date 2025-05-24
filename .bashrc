@@ -23,6 +23,8 @@ if [ -e /etc/fmhome/bashrc ]; then
   fi
 fi
 
+command which fzf > /dev/null && eval "$(fzf --bash)"
+
 if [ ! -z "$SSH_AUTH_SOCK" ] \
   && [ ! -e "$HOME/.ssh/agent" ] \
   && [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/agent" ]; \
