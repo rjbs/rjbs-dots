@@ -1,10 +1,4 @@
 ## rjbs's .zshrc
-uname=`uname`
-
-if [ "$uname" != "SunOS" ]; then
-  export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin
-fi
-
 if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
