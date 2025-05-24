@@ -222,3 +222,5 @@ bindkey -M vicmd 'z' vi-push-line-or-edit
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd 'Z' edit-command-line
+
+command which fzf > /dev/null && source <(fzf --zsh)
