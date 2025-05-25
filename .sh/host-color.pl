@@ -45,12 +45,12 @@ my sub assignments ($comment, $fg, $bg, $rv) {
   }
 
   return (
-    "RJBS_HOST_COLOR=$fg # $comment",
-    "RJBS_HOST_COLOR_BACKGROUND=$bg",
-    "RJBS_HOST_COLOR_REVERSE=$rv",
-    "RJBS_HOST_COLOR_RGB=" . xterm_to_rgb($fg),
-    "RJBS_HOST_COLOR_BACKGROUND_RGB=" . xterm_to_rgb($bg),
-    "RJBS_HOST_COLOR_REVERSE_RGB=" . xterm_to_rgb($rv),
+    "export RJBS_HOST_COLOR=$fg # $comment",
+    "export RJBS_HOST_COLOR_BACKGROUND=$bg",
+    "export RJBS_HOST_COLOR_REVERSE=$rv",
+    "export RJBS_HOST_COLOR_RGB=" . xterm_to_rgb($fg),
+    "export RJBS_HOST_COLOR_BACKGROUND_RGB=" . xterm_to_rgb($bg),
+    "export RJBS_HOST_COLOR_REVERSE_RGB=" . xterm_to_rgb($rv),
   );
 }
 
@@ -87,10 +87,6 @@ if ($mode eq 'shell') {
     (map { "  $_" } assignments($default->[1], @default{qw(fg bg rv)})),
     "fi",
     "";
-
-  $str .= "export RJBS_HOST_COLOR\n";
-  $str .= "export RJBS_HOST_COLOR_BACKGROUND\n";
-  $str .= "export RJBS_HOST_COLOR_REVERSE\n";
 
   print $str;
   exit;
