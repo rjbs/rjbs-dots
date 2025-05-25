@@ -126,8 +126,11 @@ alias man=man
 unalias man
 
 # gotta have my colorized ls listings!
-dirc=$(whiff dircolors gdircolors);
-[ $? -eq 0 ] && eval $($dirc -b ~/.dir_colors | grep LS_COLORS)
+if which dircolors > /dev/null; then
+  eval $(dircolors -b ~/.dir_colors | grep LS_COLORS)
+elif which gdircolors > /dev/null; then
+  eval $(gdircolors -b ~/.dir_colors | grep LS_COLORS)
+fi
 
 # By excluding /, this lets me hit <C-w> to delete part of a path.
 export WORDCHARS='*?[]~=&!#$%^(){}<>'
