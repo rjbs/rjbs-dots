@@ -1,11 +1,11 @@
 export FZF_DEFAULT_OPTS='--tmux --style=default'
 
 # Generated via https://vitormv.github.io/fzf-themes/
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-  --color=fg:#d0d0d0,fg+:#d0d0d0,bg:#000000,bg+:#262626
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
+  --color=fg:#d0d0d0,fg+:#$RJBS_HOST_COLOR_REVERSE_RGB,bg:#000000,bg+:#$RJBS_HOST_COLOR_BACKGROUND_RGB
   --color=hl:#b2b20a,hl+:#ffff00,info:#4393a3,marker:#13ba00
   --color=prompt:#4879ff,spinner:#5effd7,pointer:#dfff5e,header:#87afaf
-  --color=gutter:#222222,border:#404040,label:#aeaeae,query:#d9d9d9
-  --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="> "
-  --marker="✔ " --pointer="►" --separator="─" --scrollbar="│"
-  --info="right"'
+  --color=gutter:#$RJBS_HOST_COLOR_BACKGROUND_RGB,border:#404040,label:#aeaeae,query:#d9d9d9
+  --border='rounded' --border-label='' --preview-window=border-rounded --prompt='> '
+  --marker='✔ ' --pointer='►' --separator='─' --scrollbar='│'
+  --info='right'"
