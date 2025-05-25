@@ -1,4 +1,12 @@
-export FZF_DEFAULT_OPTS='--tmux --style=default'
+FZF_VERSION=`fzf --version`;
+FZF_MAJOR=`echo $FZF_VERSION | cut -d . -f 1`
+FZF_MINOR=`echo $FZF_VERSION | cut -d . -f 2`
+
+if [ $FZF_MAJOR -gt 0 ] || [ $FZF_MINOR -gt 53 ]; then
+  export FZF_DEFAULT_OPTS='--tmux --style=default'
+else
+  export FZF_DEFAULT_OPTS='--style=default'
+fi
 
 # Generated via https://vitormv.github.io/fzf-themes/
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
