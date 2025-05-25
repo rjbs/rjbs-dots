@@ -1,6 +1,9 @@
 #!/usr/bin/perl
-use v5.12.0;
+use v5.20.0;
 use warnings;
+
+use feature 'signatures';
+no warnings 'experimental::signatures';
 
 my $mode = $ARGV[0] || 'shell';
 
@@ -24,6 +27,33 @@ my $default = [
   [ 247, 232 ], 'unknown identity, just kinda grey'
 ];
 
+my sub assignments ($comment, $fg, $bg, $rv) {
+  my sub xterm_to_rgb ($xtc) {
+    # 232 .. 255 are greys
+    if ($xtc >= 232) {
+      my $tens = $xtc - 232;
+      return sprintf('%02x', 8 + ($tens*10)) x 3;
+    }
+
+    my @HEX_FOR = qw( 00 5f 87 af d7 ff );
+    $xtc -= 16;
+    my $r = int $xtc / 36;
+    my $g = int($xtc % 36 / 6);
+    my $b = $xtc % 6;
+
+    return join q{}, map { $HEX_FOR[$_] } $r, $g, $b;
+  }
+
+  return (
+    "RJBS_HOST_COLOR=$fg # $comment",
+    "RJBS_HOST_COLOR_BACKGROUND=$bg",
+    "RJBS_HOST_COLOR_REVERSE=$rv",
+    "RJBS_HOST_COLOR_RGB=" . xterm_to_rgb($fg),
+    "RJBS_HOST_COLOR_BACKGROUND_RGB=" . xterm_to_rgb($bg),
+    "RJBS_HOST_COLOR_REVERSE_RGB=" . xterm_to_rgb($rv),
+  );
+}
+
 if ($mode eq 'shell') {
   my $str = qq{#!sh\nHOSTNAME=`hostname -s`\n};
 
@@ -42,22 +72,21 @@ if ($mode eq 'shell') {
       die "weird condition that I didn't understand!\n";
     }
 
-    $str .= "if [ $cond_str ]; then\n"
-         .  "  RJBS_HOST_COLOR=$fg # $comment\n"
-         .  "  RJBS_HOST_COLOR_BACKGROUND=$bg\n"
-         .  "  RJBS_HOST_COLOR_REVERSE=$rv\n"
-         .  "el";
+    $str .= join qq{\n},
+      "if [ $cond_str ]; then",
+      (map { "  $_" } assignments($comment, $fg, $bg, $rv)),
+      "el";
   }
 
   my %default;
   @default{ qw( fg rv bg ) } = $default->[0]->@*;
   $default{bg} //= $default{fg};
 
-  $str .= "se\n"
-       .  "  RJBS_HOST_COLOR=$default{fg} # $default->[1]\n"
-       .  "  RJBS_HOST_COLOR_BACKGROUND=$default{bg}\n"
-       .  "  RJBS_HOST_COLOR_REVERSE=$default{rv}\n"
-       .  "fi\n";
+  $str .= join qq{\n},
+    "se",
+    (map { "  $_" } assignments($default->[1], @default{qw(fg bg rv)})),
+    "fi",
+    "";
 
   $str .= "export RJBS_HOST_COLOR\n";
   $str .= "export RJBS_HOST_COLOR_BACKGROUND\n";
