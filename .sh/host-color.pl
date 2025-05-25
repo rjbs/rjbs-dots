@@ -13,8 +13,8 @@ my @options = (
   [ { host => 'dormouse' }  => [ 222, 232,     ], 'yellow as the fur of the dormouse' ],
   # [ { fm => 'boxdc' }       => [  51, 232,     ], 'cyan, following convention' ],
   [ { fm => 'boxdc' }       => [  94, 255,     ], 'brown, the color of the box emoji' ],
-  [ { fm => 'phl' }         => [  13, 232,     ], 'magenta, following convention' ],
-  [ { fm => 'stl' }         => [  11, 232,     ], 'yellow, following convention' ],
+  [ { fm => 'phl' }         => [ 201, 232,     ], 'magenta, following convention' ],
+  [ { fm => 'stl' }         => [ 226, 232,     ], 'yellow, following convention' ],
   [ { fm => '' }            => [ 225, 232,     ], 'unknown DC; the salmon of doubt' ],
 
   # [ 196, 255 ] # alarmingly red
