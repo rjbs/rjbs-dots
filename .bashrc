@@ -33,4 +33,14 @@ fi
 
 source ~/.sh/host-color
 
-command which fzf > /dev/null && source ~/.fzfenv && eval "$(fzf --bash)"
+command which fzf > /dev/null && source ~/.fzfenv
+if [ ! -z "$FZF_VERSION" ]; then
+  if [ $FZF_MAJOR -gt 0 ] || [ $FZF_MINOR -gt 53 ]; then
+    eval "$(fzf --bash)"
+  else
+    # Pre-"--bash", so look for the Debian bash helper
+    if [ -e /usr/share/doc/fzf/examples/key-bindings.bash ]; then
+      source /usr/share/doc/fzf/examples/key-bindings.bash
+    fi
+  fi
+fi
