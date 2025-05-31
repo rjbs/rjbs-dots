@@ -1,0 +1,26 @@
+indent = 2
+
+class.parents      = 0
+class.stringify    = 0
+class.show_methods = none
+class.show_overloads = 0
+
+theme = Monokai
+colors.caller_info = '#ffff00'
+colors.brackets    = '#888888'
+colors.escaped     = '#888800'
+colors.undef       = '#d00000'
+colors.true        = '#82AAFF'
+colors.false       = '#82AAFF'
+
+end_separator = 1
+hash_separator = " => "
+print_escapes = 1
+show_readonly = 0
+
+# loading Web before JType so JType can replace Typist formatting
+filters = DateTime, Web, JType, JMAP
+
+filter_datetime.show_class_name = 1
+filter_datetime.show_timezone   = 1
+
