@@ -3,6 +3,9 @@ $DB::ornaments = 0;
 
 # use DB::Color;
 
-use Data::Printer colored => 1;
-$DB::alias{'pp'}  = 's/^pp(.*)/Data::Printer::p_without_prototypes(scalar $1)/';
+package RJBS::Debugger {
+  use Data::Printer colored => 1, use_prototypes => 0;
+}
+
+$DB::alias{'pp'}  = 's/^pp(.*)/RJBS::Debugger::p(scalar $1)/';
 $DB::histitemminlength = 0;
