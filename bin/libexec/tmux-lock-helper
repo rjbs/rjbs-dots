@@ -1,0 +1,27 @@
+#!/usr/bin/perl
+use v5.20.0;
+use warnings;
+
+my @interrupted;
+$SIG{INT} = sub {
+  my $t = time;
+  @interrupted = grep {; $_ >= $t - 10 } (@interrupted, $t);
+  die "Interrupted to death!\n" if @interrupted >= 3;
+
+  my $more = 3 - @interrupted;
+  my $noun = $more == 1 ? "time" : "time";
+
+  warn "\nCaught interrupt!  Interrupt $more more $noun to terminate.\n";
+};
+
+while (1) {
+  print "\rEnter EXIT to exit> ";
+  my $line = <STDIN>;
+
+  last unless defined $line;
+  chomp $line;
+
+  last if $line eq 'EXIT';
+
+  say "Carrying on waiting for the magic word...";
+}
