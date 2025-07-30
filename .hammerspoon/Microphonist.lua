@@ -43,6 +43,24 @@ function Microphonist:new (obj)
       order  = 6
     },
     {
+      input  = "Atlas Air",
+      output = "Atlas Air",
+      icon   = "🐢",
+      order  = 7
+    },
+    {
+      input  = "Atlas Air (Office)",
+      output = "Atlas Air (Office)",
+      icon   = "🐢",
+      order  = 8
+    },
+    {
+      input  = "Atlas Air (Home)",
+      output = "Atlas Air (Home)",
+      icon   = "🐢",
+      order  = 9
+    },
+    {
       input  = "MacBook Air Microphone",
       output = "MacBook Air Speakers",
       icon    = "💻"
