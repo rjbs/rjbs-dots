@@ -2,26 +2,123 @@
 use v5.20.0;
 use warnings;
 
-my @interrupted;
-$SIG{INT} = sub {
-  my $t = time;
-  @interrupted = grep {; $_ >= $t - 10 } (@interrupted, $t);
-  die "Interrupted to death!\n" if @interrupted >= 3;
+$| = 1;
 
-  my $more = 3 - @interrupted;
-  my $noun = $more == 1 ? "time" : "time";
+use Term::ANSIColor;
+use Term::ReadKey;
 
-  warn "\nCaught interrupt!  Interrupt $more more $noun to terminate.\n";
+ReadMode 3;
+
+use utf8;
+binmode *STDOUT, ':encoding(UTF-8)';
+binmode *STDERR, ':encoding(UTF-8)';
+
+my $regex = join q{.}, ('(...)') x 4;
+
+# my @lines = map {; [ /$regex/ ] } (
+#   # 012345
+#   q{██████  ██  ██  ██████  ██████},
+#   q{██       ████     ██      ██  },
+#   q{█████     ██      ██      ██  },
+#   q{██       ████     ██      ██  },
+#   q{██████  ██  ██  ██████    ██  },
+# );
+
+my @lines = map {; [ /$regex/ ] } (
+  # 012
+  q{█▀▀ █ █ ▀█▀ ▀█▀},
+  q{█▀▀  █   █   █ },
+  q{█▄▄ █ █ ▄█▄  █ },
+);
+
+my $width = 20;
+my $dirty = 1;
+
+my ($term_w, $term_h) = GetTerminalSize;
+my $left_pad = int(($term_w - $width) / 2);
+
+$SIG{WINCH} = sub {
+  ($term_w, $term_h) = GetTerminalSize;
+  $left_pad = int(($term_w - $width) / 2);
 };
 
+END {
+  print "\e[0H\e[0J\e[?25h";
+}
+
+my $int_max = 3;
+my @interrupted;
+$SIG{INT} = sub {
+  push @interrupted, time;
+  die "Interrupted to death!\n" if @interrupted >= $int_max;
+
+  my $more = $int_max - @interrupted;
+  my $noun = $more == 1 ? "time" : "time";
+  $dirty = 1;
+};
+
+my $let_dim = 'ansi243';
+my $let_lit = 'ansi226';
+
+my @int_color = (
+  [ 'ansi52', 'ansi196' ],
+  [ 'ansi58', 'ansi191' ],
+  [ 'ansi28', 'ansi120' ],
+);
+
+my $word  = 'exit';
+my $pos   = 0;
+
+print "\e[2J";   # clear screen;
+print "\e[?25l"; # hide cursor
+
+sub draw {
+  return unless $dirty;
+
+  print "\e[1;1H";
+
+  for my $row (keys @lines) {
+    my $int_row = 2 - $row;
+    my $color   = $int_color[$row][ @interrupted == $int_row ? 1 : 0 ];
+
+    my $line = q{ } x $left_pad;
+    $line .= colored([ $color ], "INT") . q{ };
+
+    for my $letter (0 .. 3) {
+      my $color = $letter < $pos ? $let_lit : $let_dim;
+      $line .= colored([ $color ], $lines[$row][$letter]);
+    } continue {
+      $line .= " ";
+    }
+
+    if ($row == $#lines) {
+      print $line;
+    } else {
+      say $line;
+    }
+  }
+
+  $dirty = 0;
+}
+
 while (1) {
-  print "\rEnter EXIT to exit> ";
-  my $line = <STDIN>;
+  my $t = time;
 
-  last unless defined $line;
-  chomp $line;
+  my $int_count = @interrupted;
+  @interrupted = grep {; $_ >= $t - 10 } @interrupted;
+  $dirty = 1 if $int_count != @interrupted;
 
-  last if $line eq 'EXIT';
+  draw();
 
-  say "Carrying on waiting for the magic word...";
+  my $key = ReadKey -1;
+  if (defined $key) {
+    if ($key eq substr $word, $pos, 1) {
+      $pos++;
+      $dirty = 1;
+      exit if $pos == length $word;
+    } else {
+      $dirty = 1 if $pos > 0;
+      $pos = 0;
+    }
+  }
 }
