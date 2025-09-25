@@ -36,6 +36,7 @@
 
 [log]
   date = iso-local
+  follow = true
 
 [pull]
   ff = only
