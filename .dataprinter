@@ -17,6 +17,7 @@ colors.false       = '#82AAFF'
 end_separator = 1
 hash_separator = " => "
 print_escapes = 1
+show_dualvar = off
 show_readonly = 0
 
 # loading Web before JType so JType can replace Typist formatting
