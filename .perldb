@@ -8,4 +8,5 @@ package RJBS::Debugger {
 }
 
 $DB::alias{'pp'}  = 's/^pp(.*)/RJBS::Debugger::p(scalar $1)/';
+$DB::alias{'dd'}  = 's/^dd(.*)/use Devel::Peek (); Devel::Peek::Dump($1)/';
 $DB::histitemminlength = 0;
