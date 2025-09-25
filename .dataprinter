@@ -1,5 +1,6 @@
 indent = 2
 
+class.expand       = all
 class.parents      = 0
 class.stringify    = 0
 class.show_methods = none
