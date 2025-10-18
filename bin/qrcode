@@ -1,0 +1,28 @@
+#!/usr/bin/env perl
+use v5.36.0;
+use Imager::QRCode;
+
+die "usage: qrcode TEXT\n" unless @ARGV == 1;
+
+my $text = $ARGV[0];
+
+my $qrcode = Imager::QRCode->new(
+  size          => 16,
+  margin        => 2,
+  version       => 1,
+  level         => 'M',
+  casesensitive => 1,
+  lightcolor    => Imager::Color->new(255, 255, 255),
+  darkcolor     => Imager::Color->new(0, 0, 0),
+);
+
+my $img = $qrcode->plot($text);
+
+my $data;
+$img->write(data => \$data, type => 'png')
+  or die "Failed to write: " . $img->errstr;
+
+use Path::Tiny;
+my $file = Path::Tiny->tempfile;
+$file->spew($data);
+system("imgcat $file");
