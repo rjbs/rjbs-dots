@@ -8,3 +8,4 @@
   line:style:bold
 --colors
   match:fg:0xff,0x0ff,00
+--sort=path
