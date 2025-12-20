@@ -20,6 +20,9 @@ print_escapes = 1
 show_dualvar = off
 show_readonly = 0
 
+hash_max  = 10000
+array_max = 10000
+
 # loading Web before JType so JType can replace Typist formatting
 filters = DateTime, Web, JType, JMAP, StructDumb
 
