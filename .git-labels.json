@@ -3,6 +3,7 @@
   "do-not-merge": "🛑",
   "include-in-beta": "🅱️",
   "include-in-dogfood": "🐕🍔",
+  "include-in-fastmail": "💌",
   "needs-rewrite": "♻️",
   "pup": "💙",
   "run-perl-tests": "🦎",
