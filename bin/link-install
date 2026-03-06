@@ -58,6 +58,7 @@ FILE: for my $file (@files) {
   # Never makes sense to copy this.
   next if $file eq '.gitignore';
   next if $file eq '.gitmodules';
+  next if $file eq '.tags';
   next if $file eq 'README.md';
   next if $file =~ m{(^|/)\.DS_Store\z}n;
 
