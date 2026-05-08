@@ -49,11 +49,9 @@ declaration of what the case is, not a step-by-step procedure.
 
 # Git habits
 
-When committing to git, when you use your name in an author or co-author
-credit, use the name "Claude".  Do not include a version or model name.  If you
-are listing yourself as the author, do not *also* put yourself in a
-Co-Authored-By trailer.  When listing someone else as the author, *do* put
-yourself in a Co-Authored-By trailer.
+When committing to git, you must credit yourself as co-author in a trailer,
+using the name "Claude".  Do not include a version or model name.  Do not
+credit yourself as primary author.
 
 Git commits should be geared toward the reader, meaning multiple smaller
 commits, each moving from one state to the next, are to be preferred.
