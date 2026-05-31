@@ -1,0 +1,57 @@
+#!/usr/bin/env perl
+use v5.36;
+
+my @rows;
+
+while (my $line = <STDIN>) {
+  chomp $line;
+  $line =~ s/^\s*\||\|\s*$//g;
+  my @cells = map { s/^\s+|\s+$//gr } split /\|/, $line, -1;
+  push @rows, \@cells;
+}
+
+# The second row is the separator row (---, :---, etc.)
+# We'll keep it but reformat it.
+my $ncols = max(map { scalar @$_ } @rows);
+
+my @widths = (0) x $ncols;
+for my $row (@rows) {
+  for my $i (0 .. $#$row) {
+    my $w = length $row->[$i];
+    $widths[$i] = $w if $w > $widths[$i];
+  }
+}
+
+# Ensure separator cells are at least 3 wide (GFM minimum for ---)
+if (@rows >= 2) {
+  for my $i (0 .. $ncols - 1) {
+    $widths[$i] = 3 if $widths[$i] < 3;
+  }
+}
+
+for my $ri (0 .. $#rows) {
+  my $row = $rows[$ri];
+  my @cells;
+  for my $i (0 .. $ncols - 1) {
+    my $cell = $row->[$i] // '';
+    if ($ri == 1) {
+      # separator row: rebuild as dashes preserving alignment colons
+      my $align = '';
+      if    ($cell =~ /^:.*:$/) { $align = 'center' }
+      elsif ($cell =~ /^:/)     { $align = 'left'   }
+      elsif ($cell =~ /:$/)     { $align = 'right'  }
+      else                      { $align = 'none'   }
+      my $inner = $widths[$i];
+      $cell = $align eq 'center' ? ':' . '-' x ($inner - 2) . ':'
+            : $align eq 'left'   ? ':' . '-' x ($inner - 1)
+            : $align eq 'right'  ?       '-' x ($inner - 1) . ':'
+            :                             '-' x $inner;
+    } else {
+      $cell = sprintf '%-*s', $widths[$i], $cell;
+    }
+    push @cells, $cell;
+  }
+  say '| ' . join(' | ', @cells) . ' |';
+}
+
+sub max { my $m = shift; $m = $_ > $m ? $_ : $m for @_; $m }

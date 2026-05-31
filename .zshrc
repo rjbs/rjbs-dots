@@ -65,6 +65,8 @@ if [ -d "/opt/homebrew" ]; then
   export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
   export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
   export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 fi
 
 if [ -f $HOME/.cargo/env ]; then
@@ -99,9 +101,17 @@ if [ -d $HOME/.rbenv ]; then
   eval "$(rbenv init -)"
 fi
 
+if [ -d $HOME/.local/bin ]; then
+  # I don't like this.
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
 # Everything above that might have stuck things into our $PATH is now complete,
 # so we can finally put ~/bin at the head of the path!
 export PATH=$HOME/bin:$PATH
+
+autoload -Uz compinit
+compinit -i
 
 source ~/.sh/host-color
 
@@ -166,9 +176,6 @@ setopt    transient_rprompt     # rprompt goes away after command is run
 # The following lines were added by compinstall
 _compdir=/usr/share/zsh/${ZSH_VERSION}/functions
 [[ -z $fpath[(r)$_compdir] ]] && fpath=($fpath $_compdir)
-
-autoload -U compinit
-compinit
 
 zstyle ':completion:*' completer _expand _complete # _approximate
 zstyle ':completion:*' completer _expand _complete:-equal-

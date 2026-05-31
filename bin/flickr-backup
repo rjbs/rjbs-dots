@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+use lib '/Users/rjbs/code/hub/Net-Flickr-Backup/lib';
+
 use Config::Simple;
 use File::Path;
 use Log::Dispatch::Screen;
