@@ -176,7 +176,10 @@ sub show_diff ($staged) {
     }
   }
 
-  my $rc = system('diff', '--recursive', '--unified', "$old", "$staged");
+  # --new-file treats an absent file as empty, so a not-yet-installed file
+  # shows as its full body rather than a bare "Only in ...": you can vet every
+  # line before it lands. -- claude, 2026-06-21
+  my $rc = system('diff', '--recursive', '--unified', '--new-file', "$old", "$staged");
   die "couldn't run diff\n" if $rc == -1;
 
   my $code = $rc >> 8;
