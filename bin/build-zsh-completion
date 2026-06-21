@@ -1,0 +1,256 @@
+#!/usr/bin/env perl
+use v5.36;
+
+use File::Copy ();
+use IPC::Run3;
+use Path::Tiny;
+
+# build-zsh-completion -- generate zsh completion for my GLD / App::Cmd tools
+#
+# A number of my programs (Getopt::Long::Descriptive- or App::Cmd-based) can
+# emit their own zsh completion when asked.  This builds completion functions
+# for the ones listed in %SPEC that are also found on $PATH, and installs them
+# into ~/.zsh/rjbs-completion, which my .zshrc puts on $fpath.
+#
+# None of the generated completion is committed to my dotfiles: each machine
+# generates completion from the program versions actually installed on it.  The
+# generator is run by hand, and only ever executes programs I have explicitly
+# listed -- so a hostile git-* dropped on $PATH can't get its output loaded
+# just by existing. -- claude, 2026-06-21
+#
+# Usage:
+#   build-zsh-completion            summarize what could and couldn't be built
+#   build-zsh-completion --diff     preview changes vs what's installed (exit 1 if any)
+#   build-zsh-completion --really   build and install, pruning stale files
+
+my $TARGET = path($ENV{HOME}, '.zsh', 'rjbs-completion');
+
+# The programs to build completion for, and how each emits it:
+#   gld     -- a Getopt::Long::Descriptive program, via the
+#              GETOPT_LONG_DESCRIPTIVE_COMPLETION=zsh environment variable
+#   app-cmd -- an App::Cmd application, via `<prog> commands --zsh-completion`
+# An optional 'desc' becomes the one-line blurb shown in `git <TAB>` menus.
+my %SPEC = (
+  'git-work-status'    => { kind => 'gld', desc => 'summarize work in progress' },
+  'git-scrub-branches' => { kind => 'gld', desc => 'delete merged branches'     },
+  # 'git-pr'           => { kind => 'app-cmd', desc => 'manage pull requests' },
+);
+
+my %MODE = (diff => 0, really => 0);
+for my $arg (@ARGV) {
+  if    ($arg eq '--diff')   { $MODE{diff}++   }
+  elsif ($arg eq '--really') { $MODE{really}++ }
+  else  { die "usage: build-zsh-completion [--diff | --really]\n" }
+}
+die "--diff and --really are mutually exclusive\n" if $MODE{diff} && $MODE{really};
+
+my @results = map {; build_one($_, $SPEC{$_}) } sort keys %SPEC;
+
+if ($MODE{really}) {
+  report_skips(\@results);
+  my $staged = stage(\@results);
+  show_diff($staged);
+  install($staged);
+  refresh_compdump();
+  say "installed into $TARGET";
+  exit 0;
+}
+
+if ($MODE{diff}) {
+  report_skips(\@results);
+  my $staged = stage(\@results);
+  exit(show_diff($staged) ? 1 : 0);
+}
+
+print_summary(\@results);
+exit 0;
+
+# Locate $cmd as an executable on $PATH, returning its Path::Tiny or undef.
+sub which ($cmd) {
+  for my $dir (split /:/, ($ENV{PATH} // q{})) {
+    next unless length $dir;
+    my $p = path($dir, $cmd);
+    return $p if $p->is_file && -x $p;
+  }
+  return undef;
+}
+
+# Build the completion for one program.  Returns a result hash with a 'status'
+# of 'ok', 'absent' (not on $PATH), or 'no-protocol' (on $PATH but didn't emit
+# a completion script).  An 'ok' result also carries 'file' and 'script'.
+sub build_one ($cmd, $spec) {
+  my %r = (cmd => $cmd, kind => $spec->{kind});
+
+  my $path = which($cmd);
+  return { %r, status => 'absent' } unless $path;
+
+  my $raw = $spec->{kind} eq 'gld'     ? emit_gld($path)
+          : $spec->{kind} eq 'app-cmd' ? emit_app_cmd($path)
+          : die "unknown kind '$spec->{kind}' for $cmd\n";
+
+  return { %r, status => 'no-protocol' } unless defined $raw;
+
+  return {
+    %r,
+    status => 'ok',
+    file   => file_name_for($cmd),
+    script => rewrite($raw, $cmd, $spec->{desc}),
+  };
+}
+
+# Run a GLD program in zsh-completion mode.  Returns the emitted script, or
+# undef unless the program signalled completion mode by exiting 42 -- so a
+# program that ignores the variable and just runs is not mistaken for one that
+# emitted a script. -- claude, 2026-06-21
+sub emit_gld ($path) {
+  local $ENV{GETOPT_LONG_DESCRIPTIVE_COMPLETION} = 'zsh';
+  delete local $ENV{GETOPT_LONG_DESCRIPTIVE_COMPLETION_NAME};
+
+  my $out;
+  run3 [ "$path" ], \undef, \$out, \my $err;
+  return ($? >> 8) == 42 ? $out : undef;
+}
+
+# Run an App::Cmd application's built-in zsh completion emitter.  Returns the
+# script, or undef unless it exits cleanly and actually produced one (i.e. a
+# leading "#compdef"). -- claude, 2026-06-21
+sub emit_app_cmd ($path) {
+  my $out;
+  run3 [ "$path", 'commands', '--zsh-completion' ], \undef, \$out, \my $err;
+  return (($? >> 8) == 0 && defined $out && $out =~ /\A\#compdef/) ? $out : undef;
+}
+
+# The completion-function file name for a command.  A git subcommand becomes
+# _git-SUB -- the name zsh's native _git dispatches to for `git SUB ...` -- so
+# a single file drives both `git-SUB <TAB>` and `git SUB <TAB>`.  Anything else
+# becomes _NAME.
+sub file_name_for ($cmd) {
+  return "_git-$1" if $cmd =~ /\Agit-(.+)\z/;
+  (my $name = "_$cmd") =~ s/\W/_/g;
+  return $name;
+}
+
+# Rewrite a freshly-emitted completion script for installation: rename the
+# emitted function to the name we file it under (see file_name_for) and point
+# its #compdef line there, inserting a #description as line 2 (where _git looks
+# for it) when we have one. -- claude, 2026-06-21
+sub rewrite ($raw, $cmd, $desc) {
+  my ($emitted) = $raw =~ /^(\w+)\(\)\s*\{/m
+    or die "no function definition found in completion for $cmd\n";
+
+  my $fn = file_name_for($cmd);
+
+  (my $script = $raw) =~ s/\Q$emitted\E/$fn/g;
+
+  my $header = "#compdef $cmd\n";
+  $header   .= "#description $desc\n" if defined $desc && length $desc;
+  $script =~ s/\A\#compdef[^\n]*\n/$header/;
+
+  return $script;
+}
+
+# Build all "ok" completions into a fresh temp directory and return it.  The
+# returned Path::Tiny tempdir is removed when the object goes out of scope, so
+# callers must hold onto it for as long as they need the files.
+sub stage ($results) {
+  my $dir = Path::Tiny->tempdir;
+  for my $r (@$results) {
+    next unless $r->{status} eq 'ok';
+    $dir->child($r->{file})->spew_utf8($r->{script});
+  }
+  return $dir;
+}
+
+# Show a unified diff between the installed completion and the staged set, and
+# return true if they differ.  We compare only the completion files we manage
+# (a leading "_"), so the diff has the same scope as install() -- an unrelated
+# file in the target neither shows as drift nor as something we'd remove.  This
+# also means a first build, with nothing installed, reads as all-additions.
+# -- claude, 2026-06-21
+sub show_diff ($staged) {
+  my $old = Path::Tiny->tempdir;
+  if ($TARGET->is_dir) {
+    for my $f ($TARGET->children(qr/\A_/)) {
+      File::Copy::copy("$f", $old->child($f->basename))
+        or die "couldn't read installed $f: $!\n";
+    }
+  }
+
+  my $rc = system('diff', '--recursive', '--unified', "$old", "$staged");
+  die "couldn't run diff\n" if $rc == -1;
+
+  my $code = $rc >> 8;
+  die "diff failed (exit $code)\n" if $code >= 2;
+  return $code == 1;
+}
+
+# Install the staged completions into $TARGET, then prune any completion files
+# there that we did not just write.  Refuses to touch a symlink or a non-
+# directory target, and only ever removes files whose names look like
+# completion functions (a leading "_"). -- claude, 2026-06-21
+sub install ($staged) {
+  die "refusing to install: $TARGET is a symlink\n" if -l "$TARGET";
+  $TARGET->mkpath unless $TARGET->exists;
+  die "refusing to install: $TARGET is not a directory\n" unless $TARGET->is_dir;
+
+  my %wrote;
+  for my $src ($staged->children) {
+    my $name = $src->basename;
+    File::Copy::copy("$src", $TARGET->child($name))
+      or die "couldn't install $name: $!\n";
+    $wrote{$name} = 1;
+  }
+
+  for my $f ($TARGET->children(qr/\A_/)) {
+    $f->remove unless $wrote{ $f->basename };
+  }
+
+  return;
+}
+
+# compinit caches loaded completions in ~/.zcompdump; a stale cache can hide a
+# newly-installed completion until it's rebuilt.  Remove it so the next shell
+# regenerates it. -- claude, 2026-06-21
+sub refresh_compdump () {
+  $_->remove for path($ENV{HOME})->children(qr/\A\.zcompdump/);
+  return;
+}
+
+# Warn (to STDERR) about every listed program we could not build completion
+# for, so a missing tool or a non-cooperating program is never silently
+# dropped. -- claude, 2026-06-21
+sub report_skips ($results) {
+  for my $r (@$results) {
+    next if $r->{status} eq 'ok';
+    my $why = $r->{status} eq 'absent'
+            ? 'not found on $PATH'
+            : "on \$PATH but emitted no completion ($r->{kind})";
+    warn "skipping $r->{cmd}: $why\n";
+  }
+  return;
+}
+
+# Print the no-flag summary: one line per listed program, saying whether we
+# could build its completion and why not.
+sub print_summary ($results) {
+  my %label = (
+    'ok'          => 'ok',
+    'absent'      => 'not in PATH',
+    'no-protocol' => 'no completion',
+  );
+
+  my $width = 0;
+  for my $r (@$results) {
+    $width = length $r->{cmd} if length $r->{cmd} > $width;
+  }
+
+  for my $r (@$results) {
+    printf "  %-13s  %-*s  (%s)\n",
+      $label{ $r->{status} } // $r->{status}, $width, $r->{cmd}, $r->{kind};
+  }
+
+  say q{};
+  say "target: $TARGET";
+  say 'run with --diff to preview changes, or --really to install';
+  return;
+}
