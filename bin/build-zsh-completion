@@ -31,9 +31,10 @@ my $TARGET = path($ENV{HOME}, '.zsh', 'rjbs-completion');
 #   app-cmd -- an App::Cmd application, via `<prog> commands --zsh-completion`
 # An optional 'desc' becomes the one-line blurb shown in `git <TAB>` menus.
 my %SPEC = (
-  'git-work-status'    => { kind => 'gld', desc => 'summarize work in progress' },
-  'git-scrub-branches' => { kind => 'gld', desc => 'delete merged branches'     },
-  # 'git-pr'           => { kind => 'app-cmd', desc => 'manage pull requests' },
+  'git-work-status'     => { kind => 'gld', desc => 'summarize work in progress' },
+  'git-scrub-branches'  => { kind => 'gld', desc => 'delete merged branches'     },
+  'dzil'                => { kind => 'app-cmd', desc => 'maximum overkill dist building' },
+  'melnitz'             => { kind => 'app-cmd', desc => 'weird tools for task management' },
 );
 
 my %MODE = (diff => 0, really => 0);
