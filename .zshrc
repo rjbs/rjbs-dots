@@ -110,6 +110,11 @@ fi
 # so we can finally put ~/bin at the head of the path!
 export PATH=$HOME/bin:$PATH
 
+# Completion I generate from my own GLD / App::Cmd tools; see
+# bin/build-zsh-completion.  Not in git -- it's built per-machine against the
+# program versions actually installed there, so the dir may not exist yet.
+fpath=($HOME/.zsh/rjbs-completion(N/) $fpath)
+
 autoload -Uz compinit
 compinit -i
 
