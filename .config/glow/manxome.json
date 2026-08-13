@@ -1,0 +1,173 @@
+{
+  "_comment": [
+    "Manxome Foes for glow/glamour -- matches how Vim's stock markdown syntax",
+    "renders under .vim/colors/manxome.vim.",
+    "",
+    "Vim group          -> manxome           -> here",
+    "Normal                ctermfg=7            7",
+    "Title (headings)      ctermfg=3 bold       11 (bright yellow) + bold",
+    "Special (# ` etc)     ctermfg=7 bold       15",
+    "Statement (list mkr)  ctermfg=6            6",
+    "Comment (blockquote)  ctermfg=2 bold       10",
+    "PreProc (rules)       ctermfg=7 bold       15",
+    "Underlined (link txt) ctermfg=2            2  (manxome sets cterm=none: no underline)",
+    "Number (URLs)         ctermfg=117          117",
+    "Identifier            ctermfg=4 bold       12",
+    "Constant (strings)    ctermfg=6 bold       14",
+    "htmlItalic            ctermfg=174          174 (dusty rose)",
+    "htmlBold              ctermfg=7 bold       15",
+    "Error                 ctermfg=1 bold       9",
+    "",
+    "manxome leans on 'bold makes ANSI 0-7 bright'. That trick only works for the",
+    "legacy SGR 30-37 codes, and glamour emits 38;5;N, so the bright slots (8-15)",
+    "are named outright instead. Backgrounds are left unset so terminal",
+    "transparency survives, same as manxome's ctermbg=none.",
+    "",
+    "Deliberate divergence: stock Vim leaves inline code unhighlighted",
+    "(markdownCode has no highlight link, so it falls through to Normal) and",
+    "shows the literal backticks as Special. Here it is 140 with the ticks",
+    "dropped -- the color carries the meaning. manxome.vim now sets markdownCode",
+    "to match.",
+    "",
+    "140 (#af87d7) and 174 (#d78787) are neighbours in the 256-cube's d7/af/87",
+    "tier: same chroma, opposite hue. Code and emphasis stay distinguishable",
+    "without either going harsh where it's used densely."
+  ],
+
+  "document": {
+    "block_prefix": "\n",
+    "block_suffix": "\n",
+    "color": "7",
+    "margin": 2
+  },
+
+  "block_quote": {
+    "color": "10",
+    "indent": 1,
+    "indent_token": "│ "
+  },
+
+  "paragraph": {},
+
+  "list": {
+    "level_indent": 2
+  },
+
+  "heading": {
+    "block_suffix": "\n",
+    "color": "11",
+    "bold": true
+  },
+  "h1": { "prefix": "# " },
+  "h2": { "prefix": "## " },
+  "h3": { "prefix": "### " },
+  "h4": { "prefix": "#### " },
+  "h5": { "prefix": "##### " },
+  "h6": { "prefix": "###### " },
+
+  "text": {},
+
+  "strong": {
+    "color": "15",
+    "bold": true
+  },
+  "emph": {
+    "color": "174",
+    "italic": true
+  },
+  "strikethrough": {
+    "crossed_out": true
+  },
+
+  "hr": {
+    "color": "15",
+    "format": "\n────────\n"
+  },
+
+  "item": {
+    "block_prefix": "• "
+  },
+  "enumeration": {
+    "block_prefix": ". "
+  },
+  "task": {
+    "ticked": "[✓] ",
+    "unticked": "[ ] "
+  },
+
+  "link": {
+    "color": "117"
+  },
+  "link_text": {
+    "color": "2"
+  },
+  "image": {
+    "color": "117"
+  },
+  "image_text": {
+    "color": "2",
+    "format": "Image: {{.text}} →"
+  },
+
+  "code": {
+    "color": "140"
+  },
+
+  "code_block": {
+    "margin": 2,
+    "chroma": {
+      "text":                  { "color": "#cccccc" },
+      "error":                 { "color": "#ff5f5f" },
+      "comment":               { "color": "#00ff00" },
+      "comment_preproc":       { "color": "#ffffff" },
+      "keyword":               { "color": "#00aaaa" },
+      "keyword_reserved":      { "color": "#00aaaa" },
+      "keyword_namespace":     { "color": "#00aaaa" },
+      "keyword_type":          { "color": "#00aaaa" },
+      "operator":              { "color": "#00aaaa" },
+      "punctuation":           { "color": "#cccccc" },
+      "name":                  { "color": "#cccccc" },
+      "name_builtin":          { "color": "#00ffff" },
+      "name_tag":              { "color": "#00aaaa" },
+      "name_attribute":        { "color": "#00ffff" },
+      "name_class":            { "color": "#5c5cff" },
+      "name_constant":         { "color": "#00ffff" },
+      "name_decorator":        { "color": "#5c5cff" },
+      "name_exception":        { "color": "#ff5f5f" },
+      "name_function":         { "color": "#5c5cff" },
+      "name_other":            { "color": "#cccccc" },
+      "literal":               { "color": "#00ffff" },
+      "literal_number":        { "color": "#87d7ff" },
+      "literal_date":          { "color": "#00ffff" },
+      "literal_string":        { "color": "#00ffff" },
+      "literal_string_escape": { "color": "#ffffff" },
+      "generic_deleted":       { "color": "#ff5f5f" },
+      "generic_emph":          { "color": "#ff00ff", "italic": true },
+      "generic_heading":       { "color": "#ffff00", "bold": true },
+      "generic_inserted":      { "color": "#00ff00" },
+      "generic_strong":        { "color": "#ffffff", "bold": true },
+      "generic_subheading":    { "color": "#ffff00" }
+    }
+  },
+
+  "table": {
+    "center_separator": "┼",
+    "column_separator": "│",
+    "row_separator": "─"
+  },
+
+  "definition_list": {},
+  "definition_term": {
+    "color": "6"
+  },
+  "definition_description": {
+    "block_prefix": "\n  "
+  },
+
+  "html_block": {
+    "color": "6"
+  },
+  "html_span": {
+    "color": "6"
+  }
+}
