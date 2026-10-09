@@ -22,6 +22,9 @@
   status = auto
   branch = auto
 
+[commit]
+  verbose = true
+
 [core]
   attributesfile = ~/.gitattributes
 
