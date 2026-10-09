@@ -14,3 +14,5 @@ path_filters: UMLS-Interface-
 path_filters: uplug-
 path_filters: zxid
 path_filters: Lingua-EN-SENNA-
+path_filters: PERLANCAR
+path_filters: Convert-Pheno
