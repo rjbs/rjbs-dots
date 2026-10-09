@@ -8,6 +8,7 @@ use Config::Simple;
 use File::Path;
 use Log::Dispatch::Screen;
 use Net::Flickr::Backup;
+use POSIX qw(strftime);
 
 my $cfg = Config::Simple->new('/Users/rjbs/.flickr-backup');
 
@@ -23,9 +24,9 @@ my $flickr = Net::Flickr::Backup->new($cfg);
 
 my $feedback = Log::Dispatch::Screen->new(
   'name'      => 'info',
-  'min_level' => 'info'
+  'min_level' => 'info',
+  'callbacks' => sub { my %p = @_; strftime("%F %T ", localtime) . $p{message} },
 );
 
 $flickr->log()->add($feedback);
-$flickr->backup();
-
+$flickr->backup({ retry_incomplete => (grep { $_ eq '--retry' } @ARGV) ? 1 : 0 });
