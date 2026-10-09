@@ -1,8 +1,8 @@
 # style name or JSON path (default "auto")
-style: "/home/rjbs/.config/glow/manxome.json"
+style: "/Users/rjbs/.config/glow/manxome.json"
 # mouse support (TUI-mode only)
 mouse: false
 # use pager to display markdown
-pager: false
+pager: true
 # word-wrap at width
 width: 80
