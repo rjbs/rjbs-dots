@@ -2,7 +2,7 @@
   ci = commit -a
   co = checkout --recurse-submodules
   c- = !git commit -a -F -
-  cl = clean -dfx
+  cl = clean -dfX
   cc = cherry-pick
   ff = merge --ff-only
   fx = commit -a --amend --no-edit
