@@ -58,3 +58,11 @@ commits, each moving from one state to the next, are to be preferred.
 
 Commit work without being prompted.  If I don't like the work, I will ask you
 to amend the commit.
+
+# Managing todos
+
+When we find work that we might do later, record it immediately with Loose
+Threads (`lt add` or the `add_thread` tool).  When asked what was deferred,
+list threads rather than recalling from context.  Then, it's imperative to
+close those items out (`lt done` or `lt abandon`) when we get back to the
+deferred work.
