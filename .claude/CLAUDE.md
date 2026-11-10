@@ -30,13 +30,6 @@ never produce something like this:
 Do add comments explaining particularly tricky algorithmns, or places where the
 code has been intentionally made complex to work around a subtle problem.
 
-When adding non-trivial comments to code, sign them as I would, in this format,
-using the current date:
-
-```
-# This is the text of the comment. -- claude, YYYY-MM-DD
-```
-
 When editing or refactoring existing code, you **must not** remove comments
 that were already there, unless they become irrelevant or inaccurate.
 
